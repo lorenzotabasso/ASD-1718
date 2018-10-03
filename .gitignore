@@ -52,3 +52,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# DATASETS ---------------------------
+Datasets/

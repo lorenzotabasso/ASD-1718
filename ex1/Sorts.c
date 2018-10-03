@@ -18,4 +18,6 @@ void insertionSort(int[] array, int n) {
     }   
 }
 
-// da vedere: https://github.com/soupi/3-C-Sorting-Algorithms
+// LINK UTILI: 
+// https://github.com/soupi/3-C-Sorting-Algorithms
+// https://gist.github.com/justinloundagin/5523524
