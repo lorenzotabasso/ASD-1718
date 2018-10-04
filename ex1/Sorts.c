@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <math.h> 
 
-void insertionSort(long long a[]) 
+void insertionSort(unsigned long long a[]) 
 {
     int i, j;
     int key;
     
-    for(i = 1; i < sizeof(a); i++) 
+    for(i = 1; i < 11; i++) 
     {
         key = a[i];
         j = i-1;
@@ -18,16 +18,16 @@ void insertionSort(long long a[])
             j = j-1; 
         }
         a[j+1] = key;
-    }   
+    }
 }
 
 int main() 
 {
-    long long a [] = {178045131, 154266748, 93573006, 191011796, 63744743, 139183879, 102116441, 166015103, 100000000, 100, 40000000000};
+    unsigned long long a [] = {178045131, 154266748, 93573006, 191011796, 63744743, 139183879, 102116441, 166015103, 100000000, 100, 40000000000};
     int b [] = {22,45,67,34,10,1,5,7,3,6,256};
 
     printf("Prima: \n");
-    for(int i = 0; i < sizeof(a); i++) 
+    for(int i = 0; i < 11; i++) 
     {
         printf("%llu,\n", a[i]);
         //printf("%d, ", b[i]);
@@ -37,7 +37,7 @@ int main()
     insertionSort(a);
     
     printf("Dopo: \n");
-    for(int i = 0; i < 11; i++) 
+    for(int i = 0; i < 12; i++) 
     {
         printf("%llu,\n", a[i]);
         //printf("%d, ", b[i]);
