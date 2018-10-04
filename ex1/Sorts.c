@@ -3,9 +3,9 @@
 void insertionSort(unsigned long long a[]) 
 {
     int i, j;
-    int key;
+    unsigned long long key;
     
-    for(i = 1; i < 4; i++) 
+    for(i = 1; i < 11; i++) 
     {
         key = a[i];
         j = i-1;
@@ -22,27 +22,27 @@ void insertionSort(unsigned long long a[])
 
 int main() 
 {
-    unsigned long long a [] = {178045131LL, 154266748LL, 93573006LL, 191011796LL, 63744743LL, 139183879LL, 102116441LL, 166015103LL, 100000000LL, 100LL, (long long) 40000000000};
+    unsigned long long a [] = {178045131LL, 154266748LL, 93573006LL, 191011796LL, 63744743LL, 139183879LL, 102116441LL, 166015103LL, 100000000LL, 100LL, 40000000000LL};
     int b [] = {22,45,67,34,10,1,5,7,3,6,256};
     unsigned long long c [] = {40000000000LL, 10000000000LL, 20000000000LL, 30000000000LL};
 
     printf("Prima: \n");
-    for(int i = 0; i < 4; i++) 
+    for(int i = 0; i < 11; i++) 
     {
-        //printf("%llu,\n", a[i]);
+        printf("%llu,\n", a[i]);
         //printf("%d, ", b[i]);
-        printf("%llu,\n", c[i]);
+        //printf("%llu,\n", c[i]);
     }
     printf("\n\n");
     
-    insertionSort(c);
+    insertionSort(a);
     
     printf("Dopo: \n");
-    for(int i = 0; i < 4; i++) 
+    for(int i = 0; i < 11; i++) 
     {
-        //printf("%llu,\n", a[i]);
+        printf("%llu,\n", a[i]);
         //printf("%d, ", b[i]);
-        printf("%llu,\n", c[i]);
+        //printf("%llu,\n", c[i]);
     }
     printf("\n\n");
 
