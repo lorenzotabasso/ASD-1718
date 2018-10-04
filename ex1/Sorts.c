@@ -6,7 +6,7 @@ void insertionSort(long long a[])
     int i, j;
     int key;
     
-    for(i = 1; i < 11; i++) 
+    for(i = 1; i < sizeof(a); i++) 
     {
         key = a[i];
         j = i-1;
@@ -27,7 +27,7 @@ int main()
     int b [] = {22,45,67,34,10,1,5,7,3,6,256};
 
     printf("Prima: \n");
-    for(int i = 0; i < 11; i++) 
+    for(int i = 0; i < sizeof(a); i++) 
     {
         printf("%llu,\n", a[i]);
         //printf("%d, ", b[i]);
