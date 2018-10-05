@@ -4,9 +4,9 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 4
+#define ELEMENTS_TO_SCAN 30000000
 
-unsigned long long toOrder [ELEMENTS_TO_SCAN] = {40000000000LL, 10000000000LL, 20000000000LL, 30000000000LL};
+unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
 
 void insertionSort(unsigned long long a[]) {
     int i, j;
@@ -24,25 +24,26 @@ void insertionSort(unsigned long long a[]) {
     }
 }
 
-void read(char path [300]) {
+void read() {
     FILE* dataset = fopen(DATASET_PATH, "r");
-    if( dataset == NULL ) { 
-    perror("Error while opening the file.\n");
-    exit(0); // exit failure
+    if(dataset == NULL ) { 
+        printf("Error while opening the file.\n");
+        exit(0); // exit failure, it closes the program
     }
-
     int i = 0;
+    int millionCount = 0;
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &toOrder[i])!=EOF) { 
+        //printf("%llu", toOrder[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
         i++;
     }
+    printf("Read %d\n", i); 
     fclose(dataset);
-    exit(1); // exit success
 }
 
 void printArray() {
     int length = sizeof(toOrder) / sizeof(toOrder[0]);
     
-    printf("length: %d \n", length);
+    // printf("length: %d \n", length); // for debug
 
     printf("Conetnuto dell' array:\n");
     for(int i = 0; i < length; i++) {
@@ -52,13 +53,14 @@ void printArray() {
 }
 
 int main() {
-    printf("Prima: \n");
-    printArray();
+    read();
+    //printf("Prima: \n");
+    //printArray();
     
-    insertionSort(toOrder);
+    //insertionSort(toOrder);
     
-    printf("Dopo: \n");
-    printArray();
+    //printf("Dopo: \n");
+    //printArray();
 
     return 0;
 }
