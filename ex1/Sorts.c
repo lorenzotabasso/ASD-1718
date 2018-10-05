@@ -1,4 +1,11 @@
-#include <stdio.h> 
+#include <stdio.h>
+#include <string.h>
+
+// riscriverlo con il path relativo
+#define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+#define ELEMENTS_TO_SCAN 100
+
+unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
 
 void insertionSort(unsigned long long a[]) 
 {
@@ -20,31 +27,41 @@ void insertionSort(unsigned long long a[])
     }
 }
 
-int main() 
-{
-    unsigned long long a [] = {178045131LL, 154266748LL, 93573006LL, 191011796LL, 63744743LL, 139183879LL, 102116441LL, 166015103LL, 100000000LL, 100LL, 40000000000LL};
-    int b [] = {22,45,67,34,10,1,5,7,3,6,256};
+void read(char [300] path) {
+    FILE* dataset = fopen(DATASET_PATH, "r");
+    if( dataset == NULL ) { 
+    perror("Error while opening the file.\n");
+    exit(0); // exit failure
+    }
+
+    int i = 0;
+    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &i)!=EOF) { 
+        toOrder[i] // finireeeee
+        i++;
+    }
+    fclose(dataset);
+    exit(1); // exit success
+}
+
+void printArray(unsigned long long toPrint[]) {
+    printf("Conetnuto dell' array:\n");
+    for(int i = 0; i < sizeof[toPrint]; i++) 
+    {
+        printf("%llu,\n", toPrint[i]);
+    }
+    printf("\n");
+}
+
+int main() {
     unsigned long long c [] = {40000000000LL, 10000000000LL, 20000000000LL, 30000000000LL};
 
     printf("Prima: \n");
-    for(int i = 0; i < 11; i++) 
-    {
-        printf("%llu,\n", a[i]);
-        //printf("%d, ", b[i]);
-        //printf("%llu,\n", c[i]);
-    }
-    printf("\n\n");
+    printArray(c)
     
     insertionSort(a);
     
     printf("Dopo: \n");
-    for(int i = 0; i < 11; i++) 
-    {
-        printf("%llu,\n", a[i]);
-        //printf("%d, ", b[i]);
-        //printf("%llu,\n", c[i]);
-    }
-    printf("\n\n");
+    printArray(c);
 
     return 0;
 }
