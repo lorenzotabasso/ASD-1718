@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 30000000
+#define ELEMENTS_TO_SCAN 100000
 
 unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
 
@@ -22,6 +21,7 @@ void insertionSort(unsigned long long a[]) {
         }
         a[j+1] = key;
     }
+    printf("Sorrting terminato\n");
 }
 
 void read() {
@@ -57,7 +57,7 @@ int main() {
     //printf("Prima: \n");
     //printArray();
     
-    //insertionSort(toOrder);
+    insertionSort(toOrder);
     
     //printf("Dopo: \n");
     //printArray();
