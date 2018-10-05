@@ -1,25 +1,22 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 100
+#define ELEMENTS_TO_SCAN 4
 
-unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
+unsigned long long toOrder [ELEMENTS_TO_SCAN] = {40000000000LL, 10000000000LL, 20000000000LL, 30000000000LL};
 
-void insertionSort(unsigned long long a[]) 
-{
+void insertionSort(unsigned long long a[]) {
     int i, j;
     unsigned long long key;
     
-    for(i = 1; i < 11; i++) 
-    {
+    for(i = 1; i < ELEMENTS_TO_SCAN; i++) {
         key = a[i];
         j = i-1;
 
-        
-        while(j >= 0 && a[j] > key) 
-        {
+        while(j >= 0 && a[j] > key) {
             a[j+1] = a[j]; 
             j = j-1; 
         }
@@ -27,7 +24,7 @@ void insertionSort(unsigned long long a[])
     }
 }
 
-void read(char [300] path) {
+void read(char path [300]) {
     FILE* dataset = fopen(DATASET_PATH, "r");
     if( dataset == NULL ) { 
     perror("Error while opening the file.\n");
@@ -35,33 +32,33 @@ void read(char [300] path) {
     }
 
     int i = 0;
-    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &i)!=EOF) { 
-        toOrder[i] // finireeeee
+    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &toOrder[i])!=EOF) { 
         i++;
     }
     fclose(dataset);
     exit(1); // exit success
 }
 
-void printArray(unsigned long long toPrint[]) {
+void printArray() {
+    int length = sizeof(toOrder) / sizeof(toOrder[0]);
+    
+    printf("length: %d \n", length);
+
     printf("Conetnuto dell' array:\n");
-    for(int i = 0; i < sizeof[toPrint]; i++) 
-    {
-        printf("%llu,\n", toPrint[i]);
+    for(int i = 0; i < length; i++) {
+        printf("%llu,\n", toOrder[i]);
     }
     printf("\n");
 }
 
 int main() {
-    unsigned long long c [] = {40000000000LL, 10000000000LL, 20000000000LL, 30000000000LL};
-
     printf("Prima: \n");
-    printArray(c)
+    printArray();
     
-    insertionSort(a);
+    insertionSort(toOrder);
     
     printf("Dopo: \n");
-    printArray(c);
+    printArray();
 
     return 0;
 }
