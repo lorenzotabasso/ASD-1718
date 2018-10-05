@@ -3,9 +3,16 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 100000
+#define ELEMENTS_TO_SCAN 5
 
 unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
+
+void insertionSort(unsigned long long a[]);
+void mergeSort(unsigned long long toOrder[], int left, int right);
+void merge(unsigned long long toOrder[], int left, int center, int right);
+void read();
+void printArray();
+
 
 void insertionSort(unsigned long long a[]) {
     int i, j;
@@ -22,6 +29,51 @@ void insertionSort(unsigned long long a[]) {
         a[j+1] = key;
     }
     printf("Sorrting terminato\n");
+}
+
+void mergeSort(unsigned long long toOrder[], int left, int right) {
+    int center = 0;
+    if (left < right) {
+        center = (left + right) / 2;
+        mergeSort(toOrder, left, center);
+        mergeSort(toOrder, center+1, right);
+        merge(toOrder, left, center, right);
+    }
+}
+
+void merge(unsigned long long toOrder[], int left, int center, int right) {
+    int i = left;
+    int j = center + 1;
+    int k = 0;
+    unsigned long long temp [(right-left)+1];
+
+    while(i <= center && j <= right) {
+        if (toOrder[i] <= toOrder[j]) {
+            temp[k] = toOrder[i];
+            i++;
+        }
+        else {
+            temp[k] = toOrder[j];
+            j++;
+        }
+        k++;
+    }
+    
+    while(i <= center){
+        temp[k] = toOrder[i];
+        i++;
+        k++;
+    }
+    
+    while(j <= right){
+        temp[k] = toOrder[j];
+        j++;
+        k++;
+    }
+    
+    for(int k = left; k < right; k++){
+        toOrder[k] = temp[k-left];
+    }
 }
 
 void read() {
@@ -55,12 +107,14 @@ void printArray() {
 int main() {
     read();
     //printf("Prima: \n");
-    //printArray();
+    printArray();
     
-    insertionSort(toOrder);
+    //insertionSort(toOrder);
+    int length = sizeof(toOrder) / sizeof(toOrder[0]);
+    mergeSort(toOrder,0,length);
     
-    //printf("Dopo: \n");
-    //printArray();
+    printf("MergeSort Terminato!\n");
+    printArray();
 
     return 0;
 }
@@ -69,8 +123,7 @@ int main() {
 void mergesort(int a[],int i,int j);
 void merge(int a[],int i1,int j1,int i2,int j2);
  
-int main()
-{
+int main() {
     int a[30],n,i;
     printf("Enter no of elements:");
     scanf("%d",&n);
