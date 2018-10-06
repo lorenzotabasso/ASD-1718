@@ -41,6 +41,7 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
     }
 }
 
+// Merge di internet
 void merge(unsigned long long toOrder[], int left, int center, int right) {
     int i = left;
     int j = center + 1;
@@ -74,6 +75,11 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
     for(int k = left; k < right; k++){
         toOrder[k] = temp[k-left];
     }
+}
+
+// merge del Cormen
+void merge(unsigned long long toOrder[], int left, int center, int right) {
+
 }
 
 void read() {
