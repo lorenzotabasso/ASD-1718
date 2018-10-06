@@ -22,9 +22,9 @@ void insertionSort(unsigned long long a[]) {
         key = a[i];
         j = i-1;
 
-        while(j >= 0 && a[j] > key) {
+        while(j > 0 && a[j] > key) {
             a[j+1] = a[j]; 
-            j = j-1; 
+            j--;
         }
         a[j+1] = key;
     }
@@ -109,9 +109,9 @@ int main() {
     //printf("Prima: \n");
     printArray();
     
-    //insertionSort(toOrder);
-    int length = sizeof(toOrder) / sizeof(toOrder[0]);
-    mergeSort(toOrder,0,length);
+    insertionSort(toOrder);
+    //int length = sizeof(toOrder) / sizeof(toOrder[0]);
+    //mergeSort(toOrder,0,length);
     
     printf("MergeSort Terminato!\n");
     printArray();
