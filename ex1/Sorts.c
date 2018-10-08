@@ -42,44 +42,73 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
 }
 
 // Merge di internet
-void merge(unsigned long long toOrder[], int left, int center, int right) {
-    int i = left;
-    int j = center + 1;
-    int k = 0;
-    unsigned long long temp [(right-left)+1];
+// void merge(unsigned long long toOrder[], int left, int center, int right) {
+//     int i = left;
+//     int j = center + 1;
+//     int k = 0;
+//     unsigned long long temp [(right-left)+1];
 
-    while(i <= center && j <= right) {
-        if (toOrder[i] <= toOrder[j]) {
-            temp[k] = toOrder[i];
-            i++;
-        }
-        else {
-            temp[k] = toOrder[j];
-            j++;
-        }
-        k++;
-    }
+//     while(i <= center && j <= right) {
+//         if (toOrder[i] <= toOrder[j]) {
+//             temp[k] = toOrder[i];
+//             i++;
+//         }
+//         else {
+//             temp[k] = toOrder[j];
+//             j++;
+//         }
+//         k++;
+//     }
     
-    while(i <= center){
-        temp[k] = toOrder[i];
-        i++;
-        k++;
-    }
+//     while(i <= center){
+//         temp[k] = toOrder[i];
+//         i++;
+//         k++;
+//     }
     
-    while(j <= right){
-        temp[k] = toOrder[j];
-        j++;
-        k++;
-    }
+//     while(j <= right){
+//         temp[k] = toOrder[j];
+//         j++;
+//         k++;
+//     }
     
-    for(int k = left; k < right; k++){
-        toOrder[k] = temp[k-left];
-    }
-}
+//     for(int k = left; k < right; k++){
+//         toOrder[k] = temp[k-left];
+//     }
+// }
 
 // merge del Cormen
 void merge(unsigned long long toOrder[], int left, int center, int right) {
+    int n1 = center - left +1;
+    int n2 = right - center;
 
+    unsigned long long l [n1 + 1];
+    unsigned long long r [n2 + 1];
+
+    for(int i = 0; i < n1; i++){
+        l[i] = toOrder[left + i -1];
+    }
+    
+    for(int j = 0; j < n2; j++){
+        r[j] = toOrder[center + j];
+    }
+
+    l[n1 + 1] = 0;
+    r[n2 + 1] = 0;
+
+    int i, j = 0; 
+    
+    
+    for(int k = left; k < right; k++) {
+        if (l[i] <= r[j]) {
+            toOrder[k] = l[i];
+            i++;
+        }
+        else {
+            toOrder[k] = r[j];
+            j++;
+        }
+    }
 }
 
 void read() {
@@ -115,9 +144,9 @@ int main() {
     //printf("Prima: \n");
     printArray();
     
-    insertionSort(toOrder);
-    //int length = sizeof(toOrder) / sizeof(toOrder[0]);
-    //mergeSort(toOrder,0,length);
+    //insertionSort(toOrder);
+    int length = sizeof(toOrder) / sizeof(toOrder[0]);
+    mergeSort(toOrder,0,length);
     
     printf("MergeSort Terminato!\n");
     printArray();
