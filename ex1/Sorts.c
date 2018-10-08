@@ -5,7 +5,8 @@
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define ELEMENTS_TO_SCAN 5
 
-unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
+//unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
+unsigned long long toOrder [5] = {5,4,3,2,1};
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long toOrder[], int left, int right);
@@ -40,6 +41,8 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
         merge(toOrder, left, center, right);
     }
 }
+
+// ALTRO MERGE INTERNET https://www.geeksforgeeks.org/merge-sort/
 
 // Merge di internet
 // void merge(unsigned long long toOrder[], int left, int center, int right) {
@@ -79,26 +82,30 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
 
 // merge del Cormen
 void merge(unsigned long long toOrder[], int left, int center, int right) {
-    int n1 = center - left +1;
-    int n2 = right - center;
-
-    unsigned long long l [n1 + 1];
-    unsigned long long r [n2 + 1];
-
-    for(int i = 0; i < n1; i++){
-        l[i] = toOrder[left + i -1];
-    }
     
-    for(int j = 0; j < n2; j++){
-        r[j] = toOrder[center + j];
+    int a = center - (left +1);
+    int b = right - center;
+    unsigned long long l[a + 1];
+    unsigned long long r[b + 1];
+
+    for(int i = 0; i < a; i++){
+        l[i] = toOrder[left + i];
+        printf("l[%d]: %llu\n", i, l[i]);
     }
 
-    l[n1 + 1] = 0;
-    r[n2 + 1] = 0;
+    printf("----------------------------\n");
+    
+    for(int j = 0; j < b; j++){
+        r[j] = toOrder[center + j];
+        printf("r[%d]: %llu\n", j, r[j]);
+    }
+
+    printf("----------------------------\n");
+
+    //l[a + 1] = 9999999;
+    //r[b + 1] = 9999999;
 
     int i, j = 0; 
-    
-    
     for(int k = left; k < right; k++) {
         if (l[i] <= r[j]) {
             toOrder[k] = l[i];
@@ -109,6 +116,20 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
             j++;
         }
     }
+
+    // int i, j = 0; 
+    // int k = left;
+    // while (i < a && j < b) { 
+    //     if (l[i] <= r[j]) { 
+    //         toOrder[k] = l[i]; 
+    //         i++; 
+    //     } 
+    //     else{ 
+    //         toOrder[k] = r[j]; 
+    //         j++; 
+    //     } 
+    //     k++; 
+    // }
 }
 
 void read() {
@@ -118,9 +139,8 @@ void read() {
         exit(0); // exit failure, it closes the program
     }
     int i = 0;
-    int millionCount = 0;
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &toOrder[i])!=EOF) { 
-        //printf("%llu", toOrder[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
+        printf("%llu\n", toOrder[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
         i++;
     }
     printf("Read %d\n", i); 
@@ -140,13 +160,16 @@ void printArray() {
 }
 
 int main() {
-    read();
+    //read();
     //printf("Prima: \n");
-    printArray();
+    //printArray();
+    //printf("DEBUG MAIN");
     
     //insertionSort(toOrder);
-    int length = sizeof(toOrder) / sizeof(toOrder[0]);
-    mergeSort(toOrder,0,length);
+    
+    //int length = sizeof(toOrder) / sizeof(toOrder[0]);
+
+    mergeSort(toOrder,0,5);
     
     printf("MergeSort Terminato!\n");
     printArray();
