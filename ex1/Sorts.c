@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define ELEMENTS_TO_SCAN 5
 
 //unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
-unsigned long long toOrder [5] = {5,4,3,2,1};
+unsigned long long toOrder [5] = {53,42,11,24,10};
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long toOrder[], int left, int right);
@@ -36,6 +37,7 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
     int center = 0;
     if (left < right) {
         center = (left + right) / 2;
+        printf("MergeSort:    left: %d, center:%d, right:%d\n", left, center, right);
         mergeSort(toOrder, left, center);
         mergeSort(toOrder, center+1, right);
         merge(toOrder, left, center, right);
@@ -83,6 +85,8 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
 // merge del Cormen
 void merge(unsigned long long toOrder[], int left, int center, int right) {
     
+    printf("Merge:        Left: %d, center: %d, right: %d\n", left, center, right);
+
     int a = center - (left +1);
     int b = right - center;
     unsigned long long l[a + 1];
@@ -90,46 +94,49 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
 
     for(int i = 0; i < a; i++){
         l[i] = toOrder[left + i];
-        printf("l[%d]: %llu\n", i, l[i]);
     }
-
-    printf("----------------------------\n");
     
     for(int j = 0; j < b; j++){
         r[j] = toOrder[center + j];
-        printf("r[%d]: %llu\n", j, r[j]);
     }
 
-    printf("----------------------------\n");
-
-    //l[a + 1] = 9999999;
-    //r[b + 1] = 9999999;
-
-    int i, j = 0; 
-    for(int k = left; k < right; k++) {
-        if (l[i] <= r[j]) {
-            toOrder[k] = l[i];
-            i++;
-        }
-        else {
-            toOrder[k] = r[j];
-            j++;
-        }
-    }
+    l[a + 1] = ULLONG_MAX;
+    r[b + 1] = ULLONG_MAX;
 
     // int i, j = 0; 
-    // int k = left;
-    // while (i < a && j < b) { 
-    //     if (l[i] <= r[j]) { 
-    //         toOrder[k] = l[i]; 
-    //         i++; 
-    //     } 
-    //     else{ 
-    //         toOrder[k] = r[j]; 
-    //         j++; 
-    //     } 
-    //     k++; 
+    // for(int k = left; k < right; k++) {
+    //     if (l[i] <= r[j]) {
+    //         toOrder[k] = l[i];
+    //         i++;
+    //     }
+    //     else {
+    //         toOrder[k] = r[j];
+    //         j++;
+    //     }
     // }
+
+    //printf("Merge Terminato\n");
+
+    int i = 0;
+    int j = 0; 
+    int k = left;
+    printf("Merge:        i=%d < A:%d, j=%d < B=%d\n", i, a, j, b);
+    while (i < a && j < b) { 
+        printf("Merge:        WHILE 3\n");
+        if (l[i] <= r[j]) {
+            printf("Merge:        IF-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
+            toOrder[k] = l[i]; 
+            i++; 
+            printf("Merge:        IF-POST toOrder[%d]=%llu=L[%d]=%llu\n", k, toOrder[k], i, l[i]);
+        } 
+        else{ 
+            printf("Merge:        ELSE-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
+            toOrder[k] = r[j]; 
+            j++; 
+            printf("Merge:        ELSE-POST toOrder[%d]=%llu=R[%d]=%llu\n", k, toOrder[k], j, r[j]);
+        } 
+        k++; 
+    }
 }
 
 void read() {
@@ -161,8 +168,8 @@ void printArray() {
 
 int main() {
     //read();
-    //printf("Prima: \n");
-    //printArray();
+    printf("Prima: \n");
+    printArray();
     //printf("DEBUG MAIN");
     
     //insertionSort(toOrder);
@@ -171,7 +178,7 @@ int main() {
 
     mergeSort(toOrder,0,5);
     
-    printf("MergeSort Terminato!\n");
+    printf("Dopo:\n");
     printArray();
 
     return 0;
