@@ -4,7 +4,7 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 550000
+#define ELEMENTS_TO_SCAN 20000000
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long toOrder[], int left, int right);
