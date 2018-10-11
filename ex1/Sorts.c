@@ -44,44 +44,6 @@ void mergeSort(unsigned long long toOrder[], int left, int right) {
     }
 }
 
-// ALTRO MERGE INTERNET https://www.geeksforgeeks.org/merge-sort/
-
-// Merge di internet
-// void merge(unsigned long long toOrder[], int left, int center, int right) {
-//     int i = left;
-//     int j = center + 1;
-//     int k = 0;
-//     unsigned long long temp [(right-left)+1];
-
-//     while(i <= center && j <= right) {
-//         if (toOrder[i] <= toOrder[j]) {
-//             temp[k] = toOrder[i];
-//             i++;
-//         }
-//         else {
-//             temp[k] = toOrder[j];
-//             j++;
-//         }
-//         k++;
-//     }
-    
-//     while(i <= center){
-//         temp[k] = toOrder[i];
-//         i++;
-//         k++;
-//     }
-    
-//     while(j <= right){
-//         temp[k] = toOrder[j];
-//         j++;
-//         k++;
-//     }
-    
-//     for(int k = left; k < right; k++){
-//         toOrder[k] = temp[k-left];
-//     }
-// }
-
 // merge del Cormen
 void merge(unsigned long long toOrder[], int left, int center, int right) {
     
@@ -102,20 +64,6 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
 
     l[a + 1] = ULLONG_MAX;
     r[b + 1] = ULLONG_MAX;
-
-    // int i, j = 0; 
-    // for(int k = left; k < right; k++) {
-    //     if (l[i] <= r[j]) {
-    //         toOrder[k] = l[i];
-    //         i++;
-    //     }
-    //     else {
-    //         toOrder[k] = r[j];
-    //         j++;
-    //     }
-    // }
-
-    //printf("Merge Terminato\n");
 
     int i = 0;
     int j = 0; 
@@ -159,17 +107,18 @@ void printArray() {
     
     // printf("length: %d \n", length); // for debug
 
-    printf("Conetnuto dell' array:\n");
+    printf("Contenuto dell'array: [");
     for(int i = 0; i < length; i++) {
-        printf("%llu,\n", toOrder[i]);
+        printf("%llu,", toOrder[i]);
     }
-    printf("\n");
+    printf("]\n");
 }
 
 int main() {
     //read();
-    printf("Prima: \n");
+    printf("\nPRIMA: \n");
     printArray();
+    printf("\n");
     //printf("DEBUG MAIN");
     
     //insertionSort(toOrder);
@@ -178,123 +127,164 @@ int main() {
 
     mergeSort(toOrder,0,5);
     
-    printf("Dopo:\n");
+    printf("\nDOPO:\n");
     printArray();
+    printf("\n");
 
     return 0;
 }
 
-/*
-void mergesort(int a[],int i,int j);
-void merge(int a[],int i1,int j1,int i2,int j2);
- 
-int main() {
-    int a[30],n,i;
-    printf("Enter no of elements:");
-    scanf("%d",&n);
-    printf("Enter array elements:");
-    
-    for(i=0;i<n;i++)
-        scanf("%d",&a[i]);
-        
-    mergesort(a,0,n-1);
-    
-    printf("\nSorted array is :");
-    for(i=0;i<n;i++)
-        printf("%d ",a[i]);
-        
-    return 0;
-}
- 
-void mergesort(int a[],int i,int j)
-{
-    int mid;
-        
-    if(i<j)
-    {
-        mid=(i+j)/2;
-        mergesort(a,i,mid);        //left recursion
-        mergesort(a,mid+1,j);    //right recursion
-        merge(a,i,mid,mid+1,j);    //merging of two sorted sub-arrays
-    }
-}
- 
-void merge(int a[],int i1,int j1,int i2,int j2)
-{
-    int temp[50];    //array used for merging
-    int i,j,k;
-    i=i1;    //beginning of the first list
-    j=i2;    //beginning of the second list
-    k=0;
-    
-    while(i<=j1 && j<=j2)    //while elements in both lists
-    {
-        if(a[i]<a[j])
-            temp[k++]=a[i++];
-        else
-            temp[k++]=a[j++];
-    }
-    
-    while(i<=j1)    //copy remaining elements of the first list
-        temp[k++]=a[i++];
-        
-    while(j<=j2)    //copy remaining elements of the second list
-        temp[k++]=a[j++];
-        
-    //Transfer elements from temp[] back to a[]
-    for(i=i1,j=0;i<=j2;i++,j++)
-        a[i]=temp[j];
-}
-*/
-
-// LINK UTILI: 
-// https://github.com/soupi/3-C-Sorting-Algorithms
-// https://gist.github.com/justinloundagin/5523524
+// ALTRE COSE UTILI -----------------------------------------------------------
 
 /*
-// C program for insertion sort 
-#include <stdio.h> 
-#include <math.h> 
-  
-// Function to sort an array using insertion sort
-void insertionSort(int arr[], int n) 
-{ 
-   int i, key, j; 
-   for (i = 1; i < n; i++) 
-   { 
-       key = arr[i]; 
-       j = i-1; 
-  
-       // Move elements of arr[0..i-1], that are greater than key, to one position ahead of their current position
-       while (j >= 0 && arr[j] > key) 
-       { 
-           arr[j+1] = arr[j]; 
-           j = j-1; 
-       } 
-       arr[j+1] = key; 
-   } 
-} 
-  
-// A utility function to print an array of size n 
-void printArray(int arr[], int n) 
-{ 
-   int i; 
-   for (i=0; i < n; i++) 
-       printf("%d ", arr[i]); 
-   printf("\n"); 
-} 
-  
-  
-  
-// Driver program to test insertion sort
-int main() 
-{ 
-    int arr[] = {12, 11, 13, 5, 6}; 
-    int n = sizeof(arr)/sizeof(arr[0]); 
-  
-    insertionSort(arr, n); 
-    printArray(arr, n); 
-  
-    return 0; 
-}  
+LINK UTILI:
+1) MERGESORT INTERNET https://www.geeksforgeeks.org/merge-sort/
+2) ALGORITMI VARI 1 https://github.com/soupi/3-C-Sorting-Algorithms
+3) ALGORITMI VARI 2 https://gist.github.com/justinloundagin/5523524
 */
+
+// PRIMO PROGRAMMA UTILE ------------------------------------------------------
+
+// void mergesort(int a[],int i,int j);
+// void merge(int a[],int i1,int j1,int i2,int j2);
+ 
+// int main() {
+//     int a[30],n,i;
+//     printf("Enter no of elements:");
+//     scanf("%d",&n);
+//     printf("Enter array elements:");
+    
+//     for(i=0;i<n;i++)
+//         scanf("%d",&a[i]);
+        
+//     mergesort(a,0,n-1);
+    
+//     printf("\nSorted array is :");
+//     for(i=0;i<n;i++)
+//         printf("%d ",a[i]);
+        
+//     return 0;
+// }
+ 
+// void mergesort(int a[],int i,int j) {
+//     int mid;
+        
+//     if(i<j) {
+//         mid=(i+j)/2;
+//         mergesort(a,i,mid);        //left recursion
+//         mergesort(a,mid+1,j);    //right recursion
+//         merge(a,i,mid,mid+1,j);    //merging of two sorted sub-arrays
+//     }
+// }
+ 
+// void merge(int a[],int i1,int j1,int i2,int j2) {
+//     int temp[50];    //array used for merging
+//     int i,j,k;
+//     i=i1;    //beginning of the first list
+//     j=i2;    //beginning of the second list
+//     k=0;
+    
+//     //while elements in both lists
+//     while(i<=j1 && j<=j2) {
+//         if(a[i]<a[j])
+//             temp[k++]=a[i++];
+//         else
+//             temp[k++]=a[j++];
+//     }
+    
+//     while(i<=j1)    //copy remaining elements of the first list
+//         temp[k++]=a[i++];
+        
+//     while(j<=j2)    //copy remaining elements of the second list
+//         temp[k++]=a[j++];
+        
+//     //Transfer elements from temp[] back to a[]
+//     for(i=i1,j=0;i<=j2;i++,j++)
+//         a[i]=temp[j];
+// }
+
+// SECONDO PROGRAMMA UTILE ----------------------------------------------------
+
+// Merge di internet
+// void merge(unsigned long long toOrder[], int left, int center, int right) {
+//     int i = left;
+//     int j = center + 1;
+//     int k = 0;
+//     unsigned long long temp [(right-left)+1];
+
+//     while(i <= center && j <= right) {
+//         if (toOrder[i] <= toOrder[j]) {
+//             temp[k] = toOrder[i];
+//             i++;
+//         }
+//         else {
+//             temp[k] = toOrder[j];
+//             j++;
+//         }
+//         k++;
+//     }
+    
+//     while(i <= center){
+//         temp[k] = toOrder[i];
+//         i++;
+//         k++;
+//     }
+    
+//     while(j <= right){
+//         temp[k] = toOrder[j];
+//         j++;
+//         k++;
+//     }
+    
+//     for(int k = left; k < right; k++){
+//         toOrder[k] = temp[k-left];
+//     }
+// }
+
+
+// TERZO PROGRAMMA UTILE (GENERICO) -------------------------------------------
+// // C program for insertion sort 
+// #include <stdio.h> 
+// #include <math.h> 
+  
+// // Function to sort an array using insertion sort
+// void insertionSort(int arr[], int n) 
+// { 
+//    int i, key, j; 
+//    for (i = 1; i < n; i++) 
+//    { 
+//        key = arr[i]; 
+//        j = i-1; 
+  
+//        // Move elements of arr[0..i-1], that are greater than key, to one position ahead of their current position
+//        while (j >= 0 && arr[j] > key) 
+//        { 
+//            arr[j+1] = arr[j]; 
+//            j = j-1; 
+//        } 
+//        arr[j+1] = key; 
+//    } 
+// } 
+  
+// // A utility function to print an array of size n 
+// void printArray(int arr[], int n) 
+// { 
+//    int i; 
+//    for (i=0; i < n; i++) 
+//        printf("%d ", arr[i]); 
+//    printf("\n"); 
+// } 
+  
+  
+  
+// // Driver program to test insertion sort
+// int main() 
+// { 
+//     int arr[] = {12, 11, 13, 5, 6}; 
+//     int n = sizeof(arr)/sizeof(arr[0]); 
+  
+//     insertionSort(arr, n); 
+//     printArray(arr, n); 
+  
+//     return 0; 
+// }
