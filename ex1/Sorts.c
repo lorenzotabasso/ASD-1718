@@ -4,10 +4,7 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 5
-
-//unsigned long long toOrder [ELEMENTS_TO_SCAN] = {};
-unsigned long long toOrder [5] = {53,42,11,24,10};
+#define ELEMENTS_TO_SCAN 550000
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long toOrder[], int left, int right);
@@ -30,120 +27,99 @@ void insertionSort(unsigned long long a[]) {
         }
         a[j+1] = key;
     }
-    printf("Sorrting terminato\n");
 }
 
-void mergeSort(unsigned long long toOrder[], int left, int right) {
-    int center = 0;
-    if (left < right) {
-        center = (left + right) / 2;
-        printf("MergeSort:    left: %d, center:%d, right:%d\n", left, center, right);
-        mergeSort(toOrder, left, center);
-        mergeSort(toOrder, center+1, right);
-        merge(toOrder, left, center, right);
+void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex){
+    if(leftIndex < rightIndex){
+        int center = (leftIndex + rightIndex) / 2;
+        mergeSort(arrayToSort, leftIndex, center);
+        mergeSort(arrayToSort, center + 1, rightIndex);
+        merge(arrayToSort, leftIndex, center, rightIndex);
     }
 }
 
-// merge del Cormen
-void merge(unsigned long long toOrder[], int left, int center, int right) {
+void merge(unsigned long long * arrayToSort, int left, int center, int right){
+    int n1 = center - left + 1;
+    int n2 = right - center; 
+
+    unsigned long long leftSubArray[n1+1];
+    unsigned long long rightSubArray[n2+1];
     
-    printf("Merge:        Left: %d, center: %d, right: %d\n", left, center, right);
-
-    int a = center - left +1;
-    int b = right - center;
-    unsigned long long l[a];
-    unsigned long long r[b];
-
-    for(int i = 0; i < a; i++){
-        l[i] = toOrder[left + i];
-    }
+    leftSubArray[n1] = ULLONG_MAX; // here Cormen use infinite
+    rightSubArray[n2] = ULLONG_MAX; // here Cormen use infinite
     
-    for(int j = 0; j < b; j++){
-        r[j] = toOrder[center + j];
-    }
-
-    // DEBUG
-    printf("\nL = [");
-    for(int z1 = 0; z1 < a; z1++) {
-        printf("%llu,", l[z1]);
-    }
-    printf("]\n");
-    
-    // DEBUG 2
-    printf("\nR = [");
-    for(int z2 = 0; z2 < b; z2++) {
-        printf("%llu,", l[z2]);
-    }
-    printf("]\n");
-
-    //l[a + 1] = ULLONG_MAX;
-    //r[b + 1] = ULLONG_MAX;
+    for(int i = 0; i < n1; i++)
+        leftSubArray[i] = arrayToSort[left + i];
+    for(int j = 0; j < n2; j++)
+        rightSubArray[j] = arrayToSort[center + j + 1];
 
     int i = 0;
-    int j = 0; 
-    int k = left;
-    printf("Merge:        i=%d < A=%d, j=%d < B=%d\n", i, a, j, b);
-    while (i < a && j < b) { 
-        printf("Merge:        WHILE 3\n");
-        if (l[i] <= r[j]) {
-            printf("Merge:        IF-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
-            toOrder[k] = l[i]; 
-            i++; 
-            printf("Merge:        IF-POST toOrder[%d]=%llu=L[%d]=%llu\n", k, toOrder[k], i-1, l[i-1]);
-        } 
-        else{ 
-            printf("Merge:        ELSE-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
-            toOrder[k] = r[j]; 
-            j++; 
-            printf("Merge:        ELSE-POST toOrder[%d]=%llu=R[%d]=%llu\n", k, toOrder[k], j, r[j]);
-        } 
-        k++; 
+    int j = 0;
+    int k = 0;
+    
+    for(k = left; k <= right; k++){
+        if(leftSubArray[i] <= rightSubArray[j]){
+            arrayToSort[k] = leftSubArray[i];
+            i++;
+        } else {
+            arrayToSort[k] = rightSubArray[j];
+            j++;
+        }
     }
 }
 
-void read() {
-    FILE* dataset = fopen(DATASET_PATH, "r");
+void read(char pathToDataset[], unsigned long long arrayToFill[]) {
+    FILE* dataset = fopen(pathToDataset, "r");
     if(dataset == NULL ) { 
         printf("Error while opening the file.\n");
         exit(0); // exit failure, it closes the program
     }
     int i = 0;
-    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%lld", &toOrder[i])!=EOF) { 
-        printf("%llu\n", toOrder[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
+    int millionCount = 0;
+    int millionDisplay = 1;
+    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", &arrayToFill[i])!=EOF) { 
+        //printf("%llu\n", arrayToFill[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
+        
+        if (millionCount == 1000000) {
+            printf("%dM, ", millionDisplay);
+            millionDisplay++;
+            millionCount = 0;
+        }
+        
         i++;
     }
-    printf("Read %d\n", i); 
+    printf("\nRead %d lines.\n", i); 
     fclose(dataset);
 }
 
-void printArray() {
-    int length = sizeof(toOrder) / sizeof(toOrder[0]);
-    
-    // printf("length: %d \n", length); // for debug
-
-    printf("Contenuto dell'array: [");
-    for(int i = 0; i < length; i++) {
-        printf("%llu,", toOrder[i]);
+void printArray(unsigned long long * arrayToPrint, int arrayLength){
+    printf("[");
+    for(int i = 0; i < arrayLength; i++) {
+        if (i == arrayLength-1) {
+          printf("%llu]", arrayToPrint[i]);
+        }
+        else {
+            printf("%llu, ", arrayToPrint[i]);
+        }
     }
-    printf("]\n");
 }
 
 int main() {
-    //read();
-    printf("\nPRIMA: \n");
-    printArray();
-    printf("\n");
-    //printf("DEBUG MAIN");
-    
-    //insertionSort(toOrder);
-    
-    //int length = sizeof(toOrder) / sizeof(toOrder[0]);
+    //unsigned long long toSort [5] = {53,42,11,24,10};
+    unsigned long long toSort [ELEMENTS_TO_SCAN] = {};
 
-    mergeSort(toOrder,0,5);
+    read(DATASET_PATH, toSort);
+
+    //printf("PRIMA: ");
+    //printArray(toSort, ELEMENTS_TO_SCAN);
     
-    printf("\nDOPO:\n");
-    printArray();
-    printf("\n");
+    //insertionSort(toSort);
+    
+    mergeSort(toSort,0,ELEMENTS_TO_SCAN-1);
+    printf("Merge terminato\n");
+
+    //printf("DOPO: ");
+    //printArray(toSort, ELEMENTS_TO_SCAN);
 
     return 0;
 }
