@@ -49,10 +49,10 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
     
     printf("Merge:        Left: %d, center: %d, right: %d\n", left, center, right);
 
-    int a = center - (left +1);
+    int a = center - left +1;
     int b = right - center;
-    unsigned long long l[a + 1];
-    unsigned long long r[b + 1];
+    unsigned long long l[a];
+    unsigned long long r[b];
 
     for(int i = 0; i < a; i++){
         l[i] = toOrder[left + i];
@@ -62,20 +62,34 @@ void merge(unsigned long long toOrder[], int left, int center, int right) {
         r[j] = toOrder[center + j];
     }
 
-    l[a + 1] = ULLONG_MAX;
-    r[b + 1] = ULLONG_MAX;
+    // DEBUG
+    printf("\nL = [");
+    for(int z1 = 0; z1 < a; z1++) {
+        printf("%llu,", l[z1]);
+    }
+    printf("]\n");
+    
+    // DEBUG 2
+    printf("\nR = [");
+    for(int z2 = 0; z2 < b; z2++) {
+        printf("%llu,", l[z2]);
+    }
+    printf("]\n");
+
+    //l[a + 1] = ULLONG_MAX;
+    //r[b + 1] = ULLONG_MAX;
 
     int i = 0;
     int j = 0; 
     int k = left;
-    printf("Merge:        i=%d < A:%d, j=%d < B=%d\n", i, a, j, b);
+    printf("Merge:        i=%d < A=%d, j=%d < B=%d\n", i, a, j, b);
     while (i < a && j < b) { 
         printf("Merge:        WHILE 3\n");
         if (l[i] <= r[j]) {
             printf("Merge:        IF-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
             toOrder[k] = l[i]; 
             i++; 
-            printf("Merge:        IF-POST toOrder[%d]=%llu=L[%d]=%llu\n", k, toOrder[k], i, l[i]);
+            printf("Merge:        IF-POST toOrder[%d]=%llu=L[%d]=%llu\n", k, toOrder[k], i-1, l[i-1]);
         } 
         else{ 
             printf("Merge:        ELSE-PRE L[%d]=%llu e R[%d]=%llu\n", i, l[i], j, r[j]);
@@ -138,6 +152,7 @@ int main() {
 
 /*
 LINK UTILI:
+0) MERGESORT CORMEN CORRETTO https://stackoverflow.com/questions/12056912/how-to-implement-merge-sort-from-the-introduction-to-algorithms-by-cormen-and
 1) MERGESORT INTERNET https://www.geeksforgeeks.org/merge-sort/
 2) ALGORITMI VARI 1 https://github.com/soupi/3-C-Sorting-Algorithms
 3) ALGORITMI VARI 2 https://gist.github.com/justinloundagin/5523524
