@@ -4,7 +4,7 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 20000000
+#define ELEMENTS_TO_SCAN 600000
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long toOrder[], int left, int right);
@@ -80,11 +80,11 @@ void read(char pathToDataset[], unsigned long long arrayToFill[]) {
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", &arrayToFill[i])!=EOF) { 
         //printf("%llu\n", arrayToFill[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
         
-        if (millionCount == 1000000) {
-            printf("%dM, ", millionDisplay);
-            millionDisplay++;
-            millionCount = 0;
-        }
+        // if (millionCount == 1000000) {
+        //     printf("%dM, ", millionDisplay);
+        //     millionDisplay++;
+        //     millionCount = 0;
+        // }
         
         i++;
     }
@@ -110,16 +110,16 @@ int main() {
 
     read(DATASET_PATH, toSort);
 
-    //printf("PRIMA: ");
-    //printArray(toSort, ELEMENTS_TO_SCAN);
+    printf("PRIMA: ");
+    printArray(toSort, ELEMENTS_TO_SCAN);
     
     //insertionSort(toSort);
     
     mergeSort(toSort,0,ELEMENTS_TO_SCAN-1);
     printf("Merge terminato\n");
 
-    //printf("DOPO: ");
-    //printArray(toSort, ELEMENTS_TO_SCAN);
+    printf("DOPO: ");
+    printArray(toSort, ELEMENTS_TO_SCAN);
 
     return 0;
 }
