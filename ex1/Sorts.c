@@ -4,7 +4,7 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 1000000
+#define ELEMENTS_TO_SCAN 30000000
 
 void insertionSort(unsigned long long a[]);
 void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex);
@@ -41,8 +41,20 @@ void merge(unsigned long long * arrayToSort, int left, int center, int right){
     int n1 = center - left + 1;
     int n2 = right - center; 
 
-    unsigned long long leftSubArray[n1+1];
-    unsigned long long rightSubArray[n2+1];
+    //unsigned long long leftSubArray[n1+1];
+    //unsigned long long rightSubArray[n2+1];
+
+    // TODO: allocare dinamicamente tutti i sub-array!
+
+    unsigned long long *leftSubArray;
+    unsigned long long *rightSubArray;
+    leftSubArray = (unsigned long long *) malloc(n1+1 * sizeof(unsigned long long));
+    rightSubArray = (unsigned long long *) malloc(n2+1 * sizeof(unsigned long long));
+    
+    if (leftSubArray == 0 || rightSubArray == 0) {
+        printf("Error in Main");
+        exit(0);
+    }
     
     leftSubArray[n1] = ULLONG_MAX; // here Cormen use infinite
     rightSubArray[n2] = ULLONG_MAX; // here Cormen use infinite
@@ -65,6 +77,10 @@ void merge(unsigned long long * arrayToSort, int left, int center, int right){
             j++;
         }
     }
+
+    free(leftSubArray);
+    free(rightSubArray);
+
 }
 
 void read(char pathToDataset[], unsigned long long arrayToFill[]) {
@@ -74,17 +90,10 @@ void read(char pathToDataset[], unsigned long long arrayToFill[]) {
         exit(0); // exit failure, it closes the program
     }
     int i = 0;
-    // int millionCount = 0;
-    // int millionDisplay = 1;
+    int millionCount = 0;
+    int millionDisplay = 1;
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", &arrayToFill[i])!=EOF) { 
         //printf("%llu\n", arrayToFill[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
-        
-        // if (millionCount == 1000000) {
-        //     printf("%dM, ", millionDisplay);
-        //     millionDisplay++;
-        //     millionCount = 0;
-        // }
-        
         //printf("line: %d.\n", i);  // DEBUG
 
         i++;
@@ -109,8 +118,14 @@ int main() {
     //unsigned long long toSort [5] = {53,42,11,24,10};
     
     unsigned long long *toSort;
-    toSort = (unsigned long long) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
+    toSort = (unsigned long long *) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
+    
+    if (toSort == 0) {
+        printf("Error in Main");
+    }
+    
     read(DATASET_PATH, toSort);
+    printf("Debug MAIN\n");
     mergeSort(toSort,0,ELEMENTS_TO_SCAN-1);
     printf("Merge finished\n");
 
