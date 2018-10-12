@@ -4,14 +4,13 @@
 
 // riscriverlo con il path relativo
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 600000
+#define ELEMENTS_TO_SCAN 1000000
 
 void insertionSort(unsigned long long a[]);
-void mergeSort(unsigned long long toOrder[], int left, int right);
-void merge(unsigned long long toOrder[], int left, int center, int right);
+void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex);
+void merge(unsigned long long * arrayToSort, int left, int center, int right);
 void read();
 void printArray();
-
 
 void insertionSort(unsigned long long a[]) {
     int i, j;
@@ -75,8 +74,8 @@ void read(char pathToDataset[], unsigned long long arrayToFill[]) {
         exit(0); // exit failure, it closes the program
     }
     int i = 0;
-    int millionCount = 0;
-    int millionDisplay = 1;
+    // int millionCount = 0;
+    // int millionDisplay = 1;
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", &arrayToFill[i])!=EOF) { 
         //printf("%llu\n", arrayToFill[i]); // ONLY FOR DEBUG, it wil print 20ML of lines!
         
@@ -86,6 +85,8 @@ void read(char pathToDataset[], unsigned long long arrayToFill[]) {
         //     millionCount = 0;
         // }
         
+        //printf("line: %d.\n", i);  // DEBUG
+
         i++;
     }
     printf("\nRead %d lines.\n", i); 
@@ -106,21 +107,14 @@ void printArray(unsigned long long * arrayToPrint, int arrayLength){
 
 int main() {
     //unsigned long long toSort [5] = {53,42,11,24,10};
-    unsigned long long toSort [ELEMENTS_TO_SCAN] = {};
-
+    
+    unsigned long long *toSort;
+    toSort = (unsigned long long) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
     read(DATASET_PATH, toSort);
-
-    printf("PRIMA: ");
-    printArray(toSort, ELEMENTS_TO_SCAN);
-    
-    //insertionSort(toSort);
-    
     mergeSort(toSort,0,ELEMENTS_TO_SCAN-1);
-    printf("Merge terminato\n");
+    printf("Merge finished\n");
 
-    printf("DOPO: ");
-    printArray(toSort, ELEMENTS_TO_SCAN);
-
+    free(toSort);
     return 0;
 }
 
