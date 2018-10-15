@@ -3,33 +3,59 @@
 #include <limits.h>
 
 #define DATASET_PATH "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 1000000
+#define ELEMENTS_TO_SCAN 5
 
 // Functions prototypes ------------------------------------------------------------------------------------------------
 
-void insertionSort(unsigned long long * aarrayToSort);
+void insertionSort(void * arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j));
 void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex);
 void merge(unsigned long long * arrayToSort, int left, int center, int right);
 void read(char pathToDataset[], unsigned long long * arrayToFill);
 void printArray(unsigned long long * arrayToPrint, int arrayLength);
 
+void swap(void* array, int i, int j);
+int compare(void* array, int i, void* value);
+int compareTwoCells(void* array, int i, int j);
+int compareTwoCellsInTwoArray(void* array1, void* array2, int i, int j);
+void assign(void* toArray, void* fromArray, int i, int j);
+void assignValue(void* array, int i, void* value);
+
 // Sorting functions ---------------------------------------------------------------------------------------------------
 
-void insertionSort(unsigned long long * arrayToSort){
+void insertionSort(void * arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j)) {
 	int i = 0;
     int j = 0;
-    unsigned long long key;
+    void * key;
 
 	for(i = 0; i < ELEMENTS_TO_SCAN; i++){
-		key = *(arrayToSort+i);
+		key = (arrayToSort+i);
 		j = i - 1;
-		while (j >= 0 && arrayToSort[j] > key){
-			arrayToSort[j+1] = arrayToSort[j];
+        printf("KEY: %llu \n", key);
+        printArray(arrayToSort, ELEMENTS_TO_SCAN);
+		while (j >= 0 && !compare(arrayToSort, j, key)){
+            assign(arrayToSort, arrayToSort, j+1, j);
 			j--;
 		}
-		arrayToSort[j+1] = key;
+        assignValue(arrayToSort, j+1, key);
 	}
 }
+
+// versione funzionante NON GENERICA
+// void insertionSort(unsigned long long * arrayToSort){
+// 	int i = 0;
+//     int j = 0;
+//     unsigned long long key;
+
+// 	for(i = 0; i < ELEMENTS_TO_SCAN; i++){
+// 		key = *(arrayToSort+i);
+// 		j = i - 1;
+// 		while (j >= 0 && arrayToSort[j] > key){
+// 			arrayToSort[j+1] = arrayToSort[j];
+// 			j--;
+// 		}
+// 		arrayToSort[j+1] = key;
+// 	}
+// }
 
 void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex){
     if(leftIndex < rightIndex){
@@ -119,11 +145,47 @@ int main() {
     //mergeSort(toSort,0, ELEMENTS_TO_SCAN-1);
     //printf("Merge finished\n");
 
-    insertionSort(toSort);
+    //printArray(toSort, ELEMENTS_TO_SCAN);
+    insertionSort(toSort, compare, swap);
     printf("InsertionSort finished\n");
+    printArray(toSort, ELEMENTS_TO_SCAN);
 
     free(toSort);
     return 0;
+}
+
+// UTILITY---------------------------------------------------------------------------------------------------------------
+
+// Swaps two values in array
+void swap(void* array, int i, int j) {
+	unsigned long long temp = ((unsigned long long*)array)[i];
+	((unsigned long long*)array)[i] = ((unsigned long long*)array)[j];
+	((unsigned long long*)array)[j] = temp;
+}
+
+// compare 2 cells in array
+int compare(void* array, int i, void* value) {
+    printf("Risultato Compare: %d,\n", (((unsigned long long*)array)[i] < ((unsigned long long)value)));
+	return (((unsigned long long*)array)[i] < ((unsigned long long)value));
+}
+
+// compare 2 cells in array
+int compareTwoCells(void* array, int i, int j) {
+	return (((unsigned long long*)array)[i] < ((unsigned long long*)array)[j]);
+}
+
+// compare a cell in 1 array to a cell in another array
+int compareTwoCellsInTwoArray(void* array1, void* array2, int i, int j) {
+	return (((unsigned long long*)array1)[i] <= ((unsigned long long*)array2)[j]);
+}
+
+// assign value from one array to another
+void assign(void* toArray, void* fromArray, int i, int j) {
+	((unsigned long long*)toArray)[i] = ((unsigned long long*)fromArray)[j];
+}
+
+void assignValue(void* array, int i, void* value) {
+	((unsigned long long*)array)[i] = (unsigned long long)value;
 }
 
 // ALTRE COSE UTILI ----------------------------------------------------------------------------------------------------
