@@ -106,6 +106,8 @@ void merge(unsigned long long * arrayToSort, int left, int center, int right){
 
 // Support functions ---------------------------------------------------------------------------------------------------
 
+// TODO: (opzionale) controllare l'input della fscanf, che non sia troppo grande rispetto all'area di memoria allocata!
+
 void read(char pathToDataset[], unsigned long long * arrayToFill) {
     FILE* dataset = fopen(pathToDataset, "r");
     if(dataset == NULL ) {
