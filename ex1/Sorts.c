@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <time.h>
 #include <string.h>
 
 // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
@@ -136,7 +137,9 @@ void printArray(void ** arrayToPrint, int arrayLength){
 
 // Main ----------------------------------------------------------------------------------------------------------------
 
+
 int main() {
+    clock_t begin = clock();
     void * toSort;
     toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
 
@@ -152,6 +155,8 @@ int main() {
     printArray(toSort, ELEMENTS_TO_SCAN);
 
     free(toSort);
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     return 0;
 }
 
