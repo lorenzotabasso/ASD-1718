@@ -6,7 +6,7 @@
 // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 5
+#define ELEMENTS_TO_SCAN 10
 
 // Functions prototypes ------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ void printArray(void ** arrayToPrint, int arrayLength);
 
 void swap(void* array, int i, int j);
 int compare(void* array, int i, void* value);
-//void assign(void* toArray, void* fromArray, int i, int j);
-void assignValue(void* array, int i, char direction[], void* value);
 
 // Sorting functions ---------------------------------------------------------------------------------------------------
 
@@ -30,15 +28,12 @@ void insertionSort(void ** arrayToSort, int compare(void* array, int i, void* va
 
     for(i = 0; i < ELEMENTS_TO_SCAN; i++){
         key = arrayToSort[i];
-        //printf("KEY points to: %llu\n", (unsigned long long) key);
         j = i - 1;
-        printf("Risultato Compare: %d,\n", compare(arrayToSort, j, key));
-        while (j >= 0 && compare(arrayToSort, j, key)){
-            //assign(arrayToSort, arrayToSort, j+1, j); // TODO forse il problema sta qui!
-            arrayToSort[j+1] = arrayToSort[j];
+        while (j >= 0 && compare(arrayToSort, j, key)) {
+            *(arrayToSort + j + 1) = *(arrayToSort + j);
             j--;
         }
-        assignValue(arrayToSort, j+1, "<-", key);
+        *(arrayToSort+j+1) = key;
     }
 }
 
@@ -166,32 +161,9 @@ void swap(void* array, int i, int j) {
     ((unsigned long long*)array)[j] = temp;
 }
 
-// compare 2 cells in array
-int compare(void* array, int i, void* value) {
-    printf("VALUE: %llu,\t", (unsigned long long)value);
-    printf("ARRAY[%d]: %llu\t", i, (((unsigned long long*)array)[i]));
+// It compares 2 elements (array[i] and value)
+int compare(void * array, int i, void * value) {
     return ((unsigned long long)value) < (((unsigned long long*)array)[i]);
-}
-
-// assign value from one array to another
-//void assign(void* to, void* from) {
-//    to = from;
-//}
-
-// FUNGE
-//// assign value from one array to another
-//void assign(void* toArray, void* fromArray, int i, int j) {
-//    ((unsigned long long*)toArray)[i] = ((unsigned long long*)fromArray)[j];
-//}
-
-void assignValue(void* array, int i, char direction[], void* value) {
-    if (strcmp(direction, "->")) {
-        value = ((unsigned long long *) array)[i];
-    }
-    else {
-        ((unsigned long long*)array)[i] = ((unsigned long long)value);
-    }
-
 }
 
 // ALTRE COSE UTILI ----------------------------------------------------------------------------------------------------
