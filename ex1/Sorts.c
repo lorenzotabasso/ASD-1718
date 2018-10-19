@@ -6,7 +6,11 @@
 // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 10
+#define ELEMENTS_TO_SCAN 5
+
+/*
+ * Insertionsort (200000 records) = 1:14 min
+ */
 
 // Functions prototypes ------------------------------------------------------------------------------------------------
 
@@ -37,8 +41,7 @@ void insertionSort(void ** arrayToSort, int compare(void* array, int i, void* va
     }
 }
 
-// versione funzionante NON GENERICA
-// void insertionSort(unsigned long long * arrayToSort){
+// void castedInsertionSort(unsigned long long * arrayToSort){
 // 	int i = 0;
 //     int j = 0;
 //     unsigned long long key;
@@ -140,12 +143,12 @@ int main() {
     read(DATASET_PATH, toSort);
     printArray(toSort, ELEMENTS_TO_SCAN);
 
-    //mergeSort(toSort,0, ELEMENTS_TO_SCAN-1);
-    //printf("Merge finished\n");
+    mergeSort(toSort,0, ELEMENTS_TO_SCAN-1);
+    printf("Merge finished\n");
 
-    //printArray(toSort, ELEMENTS_TO_SCAN);
-    insertionSort(toSort, compare, swap);
-    printf("InsertionSort finished\n");
+    //insertionSort(toSort, compare, swap);
+    //printf("InsertionSort finished\n");
+
     printArray(toSort, ELEMENTS_TO_SCAN);
 
     free(toSort);
