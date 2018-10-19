@@ -1,43 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 
-#define DATASET_PATH "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+// path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+// path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+#define DATASET_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define ELEMENTS_TO_SCAN 5
 
 // Functions prototypes ------------------------------------------------------------------------------------------------
 
-void insertionSort(void * arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j));
+void insertionSort(void ** arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j));
 void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex);
 void merge(unsigned long long * arrayToSort, int left, int center, int right);
-void read(char pathToDataset[], unsigned long long * arrayToFill);
-void printArray(unsigned long long * arrayToPrint, int arrayLength);
+void read(char pathToDataset[], void ** arrayToFill);
+void printArray(void ** arrayToPrint, int arrayLength);
 
 void swap(void* array, int i, int j);
 int compare(void* array, int i, void* value);
-int compareTwoCells(void* array, int i, int j);
-int compareTwoCellsInTwoArray(void* array1, void* array2, int i, int j);
-void assign(void* toArray, void* fromArray, int i, int j);
-void assignValue(void* array, int i, void* value);
+//void assign(void* toArray, void* fromArray, int i, int j);
+void assignValue(void* array, int i, char direction[], void* value);
 
 // Sorting functions ---------------------------------------------------------------------------------------------------
 
-void insertionSort(void * arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j)) {
-	int i = 0;
+void insertionSort(void ** arrayToSort, int compare(void* array, int i, void* value), void swap(void* array, int i, int j)) {
+    int i = 0;
     int j = 0;
     void * key;
 
-	for(i = 0; i < ELEMENTS_TO_SCAN; i++){
-		key = (arrayToSort+i);
-		j = i - 1;
-        printf("KEY: %llu \n", key);
-        printArray(arrayToSort, ELEMENTS_TO_SCAN);
-		while (j >= 0 && !compare(arrayToSort, j, key)){
-            assign(arrayToSort, arrayToSort, j+1, j);
-			j--;
-		}
-        assignValue(arrayToSort, j+1, key);
-	}
+    for(i = 0; i < ELEMENTS_TO_SCAN; i++){
+        key = arrayToSort[i];
+        //printf("KEY points to: %llu\n", (unsigned long long) key);
+        j = i - 1;
+        printf("Risultato Compare: %d,\n", compare(arrayToSort, j, key));
+        while (j >= 0 && compare(arrayToSort, j, key)){
+            //assign(arrayToSort, arrayToSort, j+1, j); // TODO forse il problema sta qui!
+            arrayToSort[j+1] = arrayToSort[j];
+            j--;
+        }
+        assignValue(arrayToSort, j+1, "<-", key);
+    }
 }
 
 // versione funzionante NON GENERICA
@@ -106,9 +108,7 @@ void merge(unsigned long long * arrayToSort, int left, int center, int right){
 
 // Support functions ---------------------------------------------------------------------------------------------------
 
-// TODO: (opzionale) controllare l'input della fscanf, che non sia troppo grande rispetto all'area di memoria allocata!
-
-void read(char pathToDataset[], unsigned long long * arrayToFill) {
+void read(char pathToDataset[], void ** arrayToFill) {
     FILE* dataset = fopen(pathToDataset, "r");
     if(dataset == NULL ) {
         printf("Error while opening the file.\n");
@@ -116,7 +116,7 @@ void read(char pathToDataset[], unsigned long long * arrayToFill) {
     }
 
     int i = 0;
-    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", &arrayToFill[i]) != EOF) {
+    while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) != EOF) {
 //        printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
         i++;
     }
@@ -124,14 +124,14 @@ void read(char pathToDataset[], unsigned long long * arrayToFill) {
     fclose(dataset);
 }
 
-void printArray(unsigned long long * arrayToPrint, int arrayLength){
+void printArray(void ** arrayToPrint, int arrayLength){
     printf("[");
     for(int i = 0; i < arrayLength; i++) {
         if (i == arrayLength-1) {
-            printf("%llu]\n", arrayToPrint[i]);
+            printf("%llu]\n", (unsigned long long) arrayToPrint[i]);
         }
         else {
-            printf("%llu, ", arrayToPrint[i]);
+            printf("%llu, ", (unsigned long long) arrayToPrint[i]);
         }
     }
 }
@@ -139,10 +139,11 @@ void printArray(unsigned long long * arrayToPrint, int arrayLength){
 // Main ----------------------------------------------------------------------------------------------------------------
 
 int main() {
-    unsigned long long *toSort;
-    toSort = (unsigned long long *) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
+    void * toSort;
+    toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long));
 
     read(DATASET_PATH, toSort);
+    printArray(toSort, ELEMENTS_TO_SCAN);
 
     //mergeSort(toSort,0, ELEMENTS_TO_SCAN-1);
     //printf("Merge finished\n");
@@ -160,34 +161,37 @@ int main() {
 
 // Swaps two values in array
 void swap(void* array, int i, int j) {
-	unsigned long long temp = ((unsigned long long*)array)[i];
-	((unsigned long long*)array)[i] = ((unsigned long long*)array)[j];
-	((unsigned long long*)array)[j] = temp;
+    unsigned long long temp = ((unsigned long long*)array)[i];
+    ((unsigned long long*)array)[i] = ((unsigned long long*)array)[j];
+    ((unsigned long long*)array)[j] = temp;
 }
 
 // compare 2 cells in array
 int compare(void* array, int i, void* value) {
-    printf("Risultato Compare: %d,\n", (((unsigned long long*)array)[i] < ((unsigned long long)value)));
-	return (((unsigned long long*)array)[i] < ((unsigned long long)value));
-}
-
-// compare 2 cells in array
-int compareTwoCells(void* array, int i, int j) {
-	return (((unsigned long long*)array)[i] < ((unsigned long long*)array)[j]);
-}
-
-// compare a cell in 1 array to a cell in another array
-int compareTwoCellsInTwoArray(void* array1, void* array2, int i, int j) {
-	return (((unsigned long long*)array1)[i] <= ((unsigned long long*)array2)[j]);
+    printf("VALUE: %llu,\t", (unsigned long long)value);
+    printf("ARRAY[%d]: %llu\t", i, (((unsigned long long*)array)[i]));
+    return ((unsigned long long)value) < (((unsigned long long*)array)[i]);
 }
 
 // assign value from one array to another
-void assign(void* toArray, void* fromArray, int i, int j) {
-	((unsigned long long*)toArray)[i] = ((unsigned long long*)fromArray)[j];
-}
+//void assign(void* to, void* from) {
+//    to = from;
+//}
 
-void assignValue(void* array, int i, void* value) {
-	((unsigned long long*)array)[i] = (unsigned long long)value;
+// FUNGE
+//// assign value from one array to another
+//void assign(void* toArray, void* fromArray, int i, int j) {
+//    ((unsigned long long*)toArray)[i] = ((unsigned long long*)fromArray)[j];
+//}
+
+void assignValue(void* array, int i, char direction[], void* value) {
+    if (strcmp(direction, "->")) {
+        value = ((unsigned long long *) array)[i];
+    }
+    else {
+        ((unsigned long long*)array)[i] = ((unsigned long long)value);
+    }
+
 }
 
 // ALTRE COSE UTILI ----------------------------------------------------------------------------------------------------
