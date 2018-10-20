@@ -7,7 +7,7 @@
 // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define DATASET_PATH "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define ELEMENTS_TO_SCAN 10
+#define ELEMENTS_TO_SCAN 20
 
 /*
  * Insertionsort (200000 records) = 1:14 min
@@ -102,6 +102,8 @@ void read(char pathToDataset[], void ** arrayToFill) {
     }
 
     int i = 0;
+
+    // TODO: chiedere a Damiani se il cast va bene!!
     while (i < ELEMENTS_TO_SCAN && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) != EOF) {
         //printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
         i++;
