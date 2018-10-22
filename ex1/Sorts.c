@@ -18,6 +18,7 @@
 void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value));
 void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue));
 void merge(void** arrayToSort, int left, int center, int right, int compare2(void * firstValue, void * secondValue));
+int usoDue(void ** arrayToTest void ** arrayToSort, int left, int center, int right, int compareMergeSort(void * firstValue, void * secondValue));
 
 void read(char pathToDataset[], void ** arrayToFill);
 void printArray(void ** arrayToPrint, int arrayLength);
@@ -88,6 +89,21 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
 
     free(leftSubArray);
     free(rightSubArray);
+}
+
+int usoDue(void ** arrayToTest, void ** sortedArray, int compareMergeSort(void * firstValue, void * secondValue)) {
+    int j = ELEMENTS_TO_SCAN;
+
+    for(size_t i = 0; i < ELEMENTS_TO_SCAN && j >=0 ; i++) {
+    //     if ( *(sortedArray+i) + *(sortedArray+j) < x)
+    //     ++i1
+    // else if A1[i1] + A2[i2] > x
+    //     --i2
+    // else
+    //     success!!!!
+    }
+    
+    
 }
 
 // Support functions ---------------------------------------------------------------------------------------------------
@@ -195,6 +211,7 @@ LINK UTILI:
 1) MERGESORT CORMEN CORRETTO https://codereview.stackexchange.com/questions/69289/merge-sort-using-sentinels
 3) ALGORITMI GENeRICI 1 https://github.com/soupi/3-C-Sorting-Algorithms
 4) ALGORITMI GENERICI 2 https://gist.github.com/justinloundagin/5523524
+5) https://stackoverflow.com/questions/49336430/algorithm-of-onlogn-to-search-for-sum-of-two-elements-in-two-arrays
 */
 
 // INSERTIONSORT NON GENERICO FUNZIONANTE
