@@ -1,17 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <string.h>
-#include <time.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <limits.h>
+// #include <string.h>
+// #include <time.h>
 
-// path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-// path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define DATASET_PATH_INTEGERS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define DATASET_PATH_SUMS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-#define ELEMENTS_TO_SCAN 20000000
-#define ELEMENTS_TO_TEST 11
+// // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+// // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+// #define DATASET_PATH_INTEGERS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+// #define DATASET_PATH_SUMS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
+// #define ELEMENTS_TO_SCAN 20000000
+// #define ELEMENTS_TO_TEST 11
 
-int test = 0;
+#include "Sorts.h"
 
 /*
  * Insertionsort (200000 records) = 1:14 min
@@ -19,16 +19,16 @@ int test = 0;
 
 // Functions prototypes ------------------------------------------------------------------------------------------------
 
-void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value));
-void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest);
-void merge(void** arrayToSort, int left, int center, int right, int compare2(void * firstValue, void * secondValue), void ** arrayToTest);
-//int usoDue(void ** arrayToTest void ** arrayToSort, int left, int center, int right, int compareMergeSort(void * firstValue, void * secondValue));
+// void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value));
+// void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest);
+// void merge(void** arrayToSort, int left, int center, int right, int compare2(void * firstValue, void * secondValue), void ** arrayToTest);
+// //int usoDue(void ** arrayToTest void ** arrayToSort, int left, int center, int right, int compareMergeSort(void * firstValue, void * secondValue));
 
-void read(char pathToDataset[], void ** arrayToFill, int arrayLength);
-void printArray(void ** arrayToPrint, int arrayLength);
+// void read(char pathToDataset[], void ** arrayToFill, int arrayLength);
+// void printArray(void ** arrayToPrint, int arrayLength);
 
-int compareInsertSort(void* array, int i, void* value);
-int compareMergeSort(void * firstValue, void * secondValue);
+// int compareInsertSort(void* array, int i, void* value);
+// int compareMergeSort(void * firstValue, void * secondValue);
 
 // Sorting functions ---------------------------------------------------------------------------------------------------
 
@@ -89,32 +89,31 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
             *(arrayToSort + k) = *(rightSubArray + j);
             j++;
         }
-        
-        // USAGE 2 ----------------------------------------------------------------------------------------------------
-
-        int sizeLeft = sizeof(leftSubArray)/sizeof(leftSubArray[0]);
-        int sizeRight = sizeof(rightSubArray)/sizeof(rightSubArray[0]);
-
-        int i1 = 0; 
-        int i2 = sizeRight;
-        int z = ELEMENTS_TO_TEST;
-        while(z >= 0 && i1 < sizeLeft && i2 >= 0) {
-            
-            if ((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) < (unsigned long long) *(arrayToTest + z)) {
-                i1++;
-            }
-            else if((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) > (unsigned long long) *(arrayToTest + z)) {
-                i2--;
-            }
-            else {
-                test = test + 1;
-            }
-        }
-        
     }
 
     free(leftSubArray);
     free(rightSubArray);
+}
+
+// TODO: TO FINISH
+int usoDue(void ** array, int compareMergeSort(void * firstValue, void * secondValue)) {
+    int size = sizeof(array)/sizeof(array[0]);
+
+    int i1 = 0; 
+    int i2 = sizeRight;
+    int z = ELEMENTS_TO_TEST;
+    while(z >= 0 && i1 < sizeLeft && i2 >= 0) {
+            
+        if ((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) < (unsigned long long) *(arrayToTest + z)) {
+            i1++;
+        }
+        else if((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) > (unsigned long long) *(arrayToTest + z)) {
+            i2--;
+        }
+        else {
+            test = test + 1;
+        }
+    }
 }
 
 // Support functions ---------------------------------------------------------------------------------------------------
@@ -158,59 +157,6 @@ void printArray(void ** arrayToPrint, int arrayLength){
     }
 }
 
-// Main ----------------------------------------------------------------------------------------------------------------
-
-int main(int argc, char *argv[]) {
-    clock_t begin = clock();
-
-    void ** toSort;
-    //toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long)); // funge
-    toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(void *)); // funge
-
-    void * toTest;
-    toTest = (void **) malloc(ELEMENTS_TO_TEST * sizeof(void *)); // funge
-
-    read(DATASET_PATH_INTEGERS, toSort, ELEMENTS_TO_SCAN);
-    read(DATASET_PATH_SUMS, toTest, ELEMENTS_TO_TEST);
-
-    if (strcmp(argv[1], "-print") == 0) {
-        printArray(toSort, ELEMENTS_TO_SCAN);
-
-        if (strcmp(argv[2], "-insertionSort") == 0) {
-            insertionSort(toSort, compareInsertSort);
-            printf("InsertionSort finished\n");
-        }
-        else {
-            mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
-            printf("Merge finished\n");
-            printf("TEST: %d\n", test);
-        }
-
-        printArray(toSort, ELEMENTS_TO_SCAN);
-    }
-    else {
-        if (strcmp(argv[1], "-insertionSort") == 0) {
-            insertionSort(toSort, compareInsertSort);
-            printf("InsertionSort finished\n");
-        }
-        else {
-            mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
-            printf("Merge finished\n");
-            printf("TEST: %d\n", test);
-        }
-    }
-
-    free(toSort);
-
-    clock_t end = clock();
-    double seconds_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("Time spent: %f seconds.\n", seconds_spent);
-
-    return 0;
-}
-
-
-
 // COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
 // It compares 2 elements (array[i] and value). Used in InsertionSort
@@ -222,6 +168,57 @@ int compareInsertSort(void * array, int i, void * value) {
 int compareMergeSort(void * firstValue, void * secondValue) {
     return ((unsigned long long*)firstValue) <= (((unsigned long long*)secondValue));
 }
+
+// Main ----------------------------------------------------------------------------------------------------------------
+
+// int main(int argc, char *argv[]) {
+//     clock_t begin = clock();
+
+//     void ** toSort;
+//     //toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long)); // funge
+//     toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(void *)); // funge
+
+//     void * toTest;
+//     toTest = (void **) malloc(ELEMENTS_TO_TEST * sizeof(void *)); // funge
+
+//     read(DATASET_PATH_INTEGERS, toSort, ELEMENTS_TO_SCAN);
+//     read(DATASET_PATH_SUMS, toTest, ELEMENTS_TO_TEST);
+
+//     if (strcmp(argv[1], "-print") == 0) {
+//         printArray(toSort, ELEMENTS_TO_SCAN);
+
+//         if (strcmp(argv[2], "-insertionSort") == 0) {
+//             insertionSort(toSort, compareInsertSort);
+//             printf("InsertionSort finished\n");
+//         }
+//         else {
+//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
+//             printf("Merge finished\n");
+//             printf("TEST: %d\n", test);
+//         }
+
+//         printArray(toSort, ELEMENTS_TO_SCAN);
+//     }
+//     else {
+//         if (strcmp(argv[1], "-insertionSort") == 0) {
+//             insertionSort(toSort, compareInsertSort);
+//             printf("InsertionSort finished\n");
+//         }
+//         else {
+//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
+//             printf("Merge finished\n");
+//             printf("TEST: %d\n", test);
+//         }
+//     }
+
+//     free(toSort);
+
+//     clock_t end = clock();
+//     double seconds_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+//     printf("Time spent: %f seconds.\n", seconds_spent);
+
+//     return 0;
+// }
 
 // ALTRE COSE UTILI ----------------------------------------------------------------------------------------------------
 
