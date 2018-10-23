@@ -117,21 +117,6 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
     free(rightSubArray);
 }
 
-// int usoDue(void ** arrayToTest, void ** sortedArray, int compareMergeSort(void * firstValue, void * secondValue)) {
-//     int j = ELEMENTS_TO_SCAN;
-
-//     for(size_t i = 0; i < ELEMENTS_TO_SCAN && j >=0 ; i++) {
-//     //     if ( *(sortedArray+i) + *(sortedArray+j) < x)
-//     //     ++i1
-//     // else if A1[i1] + A2[i2] > x
-//     //     --i2
-//     // else
-//     //     success!!!!
-//     }
-    
-    
-// }
-
 // Support functions ---------------------------------------------------------------------------------------------------
 
 void read(char pathToDataset[], void ** arrayToFill, int arrayLength) {
@@ -145,9 +130,11 @@ void read(char pathToDataset[], void ** arrayToFill, int arrayLength) {
 
     int i = 0;
 
-    // TODO: chiedere a Damiani se il cast va bene!!
+    // TODO: malloc prima, per l'elemento da inserire
     while (i < arrayLength && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) != EOF) {
         //printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
+
+        // MALLOC di ogni elemento da leggere
         i++;
     }
 
@@ -176,7 +163,7 @@ void printArray(void ** arrayToPrint, int arrayLength){
 int main(int argc, char *argv[]) {
     clock_t begin = clock();
 
-    void * toSort;
+    void ** toSort;
     //toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long)); // funge
     toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(void *)); // funge
 
@@ -310,3 +297,18 @@ LINK UTILI:
 //    free(leftSubArray);
 //    free(rightSubArray);
 //}
+
+// int usoDue(void ** arrayToTest, void ** sortedArray, int compareMergeSort(void * firstValue, void * secondValue)) {
+//     int j = ELEMENTS_TO_SCAN;
+
+//     for(size_t i = 0; i < ELEMENTS_TO_SCAN && j >=0 ; i++) {
+//     //     if ( *(sortedArray+i) + *(sortedArray+j) < x)
+//     //     ++i1
+//     // else if A1[i1] + A2[i2] > x
+//     //     --i2
+//     // else
+//     //     success!!!!
+//     }
+    
+    
+// }
