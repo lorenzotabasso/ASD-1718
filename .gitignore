@@ -55,3 +55,8 @@ $RECYCLE.BIN/
 
 # DATASETS ---------------------------
 Datasets/
+
+# CLION ------------------------------
+ex1/CMakeLists.txt
+ex1/cmake-build-debug/
+ex1/.idea

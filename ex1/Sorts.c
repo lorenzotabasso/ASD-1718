@@ -1,3 +1,7 @@
+//
+// Created by Lorenzo Tabasso on 24/10/18.
+//
+
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <limits.h>
@@ -99,11 +103,11 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
 int usoDue(void ** array, int compareMergeSort(void * firstValue, void * secondValue)) {
     int size = sizeof(array)/sizeof(array[0]);
 
-    int i1 = 0; 
+    int i1 = 0;
     int i2 = sizeRight;
     int z = ELEMENTS_TO_TEST;
     while(z >= 0 && i1 < sizeLeft && i2 >= 0) {
-            
+
         if ((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) < (unsigned long long) *(arrayToTest + z)) {
             i1++;
         }
@@ -306,6 +310,6 @@ LINK UTILI:
 //     // else
 //     //     success!!!!
 //     }
-    
-    
+
+
 // }
