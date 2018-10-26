@@ -23,10 +23,11 @@
 void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value));
 void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest);
 void merge(void** arrayToSort, int left, int center, int right, int compare2(void * firstValue, void * secondValue), void ** arrayToTest);
-int usoDue(void ** array, int compareMergeSort(void * firstValue, void * secondValue));
+int sumsInArray(void ** array, int compareMergeSort(void * firstValue, void * secondValue), unsigned long long sum(void * firstValue, void * secondValue));
 
 void read(char pathToDataset[], void ** arrayToFill, int arrayLength);
 void printArray(void ** arrayToPrint, int arrayLength);
 
-int compareInsertSort(void* array, int i, void* value);
-int compareMergeSort(void * firstValue, void * secondValue);
+int compareArrayAndValue(void ** array, int i, void * value);
+int compareValueAndValue(void * firstValue, void * secondValue);
+unsigned long long sum(void * firstValue, void * secondValue);

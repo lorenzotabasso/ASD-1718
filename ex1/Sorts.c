@@ -2,41 +2,9 @@
 // Created by Lorenzo Tabasso on 24/10/18.
 //
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <limits.h>
-// #include <string.h>
-// #include <time.h>
+#include "sorts.h"
 
-// // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-// // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-// #define DATASET_PATH_INTEGERS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-// #define DATASET_PATH_SUMS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-// #define ELEMENTS_TO_SCAN 20000000
-// #define ELEMENTS_TO_TEST 11
-
-#include "Sorts.h"
-
-/*
- * Insertionsort (200000 records) = 1:14 min
- */
-
-// Functions prototypes ------------------------------------------------------------------------------------------------
-
-// void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value));
-// void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest);
-// void merge(void** arrayToSort, int left, int center, int right, int compare2(void * firstValue, void * secondValue), void ** arrayToTest);
-// //int usoDue(void ** arrayToTest void ** arrayToSort, int left, int center, int right, int compareMergeSort(void * firstValue, void * secondValue));
-
-// void read(char pathToDataset[], void ** arrayToFill, int arrayLength);
-// void printArray(void ** arrayToPrint, int arrayLength);
-
-// int compareInsertSort(void* array, int i, void* value);
-// int compareMergeSort(void * firstValue, void * secondValue);
-
-// Sorting functions ---------------------------------------------------------------------------------------------------
-
-void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i, void* value)) {
+void insertionSort(void ** arrayToSort, int compareArrayAndValue(void* array, int i, void* value)) {
     int i = 0;
     int j = 0;
     void * key;
@@ -44,7 +12,7 @@ void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i
     for(i = 0; i < ELEMENTS_TO_SCAN; i++){
         key = arrayToSort[i];
         j = i - 1;
-        while (j >= 0 && compareInsertSort(arrayToSort, j, key)) {
+        while (j >= 0 && compareArrayAndValue(arrayToSort, j, key)) {
             *(arrayToSort + j + 1) = *(arrayToSort + j);
             j--;
         }
@@ -52,16 +20,16 @@ void insertionSort(void ** arrayToSort, int compareInsertSort(void* array, int i
     }
 }
 
-void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest){
+void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareValueAndValue(void * firstValue, void * secondValue), void ** arrayToTest){
     if(leftIndex < rightIndex){
         int center = (leftIndex + rightIndex) / 2;
-        mergeSort(arrayToSort, leftIndex, center, compareMergeSort, arrayToTest);
-        mergeSort(arrayToSort, center + 1, rightIndex, compareMergeSort, arrayToTest);
-        merge(arrayToSort, leftIndex, center, rightIndex, compareMergeSort, arrayToTest);
+        mergeSort(arrayToSort, leftIndex, center, compareValueAndValue, arrayToTest);
+        mergeSort(arrayToSort, center + 1, rightIndex, compareValueAndValue, arrayToTest);
+        merge(arrayToSort, leftIndex, center, rightIndex, compareValueAndValue, arrayToTest);
     }
 }
 
-void merge(void ** arrayToSort, int left, int center, int right, int compareMergeSort(void * firstValue, void * secondValue), void ** arrayToTest){
+void merge(void ** arrayToSort, int left, int center, int right, int compareValueAndValue(void * firstValue, void * secondValue), void ** arrayToTest){
     int n1 = (center - left + 1);
     int n2 = (right - center);
     int i, j, k;
@@ -86,7 +54,7 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
     k = 0;
 
     for(k = left; k <= right; k++){
-        if(compareMergeSort(leftSubArray[i],rightSubArray[j])){
+        if(compareValueAndValue(leftSubArray[i],rightSubArray[j])){
             *(arrayToSort+ k) = *(leftSubArray + i);
             i++;
         } else {
@@ -100,15 +68,17 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareMerg
 }
 
 // TODO: TO FINISH
-int usoDue(void ** array, int compareMergeSort(void * firstValue, void * secondValue)) {
-    int size = sizeof(array)/sizeof(array[0]);
+int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums((void * firstValue, void * secondValue)) {
+    int sizeToTest = sizeof(arrayToTest)/sizeof(*arrayToTest);
+    int sizeOfSums = sizeof(arrayOfSums)/sizeof(*arrayOfSums);
 
     int i1 = 0;
-    int i2 = sizeRight;
-    int z = ELEMENTS_TO_TEST;
-    while(z >= 0 && i1 < sizeLeft && i2 >= 0) {
+    int i2 = sizeToTest;
+    while(i1 < sizeToTest && i2 >= 0 && sizeOfSums > 0) {
 
-        if ((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) < (unsigned long long) *(arrayToTest + z)) {
+        // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
+        // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
+        if (compareArrayAndValue(arrayOfSums, sizeOfSums, sum(arrayToTest[i1], arrayToTest[i2]))) {
             i1++;
         }
         else if((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) > (unsigned long long) *(arrayToTest + z)) {
@@ -164,13 +134,17 @@ void printArray(void ** arrayToPrint, int arrayLength){
 // COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
 // It compares 2 elements (array[i] and value). Used in InsertionSort
-int compareInsertSort(void * array, int i, void * value) {
-    return ((unsigned long long)value) < (((unsigned long long*)array)[i]);
+int compareArrayAndValue(void ** array, int i, void * value) {
+    return ((unsigned long long)value) < *((unsigned long long *)array + i);
 }
 
 // It compares 2 elements (firstValue and secondValue). Used in MergeSort
-int compareMergeSort(void * firstValue, void * secondValue) {
+int compareValueAndValue(void * firstValue, void * secondValue) {
     return ((unsigned long long*)firstValue) <= (((unsigned long long*)secondValue));
+}
+
+unsigned long long sum(void * firstValue, void * secondValue) {
+    return *((unsigned long long *)firstValue) + *(((unsigned long long *)secondValue));
 }
 
 // Main ----------------------------------------------------------------------------------------------------------------
@@ -192,11 +166,11 @@ int compareMergeSort(void * firstValue, void * secondValue) {
 //         printArray(toSort, ELEMENTS_TO_SCAN);
 
 //         if (strcmp(argv[2], "-insertionSort") == 0) {
-//             insertionSort(toSort, compareInsertSort);
+//             insertionSort(toSort, compareArrayAndValue);
 //             printf("InsertionSort finished\n");
 //         }
 //         else {
-//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
+//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareValueAndValue, toTest);
 //             printf("Merge finished\n");
 //             printf("TEST: %d\n", test);
 //         }
@@ -205,11 +179,11 @@ int compareMergeSort(void * firstValue, void * secondValue) {
 //     }
 //     else {
 //         if (strcmp(argv[1], "-insertionSort") == 0) {
-//             insertionSort(toSort, compareInsertSort);
+//             insertionSort(toSort, compareArrayAndValue);
 //             printf("InsertionSort finished\n");
 //         }
 //         else {
-//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareMergeSort, toTest);
+//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareValueAndValue, toTest);
 //             printf("Merge finished\n");
 //             printf("TEST: %d\n", test);
 //         }
@@ -299,7 +273,7 @@ LINK UTILI:
 //    free(rightSubArray);
 //}
 
-// int usoDue(void ** arrayToTest, void ** sortedArray, int compareMergeSort(void * firstValue, void * secondValue)) {
+// int usoDue(void ** arrayToTest, void ** sortedArray, int compareValueAndValue(void * firstValue, void * secondValue)) {
 //     int j = ELEMENTS_TO_SCAN;
 
 //     for(size_t i = 0; i < ELEMENTS_TO_SCAN && j >=0 ; i++) {

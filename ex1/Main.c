@@ -1,4 +1,4 @@
-#include "Sorts.h"
+#include "sorts.h"
 
 int main(int argc, char *argv[]) {
     clock_t begin = clock();
