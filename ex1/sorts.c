@@ -68,7 +68,7 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareValu
 }
 
 // TODO: TO FINISH
-int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums((void * firstValue, void * secondValue)) {
+int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums((void * firstValue, void * secondValue))) {
     int sizeToTest = sizeof(arrayToTest)/sizeof(*arrayToTest);
     int sizeOfSums = sizeof(arrayOfSums)/sizeof(*arrayOfSums);
 
