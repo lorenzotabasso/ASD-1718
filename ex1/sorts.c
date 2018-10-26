@@ -1,15 +1,11 @@
-//
-// Created by Lorenzo Tabasso on 24/10/18.
-//
-
 #include "sorts.h"
 
-void insertionSort(void ** arrayToSort, int compareArrayAndValue(void* array, int i, void* value)) {
+void insertionSort(void ** arrayToSort, int size, int compareArrayAndValue(void** array, int i, void* value)) {
     int i = 0;
     int j = 0;
     void * key;
 
-    for(i = 0; i < ELEMENTS_TO_SCAN; i++){
+    for(i = 0; i < size; i++){
         key = arrayToSort[i];
         j = i - 1;
         while (j >= 0 && compareArrayAndValue(arrayToSort, j, key)) {
@@ -20,16 +16,16 @@ void insertionSort(void ** arrayToSort, int compareArrayAndValue(void* array, in
     }
 }
 
-void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareValueAndValue(void * firstValue, void * secondValue), void ** arrayToTest){
+void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareValueAndValue(void * firstValue, void * secondValue)){
     if(leftIndex < rightIndex){
         int center = (leftIndex + rightIndex) / 2;
-        mergeSort(arrayToSort, leftIndex, center, compareValueAndValue, arrayToTest);
-        mergeSort(arrayToSort, center + 1, rightIndex, compareValueAndValue, arrayToTest);
-        merge(arrayToSort, leftIndex, center, rightIndex, compareValueAndValue, arrayToTest);
+        mergeSort(arrayToSort, leftIndex, center, compareValueAndValue);
+        mergeSort(arrayToSort, center + 1, rightIndex, compareValueAndValue);
+        merge(arrayToSort, leftIndex, center, rightIndex, compareValueAndValue);
     }
 }
 
-void merge(void ** arrayToSort, int left, int center, int right, int compareValueAndValue(void * firstValue, void * secondValue), void ** arrayToTest){
+void merge(void ** arrayToSort, int left, int center, int right, int compareValueAndValue(void * firstValue, void * secondValue)){
     int n1 = (center - left + 1);
     int n2 = (right - center);
     int i, j, k;
@@ -67,27 +63,35 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareValu
     free(rightSubArray);
 }
 
-// TODO: TO FINISH
-int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums((void * firstValue, void * secondValue))) {
+int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums(void * firstValue, void * secondValue)) {
     int sizeToTest = sizeof(arrayToTest)/sizeof(*arrayToTest);
     int sizeOfSums = sizeof(arrayOfSums)/sizeof(*arrayOfSums);
 
+    int result = 0;
+
     int i1 = 0;
     int i2 = sizeToTest;
-    while(i1 < sizeToTest && i2 >= 0 && sizeOfSums > 0) {
+    while (sizeOfSums > 0) {
+        while(i1 < sizeToTest && i2 >= 0) {
 
-        // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
-        // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
-        if (compareArrayAndValue(arrayOfSums, sizeOfSums, sum(arrayToTest[i1], arrayToTest[i2]))) {
-            i1++;
+            // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
+            // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
+
+            // ! (value < array[i])
+            if (!compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
+                i1++;
+            }
+            else if(compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
+                i2--;
+            }
+            else {
+                result = result + 1;
+            }
         }
-        else if((unsigned long long) *(leftSubArray + i1) + (unsigned long long) *(rightSubArray + i2) > (unsigned long long) *(arrayToTest + z)) {
-            i2--;
-        }
-        else {
-            test = test + 1;
-        }
+        sizeOfSums--;
     }
+
+    return result;
 }
 
 // Support functions ---------------------------------------------------------------------------------------------------
@@ -133,9 +137,10 @@ void printArray(void ** arrayToPrint, int arrayLength){
 
 // COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
-// It compares 2 elements (array[i] and value). Used in InsertionSort
+// It compares 2 elements (array[i] and value). Used in InsertionSort and in SumsInArray
 int compareArrayAndValue(void ** array, int i, void * value) {
-    return ((unsigned long long)value) < *((unsigned long long *)array + i);
+    // TODO: Chiedere al Prof se è giusto
+    return ((unsigned long long) value) < *((unsigned long long *)array + i);
 }
 
 // It compares 2 elements (firstValue and secondValue). Used in MergeSort
