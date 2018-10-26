@@ -12,8 +12,8 @@
 // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 
 #define DATASET_PATH_INTEGERS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define DATASET_PATH_SUMS "../../laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-#define ELEMENTS_INTEGERS 5
+#define DATASET_PATH_SUMS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
+#define ELEMENTS_INTEGERS 20000000
 #define ELEMENTS_SUMS 11
 
 void insertionSort(void ** arrayToSort, int size, int compareArrayAndValue(void** array, int i, void* value));

@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         read(DATASET_PATH_INTEGERS, toSort, ELEMENTS_INTEGERS);
         read(DATASET_PATH_SUMS, ofSums, ELEMENTS_SUMS);
 
-        printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
+        //printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
 
         mergeSort(toSort,0, (int) ELEMENTS_INTEGERS-1, compareValueAndValue);
         printf("MergeSort finished\n");
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         int result = sumsInArray(toSort, ofSums, compareValueAndValue, sum);
         printf("Result: %d\n", result);
 
-        printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
+        //printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
     }
     else {
         printf("Error in Command Line Arguments, one or more illegal flags, retry!");
@@ -87,13 +87,17 @@ void printIfNoError(char * cla, int i, void ** array, int size) {
 }
 
 void printIfNoError2(char * cla, int i, void ** array1, int size1, void** array2, int size2) {
-    if (strcmp(cla+i, "-p") == 0) {
-        printf("ToSort: ");
-        printArray(array1, size1);
-        printf("ToTest: ");
-        printArray(array2, size2);
-    } else {
-        printf("Error in %d° Command Line Argument, illegal flag. Found: %c\n", i-1, (char) cla);
-        exit(0);
-    }
+//    if (strcmp((cla+i), "-p") == 0) {
+//        printf("ToSort: ");
+//        printArray(array1, size1);
+//        printf("ToTest: ");
+//        printArray(array2, size2);
+//    } else {
+//        printf("Error in %d° Command Line Argument, illegal flag. Found: %c\n", i, *(cla+i));
+//        exit(0);
+//    }
+    printf("ToSort: ");
+    printArray(array1, size1);
+    printf("ToTest: ");
+    printArray(array2, size2);
 }

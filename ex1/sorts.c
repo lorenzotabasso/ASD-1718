@@ -106,12 +106,17 @@ void read(char pathToDataset[], void ** arrayToFill, int arrayLength) {
     }
 
     int i = 0;
+    char buffer[1];
 
     // TODO: malloc prima, per l'elemento da inserire
-    while (i < arrayLength && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) != EOF) {
+    while (i < arrayLength && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) == 1) {
         //printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
 
         // MALLOC di ogni elemento da leggere
+
+        arrayToFill[i] = malloc(1 * sizeof(unsigned long long *));
+        arrayToFill[i] = strtoull(fgets(buffer, 1, dataset), (char **) NULL, 10);
+
         i++;
     }
 
