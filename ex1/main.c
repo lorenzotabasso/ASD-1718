@@ -54,6 +54,11 @@ int main(int argc, char *argv[]) {
 
         //printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
 
+        printf("ToSort: ");
+        printArray(toSort, ELEMENTS_INTEGERS);
+        printf("ToTest: ");
+        printArray(ofSums, ELEMENTS_SUMS);
+
         mergeSort(toSort,0, (int) ELEMENTS_INTEGERS-1, compareValueAndValue);
         printf("MergeSort finished\n");
 
@@ -61,6 +66,11 @@ int main(int argc, char *argv[]) {
         printf("Result: %d\n", result);
 
         //printIfNoError2(argv[2], 2, toSort, ELEMENTS_INTEGERS, ofSums, ELEMENTS_SUMS);
+
+        printf("ToSort: ");
+        printArray(toSort, ELEMENTS_INTEGERS);
+        printf("ToTest: ");
+        printArray(ofSums, ELEMENTS_SUMS);
     }
     else {
         printf("Error in Command Line Arguments, one or more illegal flags, retry!");

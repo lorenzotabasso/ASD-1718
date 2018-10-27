@@ -64,8 +64,8 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareValu
 }
 
 int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums(void * firstValue, void * secondValue)) {
-    int sizeToTest = sizeof(arrayToTest)/sizeof(*arrayToTest);
-    int sizeOfSums = sizeof(arrayOfSums)/sizeof(*arrayOfSums);
+    int sizeToTest = ELEMENTS_INTEGERS;
+    int sizeOfSums = ELEMENTS_SUMS;
 
     int result = 0;
 
@@ -106,16 +106,12 @@ void read(char pathToDataset[], void ** arrayToFill, int arrayLength) {
     }
 
     int i = 0;
-    char buffer[1];
 
     // TODO: malloc prima, per l'elemento da inserire
     while (i < arrayLength && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) == 1) {
         //printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
 
         // MALLOC di ogni elemento da leggere
-
-        arrayToFill[i] = malloc(1 * sizeof(unsigned long long *));
-        arrayToFill[i] = strtoull(fgets(buffer, 1, dataset), (char **) NULL, 10);
 
         i++;
     }

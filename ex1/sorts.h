@@ -11,10 +11,12 @@
 // path completo "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 // path relativo "../../laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 
-#define DATASET_PATH_INTEGERS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define DATASET_PATH_SUMS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-#define ELEMENTS_INTEGERS 20000000
-#define ELEMENTS_SUMS 11
+//#define DATASET_PATH_INTEGERS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+//#define DATASET_PATH_SUMS "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
+#define DATASET_PATH_INTEGERS "/Volumes/HDD/Lorenzo/Downloads/arrayToSort.txt"
+#define DATASET_PATH_SUMS "/Volumes/HDD/Lorenzo/Downloads/toTest.txt"
+#define ELEMENTS_INTEGERS 9
+#define ELEMENTS_SUMS 1
 
 void insertionSort(void ** arrayToSort, int size, int compareArrayAndValue(void** array, int i, void* value));
 void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareValueAndValue(void * firstValue, void * secondValue));
