@@ -63,32 +63,56 @@ void merge(void ** arrayToSort, int left, int center, int right, int compareValu
     free(rightSubArray);
 }
 
-int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareValueAndValue(void * firstValue, void * secondValue), unsigned long long sums(void * firstValue, void * secondValue)) {
+int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareArrayAndValue(void ** array, int i, void * value), unsigned long long sums(void * firstValue, void * secondValue)) {
     int sizeToTest = ELEMENTS_INTEGERS;
     int sizeOfSums = ELEMENTS_SUMS;
 
     int result = 0;
 
-    int i1 = 0;
-    int i2 = sizeToTest;
-    while (sizeOfSums > 0) {
-        while(i1 < sizeToTest && i2 >= 0) {
+//    int i1 = 0;
+//    int i2 = sizeToTest;
+//    while (sizeOfSums > 0) {
+//        while(i1 < sizeToTest && i2 >= 0) {
+//
+//            // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
+//            // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
+//
+//            // ! (value < array[i])
+//            if (!compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
+//                i1++;
+//            }
+//            else if(compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
+//                i2--;
+//            }
+//            else {
+//                result = result + 1;
+//            }
+//        }
+//        sizeOfSums--;
+//    }
 
-            // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
-            // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
+    int i = 0;
+    int j = 0;
+    int k = sizeToTest;
 
-            // ! (value < array[i])
-            if (!compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
-                i1++;
+
+
+    while (i < sizeOfSums /*&& result != 1*/) {
+        j = 0;
+        k = sizeToTest;
+
+        while (j < sizeToTest && k > 0 && result != 1) {
+            if (j != k && !compareValues((unsigned long long) *(arrayOfSums+i), sum((unsigned long long) *(arrayToTest+j), (unsigned long long) *(arrayToTest+(k-1))))){
+                j++;
             }
-            else if(compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
-                i2--;
+            else if (j != k && compareValues((unsigned long long) *(arrayOfSums+i), sum((unsigned long long) *(arrayToTest+j), (unsigned long long) *(arrayToTest+(k-1))))){
+                k--;
             }
             else {
                 result = result + 1;
             }
         }
-        sizeOfSums--;
+        i++;
     }
 
     return result;
@@ -146,11 +170,19 @@ int compareArrayAndValue(void ** array, int i, void * value) {
 
 // It compares 2 elements (firstValue and secondValue). Used in MergeSort
 int compareValueAndValue(void * firstValue, void * secondValue) {
+    unsigned long long test1 = (unsigned long long) firstValue;
+    unsigned long long test2 = (unsigned long long) secondValue;
+
     return ((unsigned long long*)firstValue) <= (((unsigned long long*)secondValue));
 }
 
-unsigned long long sum(void * firstValue, void * secondValue) {
-    return *((unsigned long long *)firstValue) + *(((unsigned long long *)secondValue));
+unsigned long long sum(unsigned long long firstValue, unsigned long long secondValue) {
+    return firstValue + secondValue;
+}
+
+// Used in SumsValuesInArray
+int compareValues(unsigned long long firstValue, unsigned long long secondValue) {
+    return firstValue < secondValue;
 }
 
 // Main ----------------------------------------------------------------------------------------------------------------
