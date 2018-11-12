@@ -60,7 +60,7 @@ void load_array(GenericArray* array, char * path){
 }
 
 void test_with_comparison_function(int (*compare)(void*, void*)) {
-    GenericArray* array = generic_array_create(11, compare); // 11 is the capacity
+    GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare);
     load_array(array, INTEGERS_PATH);
     print_array(array);
     generic_array_free_memory(array);
@@ -68,7 +68,7 @@ void test_with_comparison_function(int (*compare)(void*, void*)) {
 
 void choicheSorting(const char * algorithm) {
     if (strcmp(algorithm, "-is") == 0) {
-        GenericArray* array = generic_array_create(4, compare_insertionsort); // 11 is the capacity
+        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_insertionsort);
         load_array(array, INTEGERS_PATH);
 
         printf("\nBefore insertionSort\t");
@@ -82,7 +82,7 @@ void choicheSorting(const char * algorithm) {
         generic_array_free_memory(array);
 
     } else if (strcmp(algorithm, "-ms") == 0) {
-        GenericArray* array = generic_array_create(4, compare_sums); // 11 is the capacity
+        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_sums);
         load_array(array, INTEGERS_PATH);
 
         printf("\nBefore mergeSort\t");
@@ -96,11 +96,11 @@ void choicheSorting(const char * algorithm) {
         generic_array_free_memory(array);
 
     } else if (strcmp(algorithm, "-sm") == 0) {
-        GenericArray* array = generic_array_create(4, compare_sums); // 11 is the capacity
+        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_sums);
         load_array(array, INTEGERS_PATH);
         print_array(array);
 
-        GenericArray* sums = generic_array_create(2, compare_sums); // 11 is the capacity
+        GenericArray* sums = generic_array_create(SUMS_ELEMENTS, compare_sums);
         load_array(sums, SUMS_PATH);
         print_array(sums);
 
@@ -136,7 +136,7 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    // a starring simple test, to delete
+    // a start simple test, to delete
     //test_with_comparison_function(compare_record_int_field);
 
     return (EXIT_SUCCESS);

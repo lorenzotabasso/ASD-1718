@@ -4,8 +4,8 @@
  */
 
 #include <stdlib.h>
-#include "generic_array.h"
 #include <stdio.h>
+#include "generic_array.h"
 
 static long long get_index_to_insert(GenericArray *array, void* element);
 static void insert_element(GenericArray *array, void* element,long long index);
@@ -71,10 +71,9 @@ void generic_array_free_memory(GenericArray *array){
     free(array);
 }
 
-// SUPPORT FUNCTIONS ------------------------------------------------------------------------------
+// SUPPORT FUNCTIONS ---------------------------------------------------------------------------------------------------
 
-// TODO: da usare nell'insertion e nel merge sort
-//returns the position where the new element must be inserted
+// returns the position where the new element must be inserted
 static long long get_index_to_insert(GenericArray *array, void* element){
     long long i = 0;
 //    int cont = 0;
@@ -90,8 +89,8 @@ static long long get_index_to_insert(GenericArray *array, void* element){
     return(i);
 }
 
-//inserts the specified element in the specified ordered array at the specified
-//index position
+// inserts the specified element in the specified ordered array at the specified
+// index position
 static void insert_element(GenericArray *array, void* element, long long index){
     for(long long i = array->el_num; i > index; i--){
         (array->array)[i] = (array->array)[i-1];

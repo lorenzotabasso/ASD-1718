@@ -5,10 +5,8 @@
 
 #include "generic_array.h"
 
-#ifndef SORTS_H
-#define SORTS_H
-
-#endif //SORTS_H
+#ifndef SORTS_H_
+#define SORTS_H_
 
 // COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
@@ -40,3 +38,5 @@ void mergeSort(GenericArray *array, int leftIndex, int rightIndex, int (*compare
 void merge(GenericArray *array, int left, int center, int right, int (*compare)(void*,void*));
 int sumsInArray(GenericArray *array_to_test, GenericArray *array_of_sums,
         int (*compare)(void*,void*), long long * (sums_support)(void*,void*));
+
+#endif //SORTS_H_
