@@ -84,9 +84,14 @@ void choicheSorting(const char * algorithm) {
     } else if (strcmp(algorithm, "-ms") == 0) {
         GenericArray* array = generic_array_create(4, compare_sums); // 11 is the capacity
         load_array(array, INTEGERS_PATH);
+
+        printf("\nBefore mergeSort\t");
         print_array(array);
 
         mergeSort(array, 0, (int) array->array_capacity-1, compare_mergesort);
+
+        printf("After mergeSort \t");
+        print_array(array);
 
         generic_array_free_memory(array);
 
