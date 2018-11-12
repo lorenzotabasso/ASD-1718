@@ -1,111 +1,175 @@
+/*
+ * Author: Tabasso, Malgaroli
+ *
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
+#include <string.h>
 #include "sorts.h"
 
-void insertionSort(void ** arrayToSort, int size, int compareArrayAndValue(void** array, int i, void* value)) {
+// COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
+
+// It takes as input two void pointers.
+// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
+int compare_insertionsort(void* r1_p,void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    if(first < second){
+        return(1);
+    }
+    return(0);
+}
+
+// It takes as input two void pointers.
+// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
+int compare_mergesort(void* r1_p,void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_mergesort: the first parameter is a null pointer\n");
+        fprintf(stderr,"compare_mergesort: second parameter: %lld", (long long) r2_p);
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"compare_mergesort: the second parameter is a null pointer\n");
+        fprintf(stderr,"compare_mergesort: first parameter: %lld\n", (long long) r1_p);
+        exit(EXIT_FAILURE);
+    }
+
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    if(first <= second){
+        return(1);
+    }
+    return(0);
+}
+
+// It takes as input three void pointers.
+// It returns 1 iff the first pointed value is less than
+// the second pointed value summed with the third pointed value(0 otherwise)
+int compare_sums(void* r1_p, void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    if(first < second){
+        return(1);
+    }
+    return(0);
+}
+
+long long * sums_support(void* r1_p, void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    return (long long *) (first + second);
+}
+
+// SORTING FUNCTIONS ---------------------------------------------------------------------------------------------------
+
+void insertionSort(GenericArray *array, long long size, int (*compare)(void*,void*)) {
     int i = 0;
     int j = 0;
     void * key;
 
     for(i = 0; i < size; i++){
-        key = arrayToSort[i];
+        key = generic_array_get(array, (long long) i);
         j = i - 1;
-        while (j >= 0 && compareArrayAndValue(arrayToSort, j, key)) {
-            *(arrayToSort + j + 1) = *(arrayToSort + j);
+        while (j >= 0 && compare(key, array->array[j])) {
+            array->array[j+1] = array->array[j];
             j--;
         }
-        *(arrayToSort+j+1) = key;
+        array->array[j+1] = key;
     }
 }
 
-void mergeSort(void ** arrayToSort, int leftIndex, int rightIndex, int compareValueAndValue(void * firstValue, void * secondValue)){
+void mergeSort(GenericArray *array, int leftIndex, int rightIndex, int (*compare)(void*,void*)) {
     if(leftIndex < rightIndex){
         int center = (leftIndex + rightIndex) / 2;
-        mergeSort(arrayToSort, leftIndex, center, compareValueAndValue);
-        mergeSort(arrayToSort, center + 1, rightIndex, compareValueAndValue);
-        merge(arrayToSort, leftIndex, center, rightIndex, compareValueAndValue);
+        mergeSort(array, leftIndex, center, compare);
+        mergeSort(array, center + 1, rightIndex, compare);
+        merge(array, leftIndex, center, rightIndex, compare);
     }
 }
 
-void merge(void ** arrayToSort, int left, int center, int right, int compareValueAndValue(void * firstValue, void * secondValue)){
+void merge(GenericArray *array, int left, int center, int right, int (*compare)(void*,void*)) {
     int n1 = (center - left + 1);
     int n2 = (right - center);
     int i, j, k;
 
-    void ** leftSubArray;
-    void ** rightSubArray;
-    leftSubArray = malloc((n1+1) * sizeof(void *));
-    rightSubArray = malloc((n2+1) * sizeof(void *));
+    GenericArray * left_sub_array = generic_array_create((long long) n1+1, compare);
+    GenericArray * right_sub_array = generic_array_create((long long) n2+1, compare);
 
     for(i = 0; i < n1; i++) {
-        *(leftSubArray + i) = *(arrayToSort+ left + i);
+        left_sub_array->array[i] = array->array[left + i];
     }
     for(j = 0; j < n2; j++) {
-        *(rightSubArray + j) = *(arrayToSort+ center + j + 1);
+        right_sub_array->array[j] = array->array[center + j +1];
     }
 
-    leftSubArray[i] = (void *) ULONG_LONG_MAX;
-    rightSubArray[j] = (void *)  ULONG_LONG_MAX;
+    left_sub_array->array[i] = (void *) LLONG_MAX;
+    right_sub_array->array[j] = (void *) LLONG_MAX;
 
     i = 0;
     j = 0;
-    k = 0;
 
-    for(k = left; k <= right; k++){
-        if(compareValueAndValue(leftSubArray[i],rightSubArray[j])){
-            *(arrayToSort+ k) = *(leftSubArray + i);
+    for (k = left; k <= right; k++) {
+        if (compare(left_sub_array->array[i], right_sub_array->array[j])){
+            array->array[k] = left_sub_array->array[i];
             i++;
         } else {
-            *(arrayToSort + k) = *(rightSubArray + j);
+            array->array[k] = right_sub_array->array[j];
             j++;
         }
     }
 
-    free(leftSubArray);
-    free(rightSubArray);
+    generic_array_free_memory(left_sub_array);
+    generic_array_free_memory(right_sub_array);
 }
 
-int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareArrayAndValue(void ** array, int i, void * value), unsigned long long sums(void * firstValue, void * secondValue)) {
-    int sizeToTest = ELEMENTS_INTEGERS;
-    int sizeOfSums = ELEMENTS_SUMS;
-
+int sumsInArray(GenericArray *array_to_test, GenericArray *array_of_sums, int (*compare)(void*,void*), long long * (sums_support)(void*, void*)) {
     int result = 0;
 
-//    int i1 = 0;
-//    int i2 = sizeToTest;
-//    while (sizeOfSums > 0) {
-//        while(i1 < sizeToTest && i2 >= 0) {
-//
-//            // PRIMA: *(*(arrayToTest + i1))) + *(*(arrayToTest + i2))) < *(arrayOfSums + 0)
-//            // SECONDA: compareArrayAndValue(arrayOfSums, sizeOfSums, sum(*(arrayToTest + i1), *(arrayToTest + i2)))
-//
-//            // ! (value < array[i])
-//            if (!compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
-//                i1++;
-//            }
-//            else if(compareArrayAndValue(arrayOfSums, sizeOfSums, (void *) sum(arrayToTest + i1, arrayToTest + i2))) {
-//                i2--;
-//            }
-//            else {
-//                result = result + 1;
-//            }
-//        }
-//        sizeOfSums--;
-//    }
+    long long  i = 0;
+    long long j, k;
 
-    int i = 0;
-    int j = 0;
-    int k = sizeToTest;
-
-
-
-    while (i < sizeOfSums /*&& result != 1*/) {
+    while (i < array_of_sums->array_capacity) {
         j = 0;
-        k = sizeToTest;
+        k = array_to_test->array_capacity;
 
-        while (j < sizeToTest && k > 0 && result != 1) {
-            if (j != k && !compareValues((unsigned long long) *(arrayOfSums+i), sum((unsigned long long) *(arrayToTest+j), (unsigned long long) *(arrayToTest+(k-1))))){
+        while (j < array_to_test->array_capacity && k > 0 && result != 1) {
+            if (j != k && !compare(array_of_sums->array[i], sums_support(array_to_test->array[j], array_to_test->array[k-1]))){
                 j++;
             }
-            else if (j != k && compareValues((unsigned long long) *(arrayOfSums+i), sum((unsigned long long) *(arrayToTest+j), (unsigned long long) *(arrayToTest+(k-1))))){
+            else if (j != k && compare(array_of_sums->array[i], sums_support(array_to_test->array[j], array_to_test->array[k-1]))){
                 k--;
             }
             else {
@@ -117,211 +181,3 @@ int sumsInArray(void ** arrayToTest, void ** arrayOfSums, int compareArrayAndVal
 
     return result;
 }
-
-// Support functions ---------------------------------------------------------------------------------------------------
-
-void read(char pathToDataset[], void ** arrayToFill, int arrayLength) {
-    clock_t start = clock(); // for timing
-
-    FILE* dataset = fopen(pathToDataset, "r");
-    if(dataset == NULL ) {
-        printf("Error while opening the file.\n");
-        exit(0); // exit failure, it closes the program
-    }
-
-    int i = 0;
-
-    // TODO: malloc prima, per l'elemento da inserire
-    while (i < arrayLength && fscanf(dataset, "%llu", (unsigned long long *) &arrayToFill[i]) == 1) {
-        //printf("line: %d.\n", i);  // ONLY FOR DEBUG, it wil print 20ML of lines!
-
-        // MALLOC di ogni elemento da leggere
-
-        i++;
-    }
-
-    // for timing
-    clock_t stop = clock();
-    double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
-
-    printf("Read %d lines in %f seconds.\n", i, seconds);
-    fclose(dataset);
-}
-
-void printArray(void ** arrayToPrint, int arrayLength){
-    printf("[");
-    for(int i = 0; i < arrayLength; i++) {
-        if (i == arrayLength-1) {
-            printf("%llu]\n", (unsigned long long) arrayToPrint[i]);
-        }
-        else {
-            printf("%llu, ", (unsigned long long) arrayToPrint[i]);
-        }
-    }
-}
-
-// COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
-
-// It compares 2 elements (array[i] and value). Used in InsertionSort and in SumsInArray
-int compareArrayAndValue(void ** array, int i, void * value) {
-    // TODO: Chiedere al Prof se è giusto
-    return ((unsigned long long) value) < *((unsigned long long *)array + i);
-}
-
-// It compares 2 elements (firstValue and secondValue). Used in MergeSort
-int compareValueAndValue(void * firstValue, void * secondValue) {
-    unsigned long long test1 = (unsigned long long) firstValue;
-    unsigned long long test2 = (unsigned long long) secondValue;
-
-    return ((unsigned long long*)firstValue) <= (((unsigned long long*)secondValue));
-}
-
-unsigned long long sum(unsigned long long firstValue, unsigned long long secondValue) {
-    return firstValue + secondValue;
-}
-
-// Used in SumsValuesInArray
-int compareValues(unsigned long long firstValue, unsigned long long secondValue) {
-    return firstValue < secondValue;
-}
-
-// Main ----------------------------------------------------------------------------------------------------------------
-
-// int main(int argc, char *argv[]) {
-//     clock_t begin = clock();
-
-//     void ** toSort;
-//     //toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(unsigned long long)); // funge
-//     toSort = (void **) malloc(ELEMENTS_TO_SCAN * sizeof(void *)); // funge
-
-//     void * toTest;
-//     toTest = (void **) malloc(ELEMENTS_TO_TEST * sizeof(void *)); // funge
-
-//     read(DATASET_PATH_INTEGERS, toSort, ELEMENTS_TO_SCAN);
-//     read(DATASET_PATH_SUMS, toTest, ELEMENTS_TO_TEST);
-
-//     if (strcmp(argv[1], "-print") == 0) {
-//         printArray(toSort, ELEMENTS_TO_SCAN);
-
-//         if (strcmp(argv[2], "-insertionSort") == 0) {
-//             insertionSort(toSort, compareArrayAndValue);
-//             printf("InsertionSort finished\n");
-//         }
-//         else {
-//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareValueAndValue, toTest);
-//             printf("Merge finished\n");
-//             printf("TEST: %d\n", test);
-//         }
-
-//         printArray(toSort, ELEMENTS_TO_SCAN);
-//     }
-//     else {
-//         if (strcmp(argv[1], "-insertionSort") == 0) {
-//             insertionSort(toSort, compareArrayAndValue);
-//             printf("InsertionSort finished\n");
-//         }
-//         else {
-//             mergeSort(toSort,0, ELEMENTS_TO_SCAN-1, compareValueAndValue, toTest);
-//             printf("Merge finished\n");
-//             printf("TEST: %d\n", test);
-//         }
-//     }
-
-//     free(toSort);
-
-//     clock_t end = clock();
-//     double seconds_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-//     printf("Time spent: %f seconds.\n", seconds_spent);
-
-//     return 0;
-// }
-
-// ALTRE COSE UTILI ----------------------------------------------------------------------------------------------------
-
-/*
-LINK UTILI:
-1) MERGESORT CORMEN CORRETTO https://codereview.stackexchange.com/questions/69289/merge-sort-using-sentinels
-3) ALGORITMI GENeRICI 1 https://github.com/soupi/3-C-Sorting-Algorithms
-4) ALGORITMI GENERICI 2 https://gist.github.com/justinloundagin/5523524
-5) https://stackoverflow.com/questions/49336430/algorithm-of-onlogn-to-search-for-sum-of-two-elements-in-two-arrays
-*/
-
-// INSERTIONSORT NON GENERICO FUNZIONANTE
-// void castedInsertionSort(unsigned long long * arrayToSort){
-// 	int i = 0;
-//     int j = 0;
-//     unsigned long long key;
-
-// 	for(i = 0; i < ELEMENTS_TO_SCAN; i++){
-// 		key = *(arrayToSort+i);
-// 		j = i - 1;
-// 		while (j >= 0 && arrayToSort[j] > key){
-// 			arrayToSort[j+1] = arrayToSort[j];
-// 			j--;
-// 		}
-// 		arrayToSort[j+1] = key;
-// 	}
-// }
-
-// MERGESORT NON GENERICO FUNZIONANTE
-//void mergeSort(unsigned long long * arrayToSort, int leftIndex, int rightIndex){
-//    if(leftIndex < rightIndex){
-//        int center = (leftIndex + rightIndex) / 2;
-//        mergeSort(arrayToSort, leftIndex, center);
-//        mergeSort(arrayToSort, center + 1, rightIndex);
-//        merge(arrayToSort, leftIndex, center, rightIndex);
-//    }
-//}
-//
-//void merge(unsigned long long * arrayToSort, int left, int center, int right){
-//    int n1 = (center - left + 1);
-//    int n2 = (right - center);
-//    int i, j, k;
-//
-//    unsigned long long *leftSubArray;
-//    unsigned long long *rightSubArray;
-//    leftSubArray = (unsigned long long *) malloc((n1+1) * sizeof(unsigned long long));
-//    rightSubArray = (unsigned long long *) malloc((n2+1) * sizeof(unsigned long long));
-//
-//    for(i = 0; i < n1; i++) {
-//        leftSubArray[i] = arrayToSort[left + i];
-//    }
-//    for(j = 0; j < n2; j++) {
-//        rightSubArray[j] = arrayToSort[center + j + 1];
-//    }
-//
-//    leftSubArray[i] = ULONG_LONG_MAX;
-//    rightSubArray[j] = ULONG_LONG_MAX;
-//
-//    i = 0;
-//    j = 0;
-//    k = 0;
-//
-//    for(k = left; k <= right; k++){
-//        if(leftSubArray[i] <= rightSubArray[j]){
-//            arrayToSort[k] = leftSubArray[i];
-//            i++;
-//        } else {
-//            arrayToSort[k] = rightSubArray[j];
-//            j++;
-//        }
-//    }
-//
-//    free(leftSubArray);
-//    free(rightSubArray);
-//}
-
-// int usoDue(void ** arrayToTest, void ** sortedArray, int compareValueAndValue(void * firstValue, void * secondValue)) {
-//     int j = ELEMENTS_TO_SCAN;
-
-//     for(size_t i = 0; i < ELEMENTS_TO_SCAN && j >=0 ; i++) {
-//     //     if ( *(sortedArray+i) + *(sortedArray+j) < x)
-//     //     ++i1
-//     // else if A1[i1] + A2[i2] > x
-//     //     --i2
-//     // else
-//     //     success!!!!
-//     }
-
-
-// }
