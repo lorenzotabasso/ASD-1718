@@ -6,10 +6,8 @@
 #ifndef GENERIC_ARRAY_H_
 #define GENERIC_ARRAY_H_
 
-#define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Downloads/ASD Lab PAC/arrayToSort.txt"
-#define SUMS_PATH "/Volumes/HDD/Lorenzo/Downloads/ASD Lab PAC/toTest.txt"
-#define INTEGERS_ELEMENTS 4
-#define SUMS_ELEMENTS 2
+#include <stdlib.h>
+#include <stdio.h>
 
 // An array of any number of elements of any kind, generic.
 typedef struct {
@@ -24,7 +22,6 @@ typedef struct {
 // and a compare function which takes as input two void pointes and
 // returns 1 iff the first pointed value is less than the second pointed value (0 otherwise)
 GenericArray * generic_array_create(long long capacity, int (*compare)(void*,void*));
-
 
 // It accepts as input a pointer to a generic array and it returns 1 iff
 //the generic array is empty (0 otherwise)

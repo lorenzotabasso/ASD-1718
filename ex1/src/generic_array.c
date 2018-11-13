@@ -3,12 +3,14 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "generic_array.h"
+#include "../include/generic_array.h"
+
+// FUNCTIONS PROTOTYPES ------------------------------------------------------------------------------------------------
 
 static long long get_index_to_insert(GenericArray *array, void* element);
 static void insert_element(GenericArray *array, void* element,long long index);
+
+// FUNCTIONS OF GENERIC_ARRAY ------------------------------------------------------------------------------------------
 
 GenericArray *generic_array_create(long long capacity, int (*compare)(void*,void*)){
     GenericArray *array = malloc(sizeof(GenericArray));
@@ -76,12 +78,6 @@ void generic_array_free_memory(GenericArray *array){
 // returns the position where the new element must be inserted
 static long long get_index_to_insert(GenericArray *array, void* element){
     long long i = 0;
-//    int cont = 0;
-//    while(i < array->el_num && !cont){
-//        if((*(array->compare))(element,(array->array)[i])){
-//            cont = 1;
-//        } else i++;
-//    }
     while (i < array->el_num) {
         i++;
     }
