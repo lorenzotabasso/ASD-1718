@@ -8,8 +8,8 @@
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.h"
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.c"
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity_internals.h"
-#include "../include/generic_array.h"
-#include "../src/generic_array.c"
+#include "../include/sorts.h"
+#include "../src/sorts.c"
 
 /*
  * Test suite for generic array data structure and algorithms
@@ -27,37 +27,37 @@ int verifySort(void ** array, int size, int (* compare)(void*, void*)) {
 }
 
 //compare used in tests
-static int compare_int(void* i1_p,void* i2_p){
-  int* int1_p = (int*)i1_p;
-  int* int2_p = (int*)i2_p;
-  if((*int1_p) < (*int2_p))
-    return(1);
-  return(0);
+static int compare_int(void* first_p, void* second_p){
+    int * first_int_p = (int *) first_p;
+    int * second_int_p = (int *) second_p;
+    if((*first_int_p) < (*second_int_p))
+        return(1);
+    return(0);
 }
 
 //Data elements that must be initialized once, before all tests
 static int i1,i2,i3;
 
 //Data element that must be created before each test
-GenericArray *generic_array_int;
+void ** array;
 
 void mySetUp(void){
   i1 = -12;
   i2 = 0;
   i3 = 4;
-  generic_array_int = generic_array_create(3, compare_int);
+  array = malloc(3 * sizeof(void *));
 }
 
 
 
 void myTearDown(void){
-  generic_array_free_memory(generic_array_int);
+    free(array)
 }
 
 
-static void test_generic_array_is_empty_zero_el(void){
+static void test_empty_array(void){
     mySetUp();
-    TEST_ASSERT_TRUE(generic_array_is_empty(generic_array_int));
+    TEST_ASSERT_TRUE(insertionSort(array, 3, compare_int));
     myTearDown();
 }
 

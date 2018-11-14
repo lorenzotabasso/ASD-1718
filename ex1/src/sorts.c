@@ -75,12 +75,12 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
 }
 
 int sumsInArray(void ** array_to_test, void ** array_of_sums, int size_to_test, int size_of_sums,
-        int (*compare)(void*,void*), long long * (sums_support)(void*, void*)) {
+        int (*compare)(void*,void*), long * (sums_support)(void*, void*)) {
 
     int result = 0;
 
-    long long  i = 0;
-    long long j, k;
+    int  i = 0;
+    int j, k;
 
     while (i < size_of_sums) {
         j = 0;

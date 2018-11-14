@@ -10,11 +10,12 @@
 #include <string.h>
 #include "../include/generic_array.h"
 #include "../include/sorts.h"
+#include <time.h> // for timing, see load_array and chooseAlgorithm functions
 
-#define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Downloads/ASD Lab PAC/arrayToSort.txt"
-#define SUMS_PATH "/Volumes/HDD/Lorenzo/Downloads/ASD Lab PAC/toTest.txt"
-#define INTEGERS_ELEMENTS 4
-#define SUMS_ELEMENTS 2
+#define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+#define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
+#define INTEGERS_ELEMENTS 5
+#define SUMS_ELEMENTS 11
 
 // FUNCTIONS PROTOTYPES ------------------------------------------------------------------------------------------------
 
@@ -32,11 +33,11 @@ static int compare_sums(void* r1_p, void* r2_p);
 
 // It takes as input two void pointers.
 // It returns the sum of the two pointed values. Used in compare_sums() function.
-static long long * sums_support(void* r1_p, void* r2_p);
+static long * sums_support(void* r1_p, void* r2_p);
 
-void load_array(GenericArray* array, char * path);
-void print_array(GenericArray* array);
-void chooseSorting(const char * algorithm);
+void load_array(void ** array, int size, char * path);
+void print_array(void ** array, int size);
+void chooseSorting(const char * algorithm, const char * extra_args);
 
 // COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ static int compare_sums(void* r1_p, void* r2_p){
 
 // It takes as input two void pointers.
 // It returns the sum of the two pointed values. Used in compare_sums() function.
-static long long * sums_support(void* r1_p, void* r2_p){
+static long * sums_support(void* r1_p, void* r2_p){
     if(r1_p == NULL){
         fprintf(stderr,"sums_support: the first parameter is a null pointer");
         exit(EXIT_FAILURE);
@@ -117,16 +118,17 @@ static long long * sums_support(void* r1_p, void* r2_p){
         exit(EXIT_FAILURE);
     }
 
-    long long first = (long long) r1_p;
-    long long second = (long long) r2_p;
+    long first = (long) r1_p;
+    long second = (long) r2_p;
 
-    return (long long *) (first + second);
+    return (long *) (first + second);
 }
 
 
 // UTILITY FUNCTIONS ----------------------------------------------------------
 
-void load_array(GenericArray* array, char * path){
+void load_array(void ** array, int size, char * path){
+    clock_t start = clock(); // for timing
 
     printf("\nLoading data from file...\n");
 
@@ -141,8 +143,10 @@ void load_array(GenericArray* array, char * path){
     int buf_size = 1024;
 
     long long number_in_read_line = 0;
+    void * number_in_read_line_p;
+    int i = 0;
 
-    while(fgets(buffer, buf_size, dataset_p) != NULL){
+    while(fgets(buffer, buf_size, dataset_p) != NULL && i < INTEGERS_ELEMENTS){
         read_line_p = malloc((strlen(buffer) + 1) * sizeof(char));
         strcpy(read_line_p, buffer);
 
@@ -150,75 +154,97 @@ void load_array(GenericArray* array, char * path){
 
         number_in_read_line = strtoull(field_in_read_line_p, (char **) NULL, 10);
 
-        generic_array_add(array, (void *) number_in_read_line);
+        number_in_read_line_p = (void *) number_in_read_line;
 
+        //generic_array_add(array, (void *) number_in_read_line);
+
+        if(number_in_read_line_p == NULL){
+            fprintf(stderr,"load_array: number_in_read_line_p parameter cannot be NULL");
+            exit(EXIT_FAILURE);
+        }
+        array[i] = number_in_read_line_p;
         free(read_line_p);
+        i++;
     }
 
+    clock_t stop = clock();
+    double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
     fclose(dataset_p);
-    printf("Data loaded\n");
+    printf("Data loaded. Read %d lines in %f seconds.\n", i, seconds);
 }
 
-void print_array(GenericArray* array){
-    long long el_num =  generic_array_size(array);
-
+void print_array(void ** array, int size){
     long long * to_print_p;
+    long long to_print;
 
     printf("Array: [");
 
-    for(long long i = 0; i < el_num; i++){
-        to_print_p = (long long *) generic_array_get(array, i);
-        if (i == el_num-1) {
-            printf("%llu]\n", (long long) to_print_p);
+    for(int i = 0; i < size; i++){
+        to_print_p = (long long *) array[i];
+        to_print = (long long) to_print_p;
+        if (i == size-1) {
+            printf("%lld]\n", (long long) to_print);
         } else {
-            printf("%llu, ", (long long) to_print_p);
+            printf("%lld, ", (long long) to_print);
         }
     }
 }
 
-void chooseSorting(const char * algorithm) {
+void chooseSorting(const char * algorithm, const char * extra_args) {
+    clock_t start = clock();
+
+    void ** array_integers = malloc(INTEGERS_ELEMENTS * sizeof(void*));
+    void ** array_sums = malloc(SUMS_ELEMENTS * sizeof(void *));
+
     if (strcmp(algorithm, "-is") == 0) {
-        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_insertionsort);
-        load_array(array, INTEGERS_PATH);
+        load_array(array_integers, INTEGERS_ELEMENTS, INTEGERS_PATH);
 
-        printf("\nBefore insertionSort\t");
-        print_array(array);
+        if (strcmp(extra_args, "-p") == 0) {
+            printf("\nBefore insertionSort\t");
+            print_array(array_integers, INTEGERS_ELEMENTS);
+        }
 
-        insertionSort(array->array, INTEGERS_ELEMENTS, compare_insertionsort);
+        printf("\nStarting insertionSort, timer set to 0.\n");
+        insertionSort(array_integers, INTEGERS_ELEMENTS, compare_insertionsort);
 
-        printf("After insertionSort \t");
-        print_array(array);
+        if (strcmp(extra_args, "-p") == 0) {
+            printf("\nAfter insertionSort\t");
+            print_array(array_integers, INTEGERS_ELEMENTS);
+        }
 
-        generic_array_free_memory(array);
+        clock_t stop = clock();
+        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+        printf("\nInsertionSort finished, time enlapsed: %f seconds\n", seconds);
+
+        free(array_integers);
 
     } else if (strcmp(algorithm, "-ms") == 0) {
-        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_sums);
-        load_array(array, INTEGERS_PATH);
+        load_array(array_integers, INTEGERS_ELEMENTS, INTEGERS_PATH);
 
         printf("\nBefore mergeSort\t");
-        print_array(array);
+        print_array(array_integers, INTEGERS_ELEMENTS);
 
-        mergeSort(array->array, 0, INTEGERS_ELEMENTS-1, compare_mergesort);
+        mergeSort(array_integers, 0, INTEGERS_ELEMENTS-1, compare_mergesort);
 
         printf("After mergeSort \t");
-        print_array(array);
+        print_array(array_integers, INTEGERS_ELEMENTS);
 
-        generic_array_free_memory(array);
+        free(array_integers);
 
     } else if (strcmp(algorithm, "-sm") == 0) {
-        GenericArray* array = generic_array_create(INTEGERS_ELEMENTS, compare_sums);
-        load_array(array, INTEGERS_PATH);
-        print_array(array);
+        load_array(array_integers, INTEGERS_ELEMENTS, INTEGERS_PATH);
+        print_array(array_integers, INTEGERS_ELEMENTS);
 
-        GenericArray* sums = generic_array_create(SUMS_ELEMENTS, compare_sums);
-        load_array(sums, SUMS_PATH);
-        print_array(sums);
+        load_array(array_sums, SUMS_ELEMENTS, SUMS_PATH);
+        print_array(array_sums, SUMS_ELEMENTS);
 
-        int result = sumsInArray(array->array, sums->array, INTEGERS_ELEMENTS, SUMS_ELEMENTS, compare_sums, sums_support);
+        int result = sumsInArray(array_integers, array_sums, INTEGERS_ELEMENTS, SUMS_ELEMENTS, compare_sums, sums_support);
         printf("\nRESULT: %d\n", result);
 
-        generic_array_free_memory(sums);
-        generic_array_free_memory(array);
+        free(array_sums);
+        free(array_integers);
     } else {
         fprintf(stderr, "Sort: Bad usage, one or more flag not correct, retry!");
         exit(EXIT_FAILURE);
@@ -229,21 +255,33 @@ void chooseSorting(const char * algorithm) {
 
 int main(int argc, char const *argv[]) {
     if (argc < 2) {
-        printf("Usage: ./generic_array_main <mode> <algorithm>\n");
+        printf("Usage: ./generic_array_main <mode> <algorithm> <extra_args>\n");
         exit(EXIT_FAILURE);
     }
 
     if (strcmp(argv[1], "-u1") == 0) {
         if (strcmp(argv[2], "-is") == 0){
-            chooseSorting(argv[2]); // insertionSort
+            if (argv[3] != NULL && strcmp(argv[3], "-p") == 0){
+                chooseSorting(argv[2], argv[3]); // insertionSort and print
+            } else {
+                fprintf(stderr, "Main: Bad usage, third flag not correct, retry!");
+                exit(EXIT_FAILURE);
+            }
+            chooseSorting(argv[2], NULL); // only insertionSort
         } else if (strcmp(argv[2], "-ms") == 0) {
-            chooseSorting(argv[2]); // mergeSort
+            if (argv[3] != NULL && strcmp(argv[3], "-p") == 0){
+                chooseSorting(argv[2], argv[3]); // mergeSort and print
+            } else {
+                fprintf(stderr, "Main: Bad usage, third flag not correct, retry!");
+                exit(EXIT_FAILURE);
+            }
+            chooseSorting(argv[2], NULL); // only mergeSort
         } else {
-            fprintf(stderr, "Main: Bad usage, one or more flag not correct, retry!");
+            fprintf(stderr, "Main: Bad usage, first flag not correct, retry!");
             exit(EXIT_FAILURE);
         }
     } else if (strcmp(argv[1], "-u2") == 0) {
-        chooseSorting("-sm");
+        chooseSorting("-sm", NULL);
     } else {
         fprintf(stderr, "Main: Bad usage, one or more flag not correct, retry!");
         exit(EXIT_FAILURE);
