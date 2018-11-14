@@ -14,7 +14,7 @@
 
 #define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-#define INTEGERS_ELEMENTS 5
+#define INTEGERS_ELEMENTS 20000000
 #define SUMS_ELEMENTS 11
 
 // FUNCTIONS PROTOTYPES ------------------------------------------------------------------------------------------------
@@ -211,7 +211,7 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
         clock_t stop = clock();
         double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
 
-        printf("InsertionSort finished, time enlapsed: %f seconds\n", seconds);
+        printf("InsertionSort finished, time elapsed: %f seconds\n", seconds);
 
         if (strcmp(extra_args, "-p") == 0) {
             printf("\nAfter insertionSort\t");
@@ -223,13 +223,23 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
     } else if (strcmp(algorithm, "-ms") == 0) {
         load_array(array_integers, INTEGERS_ELEMENTS, INTEGERS_PATH);
 
-        printf("\nBefore mergeSort\t");
-        print_array(array_integers, INTEGERS_ELEMENTS);
+        if (strcmp(extra_args, "-p") == 0) {
+            printf("\nBefore mergeSort\t");
+            print_array(array_integers, INTEGERS_ELEMENTS);
+        }
 
+        printf("\nStarting mergeSort, timer set to 0 seconds.\n");
         mergeSort(array_integers, 0, INTEGERS_ELEMENTS-1, compare_mergesort);
 
-        printf("After mergeSort \t");
-        print_array(array_integers, INTEGERS_ELEMENTS);
+        clock_t stop = clock();
+        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+        printf("MergeSort finished, time elapsed: %f seconds\n", seconds);
+
+        if (strcmp(extra_args, "-p") == 0) {
+            printf("\nAfter mergeSort\t");
+            print_array(array_integers, INTEGERS_ELEMENTS);
+        }
 
         free(array_integers);
 
@@ -263,25 +273,27 @@ int main(int argc, char const *argv[]) {
         if (strcmp(argv[2], "-is") == 0){
             if (argv[3] != NULL && strcmp(argv[3], "-p") == 0){
                 chooseSorting(argv[2], argv[3]); // insertionSort and print
+            } else if (argv[3] == NULL) {
+                chooseSorting(argv[2], ""); // only insertionSort
             } else {
                 fprintf(stderr, "Main: Bad usage, third flag not correct, retry!");
                 exit(EXIT_FAILURE);
             }
-            chooseSorting(argv[2], NULL); // only insertionSort
         } else if (strcmp(argv[2], "-ms") == 0) {
             if (argv[3] != NULL && strcmp(argv[3], "-p") == 0){
                 chooseSorting(argv[2], argv[3]); // mergeSort and print
+            } else if (argv[3] == NULL){
+                chooseSorting(argv[2], ""); // only mergeSort
             } else {
                 fprintf(stderr, "Main: Bad usage, third flag not correct, retry!");
                 exit(EXIT_FAILURE);
             }
-            chooseSorting(argv[2], NULL); // only mergeSort
         } else {
             fprintf(stderr, "Main: Bad usage, first flag not correct, retry!");
             exit(EXIT_FAILURE);
         }
     } else if (strcmp(argv[1], "-u2") == 0) {
-        chooseSorting("-sm", NULL);
+        chooseSorting("-sm", "");
     } else {
         fprintf(stderr, "Main: Bad usage, one or more flag not correct, retry!");
         exit(EXIT_FAILURE);
