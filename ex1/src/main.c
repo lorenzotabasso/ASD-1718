@@ -35,6 +35,12 @@ static int compare_sums(void* r1_p, void* r2_p);
 // It returns the sum of the two pointed values. Used in compare_sums() function.
 static long * sums_support(void* r1_p, void* r2_p);
 
+// It takes as input an array of void pointers to test if it's sorted, the size of the array,
+// and a pointer to a compare function.
+// Iff the array is correctly sorted, it returns a confirm string, otherwise it returns
+// a string to evince the opposite
+char* is_sorted(void ** array, int size, int (* compare)(void *, void *));
+
 void load_array(void ** array, int size, char * path);
 void print_array(void ** array, int size);
 void chooseSorting(const char * algorithm, const char * extra_args);
@@ -70,7 +76,7 @@ static int compare_mergesort(void* r1_p,void* r2_p){
         fprintf(stderr,"compare_mergesort: second parameter: %lld", (long long) r2_p);
         exit(EXIT_FAILURE);
     }
-    if(r2_p == NULL){
+    if(r2_p == NULL){ // TODO: Attenzione, se usiamo il > da errore! controllare!
         fprintf(stderr,"compare_mergesort: the second parameter is a null pointer\n");
         fprintf(stderr,"compare_mergesort: first parameter: %lld\n", (long long) r1_p);
         exit(EXIT_FAILURE);
@@ -79,7 +85,7 @@ static int compare_mergesort(void* r1_p,void* r2_p){
     long long first = (long long) r1_p;
     long long second = (long long) r2_p;
 
-    if(first < second){
+    if(first <= second){
         return(1);
     }
     return(0);
@@ -122,6 +128,17 @@ static long * sums_support(void* r1_p, void* r2_p){
     long second = (long) r2_p;
 
     return (long *) (first + second);
+}
+
+char* is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
+    int test = 1;
+    for (int i = 0; i < size-1; i++) {
+        if (!compare(array[i], array[i+1]))
+            test = 0;
+    }
+
+    if (test) return "Array is correctly sorted.";
+    else return "Array isn't correctly sorted!";
 }
 
 
@@ -218,6 +235,9 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
             print_array(array_integers, INTEGERS_ELEMENTS);
         }
 
+        // test is_sorted
+        printf("\n%s", is_sorted(array_integers, INTEGERS_ELEMENTS, compare_mergesort));
+
         free(array_integers);
 
     } else if (strcmp(algorithm, "-ms") == 0) {
@@ -240,6 +260,9 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
             printf("\nAfter mergeSort\t");
             print_array(array_integers, INTEGERS_ELEMENTS);
         }
+
+        // test is_sorted
+        printf("\n%s", is_sorted(array_integers, INTEGERS_ELEMENTS, compare_mergesort));
 
         free(array_integers);
 
