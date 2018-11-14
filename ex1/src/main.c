@@ -131,16 +131,15 @@ static long * sums_support(void* r1_p, void* r2_p){
 }
 
 char* is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
-    int test = 1;
-    for (int i = 0; i < size-1; i++) {
-        if (!compare(array[i], array[i+1]))
-            test = 0;
+    int i = 0;
+
+    while (i < size-1 && compare(array[i], array[i+1])) {
+        i++;
     }
 
-    if (test) return "Array is correctly sorted.";
+    if (i == size-1) return "Array is correctly sorted.";
     else return "Array isn't correctly sorted!";
 }
-
 
 // UTILITY FUNCTIONS ----------------------------------------------------------
 

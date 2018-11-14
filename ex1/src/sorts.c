@@ -51,6 +51,20 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
         right_sub_array[j] = array[center + j +1];
     }
 
+    /*
+     * ATTENZIONE: Usando questa implementazione del mergeSort (dal Cormen)
+     * ci sono da tenere in mente 2 accorgimenti sul cambio di int (*compare)!
+     *
+     * nel caso di int (*compare) con <= usare LLONG_MAX
+     * nel caso di int (*compare) con >= usare LLONG_MIN
+     *
+     * Bisogna fare questo cambiamento poichè il cormen utilizza,
+     * nell'ultima posizione dell'array un "valore sentinella", settato a
+     * infinito. Essendo che l'infinito o il -infinito nel caso del minimo
+     * non è settabile sui computer, utilizziamo l'header <limits.h>
+     * e poniamo come valori più bassi (+ e - infinito) LLONG_MAX e LLONG_MIN.
+     */
+
     left_sub_array[i] = (void *) LLONG_MAX;
     right_sub_array[j] = (void *) LLONG_MAX;
 
