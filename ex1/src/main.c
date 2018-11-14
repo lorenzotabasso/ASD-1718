@@ -205,18 +205,18 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
             print_array(array_integers, INTEGERS_ELEMENTS);
         }
 
-        printf("\nStarting insertionSort, timer set to 0.\n");
+        printf("\nStarting insertionSort, timer set to 0 seconds.\n");
         insertionSort(array_integers, INTEGERS_ELEMENTS, compare_insertionsort);
+
+        clock_t stop = clock();
+        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+        printf("InsertionSort finished, time enlapsed: %f seconds\n", seconds);
 
         if (strcmp(extra_args, "-p") == 0) {
             printf("\nAfter insertionSort\t");
             print_array(array_integers, INTEGERS_ELEMENTS);
         }
-
-        clock_t stop = clock();
-        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
-
-        printf("\nInsertionSort finished, time enlapsed: %f seconds\n", seconds);
 
         free(array_integers);
 
