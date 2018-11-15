@@ -162,7 +162,7 @@ void load_array(void ** array, int size, char * path){
     void * number_in_read_line_p;
     int i = 0;
 
-    while(fgets(buffer, buf_size, dataset_p) != NULL && i < INTEGERS_ELEMENTS){
+    while(fgets(buffer, buf_size, dataset_p) != NULL && i < size){
         read_line_p = malloc((strlen(buffer) + 1) * sizeof(char));
         strcpy(read_line_p, buffer);
 
@@ -200,9 +200,9 @@ void print_array(void ** array, int size){
         to_print_p = (long long *) array[i];
         to_print = (long long) to_print_p;
         if (i == size-1) {
-            printf("%lld]\n", (long long) to_print);
+            printf("%lld]\n", to_print);
         } else {
-            printf("%lld, ", (long long) to_print);
+            printf("%lld, ", to_print);
         }
     }
 }
