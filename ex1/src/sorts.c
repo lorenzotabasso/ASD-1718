@@ -1,14 +1,12 @@
 /*
- * Author: Tabasso, Malgaroli
+ * Author: Lorenzo Tabasso,
+ * Author: Andrea Malgaroli
  *
  */
 
 #include "../include/sorts.h"
 
-
-// SORTING FUNCTIONS ---------------------------------------------------------------------------------------------------
-
-void insertionSort(void ** array, int size, int (*compare)(void*,void*)) {
+void insertion_sort(void ** array, int size, int (*compare)(void*,void*)) {
     int i = 0;
     int j = 0;
     void * key;
@@ -24,11 +22,11 @@ void insertionSort(void ** array, int size, int (*compare)(void*,void*)) {
     }
 }
 
-void mergeSort(void ** array, int leftIndex, int rightIndex, int (*compare)(void*,void*)) {
+void merge_sort(void ** array, int leftIndex, int rightIndex, int (*compare)(void*,void*)) {
     if(leftIndex < rightIndex){
         int center = (leftIndex + rightIndex) / 2;
-        mergeSort(array, leftIndex, center, compare);
-        mergeSort(array, center + 1, rightIndex, compare);
+        merge_sort(array, leftIndex, center, compare);
+        merge_sort(array, center + 1, rightIndex, compare);
         merge(array, leftIndex, center, rightIndex, compare);
     }
 }
@@ -37,9 +35,6 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
     int n1 = (center - left + 1);
     int n2 = (right - center);
     int i, j, k;
-
-//    GenericArray * left_sub_array = generic_array_create((long long) n1+1, compare);
-//    GenericArray * right_sub_array = generic_array_create((long long) n2+1, compare);
 
     void ** left_sub_array = malloc((n1+1) * sizeof(void *));
     void ** right_sub_array = malloc((n2+1) * sizeof(void *));
@@ -83,12 +78,9 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
 
     free(left_sub_array);
     free(right_sub_array);
-
-//    generic_array_free_memory(left_sub_array);
-//    generic_array_free_memory(right_sub_array);
 }
 
-int sumsInArray(void ** array_to_test, void ** array_of_sums, int size_to_test, int size_of_sums,
+int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test, int size_of_sums,
         int (*compare)(void*,void*), long * (sums_support)(void*, void*)) {
 
     int result = 0;

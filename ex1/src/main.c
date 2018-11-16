@@ -1,5 +1,6 @@
-/* 
- * Author: Tabasso, Malgaroli
+/*
+ * Author: Lorenzo Tabasso,
+ * Author: Andrea Malgaroli
  *
  */
 
@@ -8,204 +9,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/generic_array.h"
 #include "../include/sorts.h"
-#include <time.h> // for timing, see load_array and chooseAlgorithm functions
+#include "../include/sorts_test.h"
 
 #define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
-#define INTEGERS_ELEMENTS 20000000
+#define INTEGERS_ELEMENTS 5
 #define SUMS_ELEMENTS 11
 
-// FUNCTIONS PROTOTYPES ------------------------------------------------------------------------------------------------
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
-static int compare_insertionsort(void* r1_p,void* r2_p);
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
-static int compare_mergesort(void* r1_p,void* r2_p);
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointed value (0 otherwise)
-static int compare_sums(void* r1_p, void* r2_p);
-
-// It takes as input two void pointers.
-// It returns the sum of the two pointed values. Used in compare_sums() function.
-static long * sums_support(void* r1_p, void* r2_p);
-
-// It takes as input an array of void pointers to test if it's sorted, the size of the array,
-// and a pointer to a compare function.
-// Iff the array is correctly sorted, it returns a confirm string, otherwise it returns
-// a string to evince the opposite
-char* is_sorted(void ** array, int size, int (* compare)(void *, void *));
-
-void load_array(void ** array, int size, char * path);
-void print_array(void ** array, int size);
 void chooseSorting(const char * algorithm, const char * extra_args);
-
-// COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
-static int compare_insertionsort(void* r1_p,void* r2_p){
-    if(r1_p == NULL){
-        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-    if(r2_p == NULL){
-        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-
-    long long first = (long long) r1_p;
-    long long second = (long long) r2_p;
-
-    if(first < second){
-        return(1);
-    }
-    return(0);
-}
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
-static int compare_mergesort(void* r1_p,void* r2_p){
-    if(r1_p == NULL){
-        fprintf(stderr,"compare_mergesort: the first parameter is a null pointer\n");
-        fprintf(stderr,"compare_mergesort: second parameter: %lld", (long long) r2_p);
-        exit(EXIT_FAILURE);
-    }
-    if(r2_p == NULL){ // TODO: Attenzione, se usiamo il > da errore! controllare!
-        fprintf(stderr,"compare_mergesort: the second parameter is a null pointer\n");
-        fprintf(stderr,"compare_mergesort: first parameter: %lld\n", (long long) r1_p);
-        exit(EXIT_FAILURE);
-    }
-
-    long long first = (long long) r1_p;
-    long long second = (long long) r2_p;
-
-    if(first <= second){
-        return(1);
-    }
-    return(0);
-}
-
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointed value (0 otherwise)
-static int compare_sums(void* r1_p, void* r2_p){
-    if(r1_p == NULL){
-        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-    if(r2_p == NULL){
-        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-
-    long long first = (long long) r1_p;
-    long long second = (long long) r2_p;
-
-    if(first < second){
-        return(1);
-    }
-    return(0);
-}
-
-// It takes as input two void pointers.
-// It returns the sum of the two pointed values. Used in compare_sums() function.
-static long * sums_support(void* r1_p, void* r2_p){
-    if(r1_p == NULL){
-        fprintf(stderr,"sums_support: the first parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-    if(r2_p == NULL){
-        fprintf(stderr,"sums_support: the second parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-
-    long first = (long) r1_p;
-    long second = (long) r2_p;
-
-    return (long *) (first + second);
-}
-
-char* is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
-    int i = 0;
-
-    while (i < size-1 && compare(array[i], array[i+1])) {
-        i++;
-    }
-
-    if (i == size-1) return "Array is correctly sorted.";
-    else return "Array isn't correctly sorted!";
-}
-
-// UTILITY FUNCTIONS ----------------------------------------------------------
-
-void load_array(void ** array, int size, char * path){
-    clock_t start = clock(); // for timing
-
-    printf("\nLoading data from file...\n");
-
-    FILE * dataset_p = fopen(path, "r");
-    if(dataset_p == NULL){
-        fprintf(stderr,"Load: unable to open the file");
-        exit(EXIT_FAILURE);
-    }
-
-    char * read_line_p;
-    char buffer[1024];
-    int buf_size = 1024;
-
-    long long number_in_read_line = 0;
-    void * number_in_read_line_p;
-    int i = 0;
-
-    while(fgets(buffer, buf_size, dataset_p) != NULL && i < size){
-        read_line_p = malloc((strlen(buffer) + 1) * sizeof(char));
-        strcpy(read_line_p, buffer);
-
-        char *field_in_read_line_p = strtok(read_line_p, "\n");
-
-        number_in_read_line = strtoull(field_in_read_line_p, (char **) NULL, 10);
-
-        number_in_read_line_p = (void *) number_in_read_line;
-
-        //generic_array_add(array, (void *) number_in_read_line);
-
-        if(number_in_read_line_p == NULL){
-            fprintf(stderr,"load_array: number_in_read_line_p parameter cannot be NULL");
-            exit(EXIT_FAILURE);
-        }
-        array[i] = number_in_read_line_p;
-        free(read_line_p);
-        i++;
-    }
-
-    clock_t stop = clock();
-    double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
-
-    fclose(dataset_p);
-    printf("Data loaded. Read %d lines in %f seconds.\n", i, seconds);
-}
-
-void print_array(void ** array, int size){
-    long long * to_print_p;
-    long long to_print;
-
-    printf("Array: [");
-
-    for(int i = 0; i < size; i++){
-        to_print_p = (long long *) array[i];
-        to_print = (long long) to_print_p;
-        if (i == size-1) {
-            printf("%lld]\n", to_print);
-        } else {
-            printf("%lld, ", to_print);
-        }
-    }
-}
 
 void chooseSorting(const char * algorithm, const char * extra_args) {
     clock_t start = clock();
@@ -222,7 +34,7 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
         }
 
         printf("\nStarting insertionSort, timer set to 0 seconds.\n");
-        insertionSort(array_integers, INTEGERS_ELEMENTS, compare_insertionsort);
+        insertion_sort(array_integers, INTEGERS_ELEMENTS, compare_insertionsort);
 
         clock_t stop = clock();
         double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
@@ -248,7 +60,7 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
         }
 
         printf("\nStarting mergeSort, timer set to 0 seconds.\n");
-        mergeSort(array_integers, 0, INTEGERS_ELEMENTS-1, compare_mergesort);
+        merge_sort(array_integers, 0, INTEGERS_ELEMENTS-1, compare_mergesort);
 
         clock_t stop = clock();
         double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
@@ -272,7 +84,7 @@ void chooseSorting(const char * algorithm, const char * extra_args) {
         load_array(array_sums, SUMS_ELEMENTS, SUMS_PATH);
         print_array(array_sums, SUMS_ELEMENTS);
 
-        int result = sumsInArray(array_integers, array_sums, INTEGERS_ELEMENTS, SUMS_ELEMENTS, compare_sums, sums_support);
+        int result = sums_in_array(array_integers, array_sums, INTEGERS_ELEMENTS, SUMS_ELEMENTS, compare_sums, sums_support);
         printf("\nRESULT: %d\n", result);
 
         free(array_sums);

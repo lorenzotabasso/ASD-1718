@@ -1,5 +1,6 @@
 /*
- * Author: Tabasso, Malgaroli
+ * Author: Lorenzo Tabasso,
+ * Author: Andrea Malgaroli
  *
  */
 

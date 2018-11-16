@@ -1,85 +1,353 @@
-/* 
- * Author: Tabasso, Malgaroli
+/*
+ * Author: Lorenzo Tabasso,
+ * Author: Andrea Malgaroli
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.h"
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.c"
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity_internals.h"
-#include "../include/sorts.h"
-#include "../src/sorts.c"
+#include "../include/sorts_test.h"
+
+#define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
+#define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
 
 /*
  * Test suite for generic array data structure and algorithms
  */
 
-int verifySort(void ** array, int size, int (* compare)(void*, void*));
+// COMPARE FUNCTIONS ---------------------------------------------------------------------------------------------------
 
-int verifySort(void ** array, int size, int (* compare)(void*, void*)) {
-    int test = 1;
-    for (int i = 0; i+1 < size && test != 0; i++) {
-        if (!compare(array[i],array[i+1])) {
-            test = 0;
-        }
-    }
-}
+// It takes as input two void pointers.
+// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
+int compare_insertionsort(void* r1_p,void* r2_p){
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
 
-//compare used in tests
-static int compare_int(void* first_p, void* second_p){
-    int * first_int_p = (int *) first_p;
-    int * second_int_p = (int *) second_p;
-    if((*first_int_p) < (*second_int_p))
+    if(first < second){
         return(1);
+    }
     return(0);
 }
 
-int is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
-    int i = 0;
-
-    while (i < size-1 && compare(array[i], array[i+1])) {
-        i++;
+// It takes as input two void pointers.
+// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
+int compare_mergesort(void* r1_p,void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_mergesort: the first parameter is a null pointer\n");
+        fprintf(stderr,"compare_mergesort: second parameter: %lld", (long long) r2_p);
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){ // TODO: Attenzione, se usiamo il > da errore! controllare!
+        fprintf(stderr,"compare_mergesort: the second parameter is a null pointer\n");
+        fprintf(stderr,"compare_mergesort: first parameter: %lld\n", (long long) r1_p);
+        exit(EXIT_FAILURE);
     }
 
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    if(first <= second){
+        return(1);
+    }
+    return(0);
+}
+
+// It takes as input two void pointers.
+// It returns 1 iff the first pointed value is less than the second pointed value (0 otherwise)
+int compare_sums(void* r1_p, void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the first parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"compare_record_int_field: the second parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
+
+    if(first < second){
+        return(1);
+    }
+    return(0);
+}
+
+// It takes as input two void pointers.
+// It returns the sum of the two pointed values. Used in compare_sums() function.
+long * sums_support(void* r1_p, void* r2_p){
+    if(r1_p == NULL){
+        fprintf(stderr,"sums_support: the first parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+    if(r2_p == NULL){
+        fprintf(stderr,"sums_support: the second parameter is a null pointer");
+        exit(EXIT_FAILURE);
+    }
+
+    long first = (long) r1_p;
+    long second = (long) r2_p;
+
+    return (long *) (first + second);
+}
+
+int is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
+    int i;
+    for (i = 0; i < size-1 && compare(array[i], array[i+1]); i++) { }
     if (i == size-1) return (1);
     else return (0);
 }
 
+// UTILITY FUNCTIONS ---------------------------------------------------------------------------------------------------
+
+void load_array(void ** array, int size, char * path){
+    clock_t start = clock(); // for timing
+
+    printf("\nLoading data from file...\n");
+
+    FILE * dataset_p = fopen(path, "r");
+    if(dataset_p == NULL){
+        fprintf(stderr,"Load: unable to open the file");
+        exit(EXIT_FAILURE);
+    }
+
+    char * read_line_p;
+    char buffer[1024];
+    int buf_size = 1024;
+
+    long long number_in_read_line = 0;
+    void * number_in_read_line_p;
+    int i = 0;
+
+    while(fgets(buffer, buf_size, dataset_p) != NULL && i < size){
+        read_line_p = malloc((strlen(buffer) + 1) * sizeof(char));
+        strcpy(read_line_p, buffer);
+
+        char *field_in_read_line_p = strtok(read_line_p, "\n");
+
+        number_in_read_line = strtoull(field_in_read_line_p, (char **) NULL, 10);
+
+        number_in_read_line_p = (void *) number_in_read_line;
+
+        array[i] = number_in_read_line_p;
+        free(read_line_p);
+        i++;
+    }
+
+    clock_t stop = clock();
+    double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+    fclose(dataset_p);
+    printf("Data loaded. Read %d lines in %f seconds.\n", i, seconds);
+}
+
+void print_array(void ** array, int size){
+    long long * to_print_p = NULL;
+    long long to_print = 0;
+
+    printf("Array: [");
+
+    for(int i = 0; i < size; i++){
+        to_print_p = (long long *) array[i];
+        to_print = (long long) to_print_p;
+
+        if (i == size-1) {
+            printf("%lld]\n", to_print);
+        } else {
+            printf("%lld, ", to_print);
+        }
+    }
+}
+
+// TESTS FUNCTIONS -----------------------------------------------------------------------------------------------------
+
 //Data elements that must be initialized once, before all tests
 static int i1,i2,i3, i4;
 
-//Data element that must be created before each test
-void ** array;
+// Data element that must be created before each test
+void ** array1;
+void ** array2;
+void ** array3;
+void ** array4;
+void ** array_integers;
+void ** array_sums;
 
-void mySetUp(void){
-    i1 = -12;
-    i2 = 0;
-    i3 = 4;
-    i4 = 9;
+void my_setup(int integer_size, int sums_size, char * integer_path, char * sums_path){
+    array1 = malloc(10 * sizeof(int *));
+    array2 = malloc(10 * sizeof(int *));
+    array3 = malloc(10 * sizeof(int *));
+    array4 = malloc(5 * sizeof(int *));
 
-    int * i1_p = &i1;
-    int * i2_p = &i2;
-    int * i3_p = &i3;
-    int * i4_p = &i4;
+    array_integers = malloc(integer_size * sizeof(void*));
+    array_sums = malloc(sums_size * sizeof(void *));
 
-    array = malloc(3 * sizeof(void *));
+    long long a1[10] = {1,2,3,4,5,6,7,8,9,10};
+    long long a2[10] = {6,1,2,7,9,8,3,5,10,4};
+    long long a3[10] = {10,9,8,7,6,5,4,3,2,1};
+    long long a4[10] = {4,7,6,1,9};
 
-    array[0] = (void *) i1_p;
-    array[1] = (void *) i2_p;
-    array[2] = (void *) i3_p;
-    array[3] = (void *) i4_p;
+    void * a1_ptr;
+    void * a2_ptr;
+    void * a3_ptr;
+    void * a4_ptr;
+
+    for (int i = 0; i < 10; ++i) {
+        a1_ptr = (void *) a1[i];
+        array1[i] = a1_ptr;
+
+        a2_ptr = (void *) a2[i];
+        array2[i] = a2_ptr;
+
+        a3_ptr = (void *) a3[i];
+        array3[i] = a3_ptr;
+
+        a4_ptr = (void *) a4[i];
+        array4[i] = a4_ptr;
+    }
+
+    load_array(array_integers, integer_size, integer_path);
+    load_array(array_integers, sums_size, sums_path);
 }
 
-void myTearDown(void){
-    free(array);
+void my_teardown(void){
+    free(array1);
+    free(array2);
+    free(array3);
+    free(array_integers);
+    free(array_sums);
 }
 
-static void test_empty_array(void){
-    mySetUp();
-    insertionSort(array, 3, compare_int);
-    TEST_ASSERT_TRUE(is_sorted(array, 3, compare_int));
-    myTearDown();
+//static void test_empty_array(void){
+//    mySetUp();
+//    insertionSort(array1, 10, compare_int);
+//    TEST_ASSERT_TRUE(is_sorted(array1, 3, compare_int));
+//    myTearDown();
+//}
+
+static void test_insertion_sort(void){
+    my_setup(10, 0, INTEGERS_PATH, SUMS_PATH);
+
+    clock_t start = clock();
+
+    printf("\nBefore insertionSort\t");
+    print_array(array1,10);
+    print_array(array2,10);
+    print_array(array3,10);
+    print_array(array_integers, 10);
+
+    printf("\nStarting insertionSort, timer set to 0 seconds.\n");
+    insertion_sort(array1, 10, compare_insertionsort);
+    insertion_sort(array2, 10, compare_insertionsort);
+    insertion_sort(array3, 10, compare_insertionsort);
+    insertion_sort(array_integers, 10, compare_insertionsort);
+
+    clock_t stop = clock();
+    double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+    printf("InsertionSort finished, time elapsed: %f seconds\n", seconds);
+
+    printf("\nAfter insertionSort\t");
+    print_array(array1,10);
+    print_array(array2,10);
+    print_array(array3,10);
+    print_array(array_integers, 10);
+
+    TEST_ASSERT_TRUE(is_sorted(array1, 10, compare_insertionsort));
+    TEST_ASSERT_TRUE(is_sorted(array2, 10, compare_insertionsort));
+    TEST_ASSERT_TRUE(is_sorted(array3, 10, compare_insertionsort));
+
+    my_teardown();
+}
+
+static void test_merge_sort(void){
+    my_setup(20000000, 0, INTEGERS_PATH, SUMS_PATH);
+
+    clock_t start1 = clock();
+
+    printf("\nBefore mergeSort\t");
+    print_array(array1,10);
+    print_array(array2,10);
+    print_array(array3,10);
+
+    printf("\nStarting mergeSort, timer set to 0 seconds.\n");
+    merge_sort(array1, 0, 10-1, compare_mergesort);
+    merge_sort(array2, 0, 10-1, compare_mergesort);
+    merge_sort(array3, 0, 10-1, compare_mergesort);
+
+    clock_t stop1 = clock();
+    double seconds1 = (double)(stop1 - start1) / CLOCKS_PER_SEC;
+
+    printf("MergeSort finished, time elapsed: %f seconds\n", seconds1);
+
+    printf("\nAfter mergeSort\t");
+    print_array(array1,10);
+    print_array(array2,10);
+    print_array(array3,10);
+
+    printf("\nRestarting mergeSort, \n (1) array_integers realoaded from disk. \n(2) timer reset to 0 seconds.\n");
+
+    clock_t start2 = clock();
+    merge_sort(array_integers, 0, 20000000-1, compare_mergesort);
+
+    clock_t stop2 = clock();
+    double seconds2 = (double)(stop2 - start2) / CLOCKS_PER_SEC;
+
+    printf("MergeSort finished, time elapsed: %f seconds\n", seconds2);
+
+    TEST_ASSERT_TRUE(is_sorted(array1, 10, compare_mergesort));
+    TEST_ASSERT_TRUE(is_sorted(array2, 10, compare_mergesort));
+    TEST_ASSERT_TRUE(is_sorted(array3, 10, compare_mergesort));
+    TEST_ASSERT_TRUE(is_sorted(array_integers, 20000000, compare_mergesort));
+
+    my_teardown();
+
+}
+
+static void test_sums_in_array(void){
+    my_setup(20000000, 11, INTEGERS_PATH, SUMS_PATH);
+
+    clock_t start1 = clock();
+
+    printf("\nBefore mergeSort\t");
+    print_array(array2,10);
+    print_array(array4,10);
+
+    printf("\nStarting mergeSort, timer set to 0 seconds.\n");
+    merge_sort(array2, 0, 10-1, compare_mergesort);
+
+    clock_t stop1 = clock();
+    double seconds1 = (double)(stop1 - start1) / CLOCKS_PER_SEC;
+
+    printf("MergeSort finished, time elapsed: %f seconds\n", seconds1);
+
+    printf("\nAfter mergeSort\t");
+    print_array(array2,10);
+
+    printf("Applying sums_in_array function. \t");
+    int result1 = sums_in_array(array2, array4, 10, 5, compare_sums, sums_support);
+    printf("Result: %d\n", result1);
+
+    TEST_ASSERT_TRUE(is_sorted(array2, 10, compare_mergesort));
+    TEST_ASSERT_TRUE(result1 == 1);
+
+    // restart with array_integers of 20000000 elements
+
+    printf("\nRestarting mergeSort, \n (1) array_integers realoaded from disk. \n(2) timer reset to 0 seconds.\n");
+
+    clock_t start2 = clock();
+    merge_sort(array_integers, 0, 20000000-1, compare_mergesort);
+
+    clock_t stop2 = clock();
+    double seconds2 = (double)(stop2 - start2) / CLOCKS_PER_SEC;
+
+    printf("MergeSort finished, time elapsed: %f seconds\n", seconds2);
+
+    printf("Applying sums_in_array function. \t");
+    int result2 = sums_in_array(array_integers, array_sums, 20000000, 11, compare_sums, sums_support);
+    printf("Result: %d\n", result2);
+
+    TEST_ASSERT_TRUE(is_sorted(array_integers, 20000000, compare_mergesort));
+    TEST_ASSERT_TRUE(result2 == 1);
+
+    my_teardown();
 }
 
 int main(void) {
@@ -87,7 +355,8 @@ int main(void) {
     //test session
     UNITY_BEGIN();
 
-    RUN_TEST(test_empty_array);
+    //RUN_TEST(test_insertion_sort);
+    RUN_TEST(test_merge_sort);
 
     return UNITY_END();
 }
