@@ -12,7 +12,7 @@
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.h"
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.c"
 #include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity_internals.h"
-#include "../include/sorts.h"
+#include "sorts.h"
 
 // It takes as input two void pointers.
 // It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
@@ -41,7 +41,8 @@ void print_array(void ** array, int size);
 
 void my_setup(int integer_size, int sums_size, char * integer_path, char * sums_path);
 void my_teardown(void);
-static void test_insertionsort(void);
-static void test_mergesort(void);
+static void test_insertion_sort(void);
+static void test_merge_sort(void);
+static void test_sums_in_array(void);
 
 #endif //EX1_UTILITY_H

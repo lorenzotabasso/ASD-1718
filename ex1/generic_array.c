@@ -4,7 +4,7 @@
  *
  */
 
-#include "../include/generic_array.h"
+#include "generic_array.h"
 
 // FUNCTIONS PROTOTYPES ------------------------------------------------------------------------------------------------
 

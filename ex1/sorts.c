@@ -4,7 +4,7 @@
  *
  */
 
-#include "../include/sorts.h"
+#include "sorts.h"
 
 void insertion_sort(void ** array, int size, int (*compare)(void*,void*)) {
     int i = 0;
@@ -84,24 +84,19 @@ int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test
         int (*compare)(void*,void*), long * (sums_support)(void*, void*)) {
 
     int result = 0;
-
     int  i = 0;
     int j, k;
 
     while (i < size_of_sums) {
         j = 0;
         k = size_to_test;
-
         while (j < size_to_test && k > 0 && result != 1) {
-            if (j != k && !compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1]))){
+            if (j != k && !compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1])))
                 j++;
-            }
-            else if (j != k && compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1]))){
+            else if (j != k && compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1])))
                 k--;
-            }
-            else {
+            else
                 result = result + 1;
-            }
         }
         i++;
     }
