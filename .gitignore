@@ -62,5 +62,5 @@ ex1/cmake-build-debug/
 ex1/.idea
 
 # INTELLIJ IDEA ----------------------
-ex2/.idea
+ex2/.idea/
 ex2/ex2.iml
