@@ -1,3 +1,5 @@
+package ex2;
+
 /**
  * @author Lorenzo Tabasso
  * @author Andrea Malgaoli

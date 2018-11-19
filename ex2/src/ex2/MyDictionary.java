@@ -1,3 +1,5 @@
+package ex2;
+
 import java.util.*;
 import java.io.*;
 
@@ -73,7 +75,7 @@ class MyDictionary {
             }
 
             long end = System.currentTimeMillis();
-            System.out.println("Loaded " + dict.sectionsNumber.intValue() + " Sections and " + dict.wordsNumber.intValue() + " Words in " + (float)(end - start)/1000 + " seconds.");
+            System.out.println("Loaded " + dict.sectionsNumber + " Sections and " + dict.wordsNumber + " Words in " + (float)(end - start)/1000 + " seconds.");
         }
 
         catch (Exception e) {
