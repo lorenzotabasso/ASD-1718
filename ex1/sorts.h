@@ -11,8 +11,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-// TODO: 3 parametri: void** array, int size, int (* compare)(void*, void*)
-
 void insertion_sort(void ** array, int size, int (*compare)(void*,void*));
 void merge_sort(void ** array, int leftIndex, int rightIndex, int (*compare)(void*,void*));
 void merge(void ** array, int left, int center, int right, int (*compare)(void*,void*));
