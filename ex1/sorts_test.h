@@ -39,8 +39,6 @@ int is_sorted(void ** array, int size, int (* compare)(void *, void *));
 void load_array(void ** array, int size, char * path);
 void print_array(void ** array, int size);
 
-void my_setup(int integer_size, int sums_size, char * integer_path, char * sums_path);
-void my_teardown(void);
 static void test_insertion_sort(void);
 static void test_merge_sort(void);
 static void test_sums_in_array(void);
