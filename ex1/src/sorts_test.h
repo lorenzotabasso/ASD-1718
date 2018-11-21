@@ -9,9 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h> // for timing, see load_array and tests functions
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.h"
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity.c"
-#include "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Resources/C/Unity/unity_internals.h"
+#include "../../Resources/C/Unity/unity.h"
 #include "sorts.h"
 
 // It takes as input two void pointers.

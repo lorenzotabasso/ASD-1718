@@ -1,42 +1,19 @@
-
-# lista dei target da eseguire sempre
-all: tests exec
-
-# compila (grazie alla dipendenza) e esegue i test
-tests: sorts_test
-	sorts_test
-
-#  compila (grazie alla dipendenza) e esegue ordered_array
-exec: sorts
-	sorts ../Dataset/ex1/integers.csv ../Dataset/ex1/sums.txt
-
-# Flags per il compilatore -- su gcc -Weverything non esiste
-#    sostituire con -Wall -Wpedantic
+# Compiler's Flags
 CFLAGS = -g -Wall -Wpedantic -Wno-padded -Werror
 
-# Lista degli header files
-INCLUDES = *.h ../Resources/Unity/*.h
+build/sorts.o: src/sorts.c src/sorts.h Makefile
+	$(CC) $(CFLAGS) -c src/sorts.c -o build/sorts.o
 
-# tutti i target vanno ricompilati se cambiano gli header o
-# questo Makefile
-COMMON_DEPS = $(INCLUDES) Makefile
+build/unity.o: ../Resources/C/Unity/unity.c ../Resources/C/Unity/unity.h Makefile
+	$(CC) $(CFLAGS) -c ../Resources/C/Unity/unity.c -o build/unity.o
 
-# regola per compilare un .c in un .o
-# viene applicata ogni volta che una dipendenza richiede di compilare un file in
-#    `build` e con suffisso .o. Il simbolo % effettua pattern matching con quanto
-#    compreso tra 'build/' e '.o', la stringa in questione viene quindi usata sul lato
-#    destro della regola per indicare il file da compilare.
-# Le variabili $< e $@ sono gestite automaticamente da `make` esse corrispondono:
-#   $@ : l'intero target della regola (in questo caso: build/<nomefile>.o)
-#   $< : la prima dipendenza della regola (in questo caso: src/<nomefile>.c)
-build/%.o: %.c $(COMMON_DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@
+build/sorts_test.o: src/sorts_test.c src/sorts_test.h ../Resources/C/Unity/unity.c ../Resources/C/Unity/unity.h Makefile
+	$(CC) $(CFLAGS) -c src/sorts_test.c -o build/sorts_test.o
 
-src/sorts: sorts.o $(COMMON_DEPS)
-	$(CC) -o sorts sorts.o
+bin/sorts_test: build/sorts.o build/unity.o build/sorts_test.o Makefile
+	$(CC) -o bin/sorts_test build/sorts_test.o build/sorts.o build/unity.o
 
-src/sorts_test: sorts_test.o sorts.o ../Resources/Unity/unity.o $(COMMON_DEPS)
-	$(CC) -o sorts_test sorts_test.o sorts.o ../Resources/Unity/unity.o
+all: build/sorts.o build/unity.o build/sorts_test.o bin/sorts_test
 
 clean:
-	rm -f *
+	rm -f build/* bin/*

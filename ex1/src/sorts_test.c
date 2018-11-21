@@ -316,9 +316,11 @@ static void test_sums_in_array(void){
     for (int i = 0; i < 10; ++i) {
         a1_ptr = (void *) a1[i];
         array1[i] = a1_ptr;
+    }
 
-        a2_ptr = (void *) a2[i];
-        array2[i] = a2_ptr;
+    for (int j = 0; j < 5; ++j) {
+        a2_ptr = (void *) a2[j];
+        array2[j] = a2_ptr;
     }
 
     load_array(array_integers, 20000000, INTEGERS_PATH);
@@ -390,4 +392,3 @@ int main(void) {
 
     return UNITY_END();
 }
-
