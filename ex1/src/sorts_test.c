@@ -9,15 +9,9 @@
 #define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
 #define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
 
-/*
- * Test suite insertion_sort and merge_sort algorithms
- */
 
 // COMPARE FUNCTIONS -----------------------------------------------------------
 
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer
-// value (0 otherwise)
 int compare_insertionsort(void* r1_p,void* r2_p){
     long long first = (long long) r1_p;
     long long second = (long long) r2_p;
@@ -28,10 +22,7 @@ int compare_insertionsort(void* r1_p,void* r2_p){
     return(0);
 }
 
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointer value (0 otherwise)
 int compare_mergesort(void* r1_p,void* r2_p){
-    // TODO: Attenzione, se usiamo il > da errore! controllare!
     long long first = (long long) r1_p;
     long long second = (long long) r2_p;
 
@@ -41,8 +32,6 @@ int compare_mergesort(void* r1_p,void* r2_p){
     return(0);
 }
 
-// It takes as input two void pointers.
-// It returns 1 iff the first pointed value is less than the second pointed value (0 otherwise)
 int compare_sums(void* r1_p, void* r2_p){
     long long first = (long long) r1_p;
     long long second = (long long) r2_p;
@@ -51,24 +40,6 @@ int compare_sums(void* r1_p, void* r2_p){
         return(1);
     }
     return(0);
-}
-
-// It takes as input two void pointers.
-// It returns the sum of the two pointed values. Used in compare_sums() function.
-long * sums_support(void* r1_p, void* r2_p){
-    if(r1_p == NULL){
-        fprintf(stderr,"sums_support: the first parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-    if(r2_p == NULL){
-        fprintf(stderr,"sums_support: the second parameter is a null pointer");
-        exit(EXIT_FAILURE);
-    }
-
-    long first = (long) r1_p;
-    long second = (long) r2_p;
-
-    return (long *) (first + second);
 }
 
 int is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
@@ -308,7 +279,7 @@ static void test_sums_in_array(void){
     void ** array_sums = malloc(11 * sizeof(void *));
 
     long long a1[10] = {10,9,8,7,6,5,4,3,2,1};
-    long long a2[5] = {4,7,6,1,9};
+    long long a2[5] = {4,7,6,1,10};
 
     void * a1_ptr;
     void * a2_ptr;
@@ -382,6 +353,8 @@ static void test_sums_in_array(void){
     /* End Teardown */
 
 } /* End test_sums_in_array */
+
+// MAIN FUNCTION ---------------------------------------------------------------
 
 int main(void) {
 

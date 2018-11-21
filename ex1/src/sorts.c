@@ -103,3 +103,10 @@ int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test
 
     return result;
 }
+
+long * sums_support(void* r1_p, void* r2_p){
+    long first = (long) r1_p;
+    long second = (long) r2_p;
+
+    return (long *) (first + second);
+}
