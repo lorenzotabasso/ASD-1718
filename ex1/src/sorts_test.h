@@ -34,7 +34,13 @@ long * sums_support(void* r1_p, void* r2_p);
 // a string to evince the opposite
 int is_sorted(void ** array, int size, int (* compare)(void *, void *));
 
+// It takes as input an array of void pointers, the size of the array,
+// and the array's path.
+// It loads all the contents of the dataset inside the array
 void load_array(void ** array, int size, char * path);
+
+// It takes as input an array of void pointers, and the size of the array.
+// It prints the array to command line. Used for tests and debug.
 void print_array(void ** array, int size);
 
 static void test_insertion_sort(void);
