@@ -1,5 +1,11 @@
 package ex2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 /**
  * @author Lorenzo Tabasso
  * @author Andrea Malgaoli
@@ -52,46 +58,73 @@ public class EditDistance {
         int dins = 1 + editDistance(str1.substring(m-(m-1)), str2, m-1, n);   // Insert
 
         // only for debug
-        System.out.println("CANC: " + dcanc);
-        System.out.println("INS: " + dins);
+        //System.out.println("CANC: " + dcanc);
+        //System.out.println("INS: " + dins);
 
         return min(dcanc, dins);
     }
 
-//    static int editDistanceDyn(String str1, String str2, int m, int n) {
-//
-//        // Create a table to store results of subproblems
-//        int dp[][] = new int[m+1][n+1];
-//
-//        // Fill d[][] in bottom up manner
-//        for (int i=0; i<=m; i++) {
-//            for (int j=0; j<=n; j++) {
-//                // If first string is empty, only option is to
-//                // isnert all characters of second string
-//                if (i==0)
-//                    dp[i][j] = j; // Min. operations = j
-//
-//                    // If second string is empty, only option is to
-//                    // remove all characters of second string
-//                else if (j==0)
-//                    dp[i][j] = i; // Min. operations = i
-//
-//                    // If last characters are same, ignore last char
-//                    // and recur for remaining string
-//                else if (str1.charAt(i-1) == str2.charAt(j-1))
-//                    dp[i][j] = dp[i-1][j-1];
-//
-//                    // If the last character is different, consider all
-//                    // possibilities and find the minimum
-//                else
-//                    dp[i][j] = 1 + min(dp[i][j-1], // Insert
-//                            dp[i-1][j] /*, // Remove
-//									dp[i-1][j-1]*/); // Replace
-//            }
-//        }
-//
-//        return dp[m][n];
-//    }
+    static int editDistanceDyn(String str1, String str2, int m, int n) {
+
+        // Create a table to store results of subproblems
+        int dp[][] = new int[m+1][n+1];
+
+        // Fill d[][] in bottom up manner
+        for (int i=0; i<=m; i++) {
+            for (int j=0; j<=n; j++) {
+                // If first string is empty, only option is to
+                // isnert all characters of second string
+                if (i==0) {
+                    dp[i][j] = j; // Min. operations = j
+                }
+                    // If second string is empty, only option is to
+                    // remove all characters of second string
+                else if (j==0) {
+                    dp[i][j] = i; // Min. operations = i
+                }
+                    // If last characters are same, ignore last char
+                    // and recur for remaining string
+                else if (str1.charAt(i-1) == str2.charAt(j-1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                    // If the last character is different, consider all
+                    // possibilities and find the minimum
+                else {
+                    int dcanc = 1 + dp[i][j - 1]; // Remove
+                    int dins = 1 + dp[i - 1][j]; // Insert
+                    dp[i][j] = min(dcanc, dins);
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    public static void correctText(String pathToFile) {
+        String token;
+        Scanner sc = null;
+
+        try {
+            sc = new Scanner(new File(pathToFile)).useDelimiter("\\s"); // space character
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        List<String> phrase = new ArrayList<String>();
+
+        assert sc != null;
+        while (sc.hasNext()) {
+            token = sc.next();
+            phrase.add(token.replaceAll("[,.:]", ""));
+        }
+        sc.close();
+
+        String[] text = phrase.toArray(new String[0]);
+
+        for (String s : text) {
+            System.out.println(s);
+        }
+    }
 
     public static void main(String args[]) {
 
@@ -103,25 +136,30 @@ public class EditDistance {
 
         System.out.println("Computing the edit distance between: " + str1 + ", " + str2);
         System.out.println(editDistance( str1 , str2 , str1.length(), str2.length()));
-        //System.out.println(editDistanceDyn( str1 , str2 , str1.length(), str2.length()));
+        System.out.println("DYN: " + editDistanceDyn( str1 , str2 , str1.length(), str2.length()));
 
         String str3 = "casa";
         String str4 = "cara";
 
         System.out.println("Computing the edit distance between: " + str3 + ", " + str4);
         System.out.println(editDistance( str3 , str4 , str3.length(), str4.length()));
+        System.out.println("DYN: " + editDistanceDyn( str3 , str4 , str3.length(), str4.length()));
 
         String str5 = "tassa";
         String str6 = "passato";
 
         System.out.println("Computing the edit distance between: " + str5 + ", " + str6);
         System.out.println(editDistance( str5 , str6 , str5.length(), str6.length()));
+        System.out.println("DYN: " + editDistanceDyn( str5 , str6 , str5.length(), str6.length()));
 
         String str7 = "pioppo";
         String str8 = "pioppo";
 
         System.out.println("Computing the edit distance between: " + str7 + ", " + str8);
         System.out.println(editDistance( str7 , str8 , str7.length(), str8.length()));
+        System.out.println("DYN: " + editDistanceDyn( str7 , str8 , str7.length(), str8.length()));
+
+        correctText("/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt");
     }
 
 }
