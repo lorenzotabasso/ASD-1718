@@ -48,4 +48,4 @@ int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test
 // Used in sums_in_array() function.
 long * sums_support(void* r1_p, void* r2_p);
 
-#endif //SORTS_H_
+#endif /* SORTS_H_ */

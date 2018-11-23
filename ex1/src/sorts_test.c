@@ -6,8 +6,9 @@
 
 #include "sorts_test.h"
 
-#define INTEGERS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/integers.csv"
-#define SUMS_PATH "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex1/sums.txt"
+// paths to dataset
+#define INTEGERS_PATH "../../Datasets/ex1/integers.csv"
+#define SUMS_PATH "../../Datasets/ex1/sums.txt"
 
 
 // COMPARE FUNCTIONS -----------------------------------------------------------
@@ -42,6 +43,8 @@ int compare_sums(void* r1_p, void* r2_p){
     return(0);
 }
 
+// UTILITY FUNCTIONS -----------------------------------------------------------
+
 int is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
     int test = 1;
     for (int i = 0; i < size-1; i++) {
@@ -50,8 +53,6 @@ int is_sorted(void ** array, int size, int (* compare)(void *, void *)) {
     if (test == 1) return (1);
     else return (0);
 }
-
-// UTILITY FUNCTIONS -----------------------------------------------------------
 
 void load_array(void ** array, int size, char * path){
     clock_t start = clock(); // for timing

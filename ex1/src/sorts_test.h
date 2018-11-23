@@ -4,8 +4,8 @@
  *
  */
 
-#ifndef EX1_UTILITY_H
-#define EX1_UTILITY_H
+#ifndef SORTS_TEST_H
+#define SORTS_TEST_H
 
 #include <stdio.h>
 #include <stdlib.h>
