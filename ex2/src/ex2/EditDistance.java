@@ -3,6 +3,7 @@ package ex2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -96,6 +97,37 @@ public class EditDistance {
         }
 
         return dp[m][n];
+    }
+
+    static void editDistanceOnText(String[] text, MyDictionary dictionary) {
+
+        HashMap<String, Integer> finalED = new HashMap<String, Integer>();
+
+        int [] EDA = null;
+        int [] EDAllTest = null;
+        int min = 0;
+        int i = 0;
+
+        for (String word: text) {
+            EDA = new int[dictionary.getSection(word.charAt(0)).size()];
+
+            i = 0;
+            for (String wordInDictionary: dictionary.getWordsInSection(word.charAt(0))) {
+                EDA[i] = editDistanceDyn(word, wordInDictionary, word.length(), wordInDictionary.length());
+                i++;
+            }
+
+            for (int j = 0; j < EDA.length-1; j++) {
+                min = min(EDA[j], EDA[j+1]);
+            }
+
+            finalED.put(word, min);
+        }
+
+        for (String word: text) {
+            System.out.println("<" + word + " : "+ finalED.get(word) + " >");
+        }
+
     }
 }
 

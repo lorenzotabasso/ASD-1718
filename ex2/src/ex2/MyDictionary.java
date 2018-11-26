@@ -71,33 +71,51 @@ class MyDictionary {
 
         if (!getIndex().containsKey(c)) {
             addSection(c);
-        } else {
+        }
             HashMap<Integer, String> section = getIndex().get(c);
 
             if (!section.containsValue(word)) {
                 section.put(key, word);
                 wordsNumber++;
             }
-        }
     }
 
     public String getWord(char sectionInitial, String word) {
 
-        HashMap<Integer, String> section = getIndex().get(sectionInitial);
+        long start = System.currentTimeMillis(); // for timing
 
-        long start = System.currentTimeMillis();
+        HashMap<Integer, String> section = getIndex().get(sectionInitial);
 
         int i = 0;
         boolean found = false;
+        String result = "";
         while (i < section.size() && !found) {
-            if (section.get(i).equals(word))
+            if (section.get(i).equals(word)) {
+                result = section.get(i);
                 found = true;
+            }
+
+            i++;
         }
 
         long end = System.currentTimeMillis();
         System.out.println("Found word [" + word + "] in " + (float)(end - start)/1000 + " seconds.");
 
-        return section.get(i);
+        return result;
+    }
+
+    public String[] getWordsInSection(char sectionInitial) {
+        HashMap<Integer, String> section = getIndex().get(sectionInitial);
+        String[] result = new String[section.size()];
+        for (int i = 0; i < section.size(); i++) {
+            result[i] = section.get(i);
+        }
+
+        return result;
+    }
+
+    public HashMap<Integer, String> getSection(char sectionInitial) {
+        return getIndex().get(sectionInitial);
     }
 
     public void printSections(){
@@ -128,7 +146,7 @@ class MyDictionary {
             Character lastIndex = cl.charAt(0); // Only for debug purposes
             Integer lastKey = 0; // Only for debug purposes
 
-            while (sc.hasNext()) {
+            while (sc.hasNext() && key < 10) {
 
                 if (!lastIndex.equals(cl.charAt(0))) {
 

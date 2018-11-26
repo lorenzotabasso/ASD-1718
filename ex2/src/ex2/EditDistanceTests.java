@@ -13,32 +13,33 @@ public class EditDistanceTests {
 
     String fileToCorrect[];
 
-//    public static String[] loadText(String pathToFile) {
-//        String token;
-//        Scanner sc = null;
-//
-//        try {
-//            sc = new Scanner(new File(pathToFile)).useDelimiter("\\s"); // space character
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
+    public static String[] loadText(String pathToFile) {
+        String token;
+        Scanner sc = null;
+
+        try {
+            sc = new Scanner(new File(pathToFile)).useDelimiter("\\s"); // space character
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        List<String> phrase = new ArrayList<String>();
+
+        assert sc != null;
+        while (sc.hasNext()) {
+            token = sc.next();
+            phrase.add(token.replaceAll("[,.:]", ""));
+        }
+        sc.close();
+
+        String[] text = phrase.toArray(new String[0]);
+
+        // only for debug
+//        for (String s : text) {
+//            System.out.println(s);
 //        }
-//
-//        List<String> phrase = new ArrayList<String>();
-//
-//        assert sc != null;
-//        while (sc.hasNext()) {
-//            token = sc.next();
-//            phrase.add(token.replaceAll("[,.:]", ""));
-//        }
-//        sc.close();
-//
-//        String[] text = phrase.toArray(new String[0]);
-//
-//        // only for debug
-////        for (String s : text) {
-////            System.out.println(s);
-////        }
-//    }
+        return text;
+    }
 
 //    public static void correctText() {
 //        MyDictionary dict = new MyDictionary();
@@ -54,13 +55,13 @@ public class EditDistanceTests {
 
     public static void main(String args[]) {
 
-        MyDictionary dict = new MyDictionary();
-        String path = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt";
-        dict.load(path);
-
-        String find = dict.getWord('y', "yacht");
-
-        System.out.println(find);
+//        MyDictionary dict = new MyDictionary();
+//        String path = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt";
+//        dict.load(path);
+//
+//        String find = dict.getWord('a', "allumare");
+//
+//        System.out.println(find);
 
 //        String str1 = "casa";
 //        String str2 = "cassa";
@@ -89,5 +90,14 @@ public class EditDistanceTests {
 //        System.out.println("Computing the edit distance between: " + str7 + ", " + str8);
 //        System.out.println(EditDistance.editDistance( str7 , str8 , str7.length(), str8.length()));
 //        System.out.println("DYN: " + EditDistance.editDistanceDyn( str7 , str8 , str7.length(), str8.length()));
+
+        MyDictionary dict = new MyDictionary();
+        String path = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt";
+        dict.load(path);
+
+        //String [] text = loadText("/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt");
+        String [] text = {"a", "abachi"};
+
+        EditDistance.editDistanceOnText(text, dict);
     }
 }
