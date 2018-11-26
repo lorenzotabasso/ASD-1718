@@ -104,7 +104,6 @@ public class EditDistance {
         HashMap<String, Integer> finalED = new HashMap<String, Integer>();
 
         int [] EDA = null;
-        int [] EDAllTest = null;
         int min = 0;
         int i = 0;
 
