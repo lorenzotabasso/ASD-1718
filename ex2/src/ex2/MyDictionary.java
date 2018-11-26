@@ -2,6 +2,9 @@ package ex2;
 
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -52,28 +55,49 @@ class MyDictionary {
         this.wordsNumber = wordsNumber;
     }
 
+    // OTHER METHODS ----------------------------------------------------------
+
     public void addSection(Character section) {
-        if (!getIndex().containsKey(section)) {
-            getIndex().put(section, new HashMap<Integer, String>());
-            sectionsNumber++;
-        }
+        getIndex().put(section, new HashMap<Integer, String>());
+        sectionsNumber++;
     }
 
     public HashMap<Integer, String> getSection(Character letter) {
         return getIndex().get(letter);
     }
 
-    public void addWord(String word) {
+    public void addWord(Integer key, String word) {
         Character c = word.charAt(0);
+
         if (!getIndex().containsKey(c)) {
-            getIndex().put(c, new HashMap<Integer, String>());
-            sectionsNumber++;
+            addSection(c);
+        } else {
+            HashMap<Integer, String> section = getIndex().get(c);
+
+            if (!section.containsValue(word)) {
+                section.put(key, word);
+                wordsNumber++;
+            }
         }
-        HashMap<Integer, String> section = getIndex().get(c);
-        if (!section.containsValue(word)) {
-            section.put(wordsNumber, word);
-            wordsNumber++;
+    }
+
+    public String getWord(char sectionInitial, String word) {
+
+        HashMap<Integer, String> section = getIndex().get(sectionInitial);
+
+        long start = System.currentTimeMillis();
+
+        int i = 0;
+        boolean found = false;
+        while (i < section.size() && !found) {
+            if (section.get(i).equals(word))
+                found = true;
         }
+
+        long end = System.currentTimeMillis();
+        System.out.println("Found word [" + word + "] in " + (float)(end - start)/1000 + " seconds.");
+
+        return section.get(i);
     }
 
     public void printSections(){
@@ -92,26 +116,48 @@ class MyDictionary {
 
     public void load (String datasetPath) {
         try {
-            if (datasetPath == null)
-                throw new RuntimeException("Error while opening the file, retry.");
-
             System.out.println("Loading dataset into Dictionary ...");
             long start = System.currentTimeMillis();
 
-            MyDictionary dict = new MyDictionary();
             Scanner sc = new Scanner(new FileInputStream(datasetPath));
             sc.useDelimiter("\n");
 
-            while (sc.hasNext())
-                dict.addWord(sc.nextLine());
+            String cl = sc.nextLine();
+            Integer key = 0;
+
+            Character lastIndex = cl.charAt(0); // Only for debug purposes
+            Integer lastKey = 0; // Only for debug purposes
+
+            while (sc.hasNext()) {
+
+                if (!lastIndex.equals(cl.charAt(0))) {
+
+                    lastIndex = cl.charAt(0); // Only for debug purposes
+                    lastKey = key; // Only for debug purposes
+                    System.out.println("\tKey updated to " + lastIndex +
+                            ", \tWRfLI: " + lastKey +
+                            ", \tTW: "+ this.wordsNumber +
+                            ", \tFWoNI: " + cl);
+
+                    key = 0;
+
+                }
+
+                this.addWord(key, cl);
+                key++;
+
+                cl = sc.nextLine();
+            }
             sc.close();
 
             long end = System.currentTimeMillis();
-            System.out.println("Loaded " + dict.sectionsNumber + " Sections and "
-                    + dict.wordsNumber + " Words in "
+            System.out.println("Loaded " + this.sectionsNumber + " Sections and "
+                    + this.wordsNumber + " Words in "
                     + (float)(end - start)/1000 + " seconds.");
-        } catch (Exception e) {
-            throw new RuntimeException("Error while reading dataset.");
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error while opening the dataset, maybe path is wrong. Retry!");
+            e.printStackTrace();
         } // end try-catch
 
     } // end load method
