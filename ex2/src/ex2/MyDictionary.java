@@ -114,10 +114,6 @@ class MyDictionary {
         return result;
     }
 
-    public HashMap<Integer, String> getSection(char sectionInitial) {
-        return getIndex().get(sectionInitial);
-    }
-
     public void printSections(){
         for (Character key : getIndex().keySet()) {
             System.out.println("Section: " + key);
@@ -146,7 +142,7 @@ class MyDictionary {
             Character lastIndex = cl.charAt(0); // Only for debug purposes
             Integer lastKey = 0; // Only for debug purposes
 
-            while (sc.hasNext() && key < 10) {
+            while (sc.hasNext()) {
 
                 if (!lastIndex.equals(cl.charAt(0))) {
 

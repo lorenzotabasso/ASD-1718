@@ -25,6 +25,11 @@ public class EditDistance {
 //        else return z;
 //    }
 
+    static boolean compareMergeSort(int x, int y) {
+        if (x <= y) return true;
+        else return false;
+    }
+
     static int min(int x,int y) {
         if (x <= y) return x;
         else return y;
@@ -104,7 +109,6 @@ public class EditDistance {
         HashMap<String, Integer> finalED = new HashMap<String, Integer>();
 
         int [] EDA = null;
-        int min = 0;
         int i = 0;
 
         for (String word: text) {
@@ -116,17 +120,68 @@ public class EditDistance {
                 i++;
             }
 
-            for (int j = 0; j < EDA.length-1; j++) {
-                min = min(EDA[j], EDA[j+1]);
-            }
+            mergeSort(EDA, 0, EDA.length-1);
 
-            finalED.put(word, min);
+            finalED.put(word, EDA[0]);
         }
 
         for (String word: text) {
             System.out.println("<" + word + " : "+ finalED.get(word) + " >");
         }
 
+    }
+
+    private static void mergeSort(int[] arrayToSort, int leftIndex, int rightIndex) {
+        if (leftIndex < rightIndex) {
+            int middleIndex = (leftIndex + rightIndex)/2;
+            mergeSort(arrayToSort, leftIndex, middleIndex);
+            mergeSort(arrayToSort , middleIndex+1, rightIndex);
+            merge(arrayToSort, leftIndex, middleIndex, rightIndex);
+        }
+    }
+
+    private static void merge(int[] arrayToSort, int left, int middle, int right) {
+        int n1 = middle - left + 1;
+        int n2 = right - middle;
+
+        // Create temp arrays
+        int[] leftSubArray = new int[n1];
+        int[] rightSubArray = new int[n2];
+
+        // Initializing temp arrays
+        for (int i = 0; i < n1; ++i)
+            leftSubArray[i] = arrayToSort[left + i];
+        for (int j=0; j<n2; ++j)
+            rightSubArray[j] = arrayToSort[middle + 1+ j];
+
+        int i = 0, j = 0; // Initial indexes of leftSubArray and rightSubArray
+
+        int k = left;
+        while (i < n1 && j < n2) {
+            if (compareMergeSort(leftSubArray[i], rightSubArray[j])) {
+                arrayToSort[k] = leftSubArray[i];
+                i++;
+            }
+            else {
+                arrayToSort[k] = rightSubArray[j];
+                j++;
+            }
+            k++;
+        }
+
+        /* Copy remaining elements of leftSubArray[] if any */
+        while (i < n1) {
+            arrayToSort[k] = leftSubArray[i];
+            i++;
+            k++;
+        }
+
+        /* Copy remaining elements of rightSubArray[] if any */
+        while (j < n2) {
+            arrayToSort[k] = rightSubArray[j];
+            j++;
+            k++;
+        }
     }
 }
 

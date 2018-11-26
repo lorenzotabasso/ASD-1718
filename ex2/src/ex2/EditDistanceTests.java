@@ -95,8 +95,8 @@ public class EditDistanceTests {
         String path = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt";
         dict.load(path);
 
-        //String [] text = loadText("/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt");
-        String [] text = {"a", "abachi"};
+        String [] text = loadText("/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt");
+        //String [] text = {"a", "abacui"};
 
         EditDistance.editDistanceOnText(text, dict);
     }
