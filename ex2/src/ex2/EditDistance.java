@@ -1,74 +1,66 @@
 package ex2;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-
 /**
- * @author Lorenzo Tabasso
- * @author Andrea Malgaoli
+ * @author Lorenzo Tabasso, mat: 812499
+ * @author Andrea Malgaoli, mat: 823429
  */
-// paths
-// /Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt
-// /Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt
 
-// A Dynamic Programming based Java program to find minimum
-// number operations to convert str1 to str2
 public class EditDistance {
 
-//    static int min(int x,int y ,int z) {
-//        if (x <= y && x <= z) return x;
-//        else if (y <= x && y <= z) return y;
-//        else return z;
-//    }
-
-    static boolean compareMergeSort(int x, int y) {
-        if (x <= y) return true;
-        else return false;
+    /**
+     * Support function used in EditDistance method.
+     * It removes the first character of the given string.
+     *
+     * @param str: string to cut.
+     *
+     * @return the part of s without its first character.
+     * @see #editDistance(String, String) for more information.
+     */
+    private static String rest(String str) {
+        return str.length() > 1 ? str.substring(1) : null;
     }
 
-    static int min(int x,int y) {
-        if (x <= y) return x;
-        else return y;
+    /**
+     * It computes the edit distance between fthe first string (str1) and the second string (str2),
+     * in other words the minimum number of deletion and insertion to transform
+     * the second string in the first string.
+     *
+     * @param str1: First string.
+     * @param str2: Second string.
+     *
+     * @return the edit distance between the two given strings (based only on insertion and deletion).
+     */
+    public static int editDistance(String str1, String str2) {
+        if (str1 == null && str2 == null)
+            return 0;
+        else if (str1 == null && str2 != null)
+            return 1 + editDistance(str1, rest(str2)); // canc
+        else if (str1 != null && str2 == null)
+            return 1 + editDistance(rest(str1), str2);    // ins
+        else if (str1.charAt(0) == str2.charAt(0))
+            return editDistance(rest(str1), rest(str2)); // no-op
+        else {
+            if ((str2.length() > 1) && (str1.charAt(0) == str2.charAt(1)))
+                return 1 + editDistance(str1, rest(str2)); // canc
+            else
+                return 2 + editDistance(rest(str1), rest(str2)); // 1 canc + 1 ins
+        }
     }
 
-    static int editDistance(String str1 , String str2 , int m ,int n) {
-
-        // If first string is empty, the only option is to
-        // insert all characters of second string into first
-        // if |s1| = 0 then editDistance(s1,s2) = |s2|
-        if (m == 0) return n;
-
-        // If second string is empty, the only option is to
-        // remove all characters of first string
-        // if |s2| = 0 then editDistance(s1,s2) = |s1|
-        if (n == 0) return m;
-
-        // If last characters of two strings are same, nothing
-        // much to do. Ignore last characters and get count for
-        // remaining strings.
-        if (str1.charAt(0) == str2.charAt(0))
-            return editDistance(str1.substring(m-(m-1)), str2.substring(n-(n-1)), m-1, n-1);
-
-        // If last characters are not same, consider all three
-        // operations on last character of first string, recursively
-        // compute minimum cost for all three operations and take
-        // minimum of three values.
-
-        int dcanc = 1 + editDistance(str1, str2.substring(n-(n-1)), m, n-1); // Remove
-        int dins = 1 + editDistance(str1.substring(m-(m-1)), str2, m-1, n);   // Insert
-
-        // only for debug
-        //System.out.println("CANC: " + dcanc);
-        //System.out.println("INS: " + dins);
-
-        return min(dcanc, dins);
-    }
-
-    static int editDistanceDyn(String str1, String str2, int m, int n) {
+    /**
+     * Iterative Bottom-up version of a Dynamic Programming method that computes the edit distance between
+     * the first string (str1) and the second string (str2), in other words
+     * the minimum number of deletion and insertion to transform
+     * the second string in the first string.
+     *
+     * @param str1: First string.
+     * @param str2: Second string.
+     *
+     * @return the edit distance between the two given strings (based only on insertion and deletion).
+     */
+    public static int editDistanceDynBottomUp(String str1, String str2) {
+        int m = str1.length();
+        int n = str2.length();
 
         // Create a table to store results of subproblems
         int dp[][] = new int[m+1][n+1];
@@ -96,7 +88,7 @@ public class EditDistance {
                 else {
                     int dcanc = 1 + dp[i][j - 1]; // Remove
                     int dins = 1 + dp[i - 1][j]; // Insert
-                    dp[i][j] = min(dcanc, dins);
+                    dp[i][j] = Math.min(dcanc, dins);
                 }
             }
         }
@@ -104,84 +96,71 @@ public class EditDistance {
         return dp[m][n];
     }
 
-    static void editDistanceOnText(String[] text, MyDictionary dictionary) {
-
-        HashMap<String, Integer> finalED = new HashMap<String, Integer>();
-
-        int [] EDA = null;
-        int i = 0;
-
-        for (String word: text) {
-            EDA = new int[dictionary.getSection(word.charAt(0)).size()];
-
-            i = 0;
-            for (String wordInDictionary: dictionary.getWordsInSection(word.charAt(0))) {
-                EDA[i] = editDistanceDyn(word, wordInDictionary, word.length(), wordInDictionary.length());
-                i++;
+    /**
+     * Recursive Top-down version of a Dynamic Programming method that computes the edit distance between
+     * the first string (str1) and the second string (str2), in other words
+     * the minimum number of deletion and insertion to transform
+     * the second string in the first string.
+     *
+     * @param str1: First string.
+     * @param str2: Second string.
+     *
+     * @return the edit distance between the two given strings (based only on insertion and deletion).
+     */
+    public static int editDistanceDynTopDown(String str1, String str2) {
+        int[][] dp = new int[str1.length() + 1][str2.length() + 1];
+        for (int i = 0; i < str1.length(); i++) {
+            for (int j = 0; j < str2.length(); j++) {
+                dp[i][j] = -1;
             }
-
-            mergeSort(EDA, 0, EDA.length-1);
-
-            finalED.put(word, EDA[0]);
         }
-
-        for (String word: text) {
-            System.out.println("<" + word + " : "+ finalED.get(word) + " >");
-        }
-
+        return editDistDynRec(str1, str2, str1.length(), str2.length(), dp);
     }
 
-    private static void mergeSort(int[] arrayToSort, int leftIndex, int rightIndex) {
-        if (leftIndex < rightIndex) {
-            int middleIndex = (leftIndex + rightIndex)/2;
-            mergeSort(arrayToSort, leftIndex, middleIndex);
-            mergeSort(arrayToSort , middleIndex+1, rightIndex);
-            merge(arrayToSort, leftIndex, middleIndex, rightIndex);
-        }
-    }
+    /**
+     * Recursive method called in editDistanceDynTopDown, computes the edit distance between
+     * the first string (str1) and the second string (str2), in other words
+     * the minimum number of deletion and insertion to transform
+     * the second string in the first string.
+     * @param str1: First string.
+     * @param str2: Second string.
+     * @param m: length of first string (str1)
+     * @param n: length of second string (str2)
+     * @param dp: a integer matrix which stores the result of previous recursive call
+     *
+     * @return the edit distance between the two given strings (based only on insertion and deletion).
+     * @see #editDistanceDynTopDown(String, String) for more information.
+     */
+    private static int editDistDynRec(String str1, String str2, int m, int n, int dp[][]) {
 
-    private static void merge(int[] arrayToSort, int left, int middle, int right) {
-        int n1 = middle - left + 1;
-        int n2 = right - middle;
+        // if |s1| = 0 then editDistance(s1,s2) = |s2|
+        if (m == 0)
+            return n;
 
-        // Create temp arrays
-        int[] leftSubArray = new int[n1];
-        int[] rightSubArray = new int[n2];
+        // if |s2| = 0 then editDistance(s1,s2) = |s1|
+        if (n == 0)
+            return m;
 
-        // Initializing temp arrays
-        for (int i = 0; i < n1; ++i)
-            leftSubArray[i] = arrayToSort[left + i];
-        for (int j=0; j<n2; ++j)
-            rightSubArray[j] = arrayToSort[middle + 1+ j];
+        // if the recursive call has been called previously, return
+        // its stored value memorized in the matrix previously
+        if (dp[m - 1][n - 1] != -1)
+            return dp[m - 1][n - 1];
 
-        int i = 0, j = 0; // Initial indexes of leftSubArray and rightSubArray
+        // If last characters of two strings are same, ignore last characters and get count for
+        // remaining strings.
 
-        int k = left;
-        while (i < n1 && j < n2) {
-            if (compareMergeSort(leftSubArray[i], rightSubArray[j])) {
-                arrayToSort[k] = leftSubArray[i];
-                i++;
-            }
-            else {
-                arrayToSort[k] = rightSubArray[j];
-                j++;
-            }
-            k++;
-        }
+        // Store the returned value at dp[m-1][n-1]
+        // considering 1-based indexing
+        if (str1.charAt(m-1) == str2.charAt(n-1))
+            return dp[m - 1][n - 1] = editDistDynRec(str1, str2, m - 1, n - 1, dp);
 
-        /* Copy remaining elements of leftSubArray[] if any */
-        while (i < n1) {
-            arrayToSort[k] = leftSubArray[i];
-            i++;
-            k++;
-        }
-
-        /* Copy remaining elements of rightSubArray[] if any */
-        while (j < n2) {
-            arrayToSort[k] = rightSubArray[j];
-            j++;
-            k++;
-        }
+        // If last characters are not same, consider all two
+        // operations on last character of first string, recursively
+        // compute minimum cost for all those operations and store
+        // that value in dp[m-1][n-1].
+        return dp[m - 1][n - 1] = 1 + Math.min(editDistDynRec(str1, str2, m, n - 1, dp), // Insert
+                                                editDistDynRec(str1, str2, m - 1, n, dp) // Remove
+                                                );
     }
 }
 
