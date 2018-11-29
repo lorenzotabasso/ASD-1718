@@ -13,6 +13,14 @@ import java.util.Scanner;
 
 public class EditDistanceMain {
 
+    /*
+     * FOR COMPILE:
+     * go in laboratorio-algoritmi-2017-18/ex2/src/ directory, and launch the next command,
+     *
+     * "javac ex2/*.java" (which will compile all the .java files in ex2 package)
+     * "java ex2/EditDistanceMain" (which will run the main down below)
+     */
+
     public static void main(String[] args) {
         String pathToDictionary = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/dictionary.txt";
         String pathToText = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex2/correctme.txt";
@@ -74,7 +82,7 @@ public class EditDistanceMain {
             int min = Integer.MAX_VALUE;
 
             for(String wordInDictionary: dictionary){
-                int editDistance = EditDistance.editDistanceDynBottomUp(wordInDictionary, wordInText);
+                int editDistance = EditDistance.editDistanceDynTopDown(wordInDictionary, wordInText);
 
                 if(editDistance < min){
                     min = editDistance;
@@ -94,8 +102,6 @@ public class EditDistanceMain {
         }
 
         long end = System.currentTimeMillis();
-        System.out.println("Loaded " + dictionary.size() + " Words in "
-                + (float)(end - start)/1000 + " seconds.");
 
         System.out.println("\nEND OF EDIT DISTANCE DYN, TOP DOWN VERSION -------- [Finished in "
                 + (float)(end - start)/1000 + " seconds]"); // 80 chars
