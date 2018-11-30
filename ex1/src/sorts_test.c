@@ -1,7 +1,6 @@
 /*
- * Author: Lorenzo Tabasso,
- * Author: Andrea Malgaroli
- *
+ * Author: Lorenzo Tabasso, mat: 812499
+ * Author: Andrea Malgaroli, mat: 823429
  */
 
 #include "sorts_test.h"
