@@ -16,8 +16,10 @@ public class EditDistanceMain {
     /*
     FOR COMPILING AND RUNNING (for better information see README.md in "laboratorio-algoritmi-2017-18/ex2")
     1. Go with the terminal inside "laboratorio-algoritmi-2017-18/ex2/src"
-    2. For compile main launch the next commmand: "javac ex2/EditDistance.java ex2/EditDistanceMain.java"
-    3. For execute main launch the next commmand: "java ex2/EditDistanceMain"
+    2. For compile main launch the next commmand:
+        "javac ex2/EditDistance.java ex2/EditDistanceMain.java"
+    3. For execute main launch the next commmand:
+        "java ex2/EditDistanceMain"
      */
 
     public static void main(String[] args) {
