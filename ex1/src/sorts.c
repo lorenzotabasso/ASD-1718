@@ -46,18 +46,43 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
     }
 
     /*
-     * ATTENZIONE: Usando questa implementazione del mergeSort (dal Cormen)
-     * ci sono da tenere in mente 2 accorgimenti sul cambio di int (*compare)!
-     *
-     * nel caso di int (*compare) con <= usare LLONG_MAX
-     * nel caso di int (*compare) con >= usare LLONG_MIN
-     *
-     * Bisogna fare questo cambiamento poichè il cormen utilizza,
-     * nell'ultima posizione dell'array un "valore sentinella", settato a
-     * infinito. Essendo che l'infinito o il -infinito nel caso del minimo
-     * non è settabile sui computer, utilizziamo l'header <limits.h>
-     * e poniamo come valori più bassi (+ e - infinito) LLONG_MAX e LLONG_MIN.
-     */
+    From "Introduction to algorithm and Data Structures
+    by T.H. Cormen, 3rd edition", page 31, 2nd paragraph (English edition)
+    (Italian edition: page 27, 2nd paragrah):
+
+    "The following pseudocode implements the above idea, but with an additional
+    twist that avoids having to check whether either pile is empty in each 
+    basic step. We place on the bottom of each pile a sentinel card, which 
+    contains a special value that we use to simplify our code. ..."
+    
+    *** BEGIN NOTE **
+    In our implementation, the sentinel values are these assignement
+    
+    left_sub_array[i] = (void *) LLONG_MAX;
+    right_sub_array[j] = (void *) LLONG_MAX; 
+    
+    Pay attention: when "int (*compare)" change from <= to >= and viceversa,
+    the previous values MUST be changed in the following way:
+
+    int (*compare) using <= ---> (void *) LLONG_MAX;
+    int (*compare) using >= ---> (void *) LLONG_MIN;
+
+    where LLONG_MAX and LLONG_MIN are defined in <limits.h>
+    *** END NOTE **
+
+    " ... Here, we use "infinite" as the sentinel value, so that whenever a card 
+    with "infinite" is exposed, it cannot be the smaller card unless both piles 
+    have their sentinel cards exposed. But once that happens, all the 
+    non-sentinel cards have already been placed onto the output pile. 
+    Since we know in advance that exactly (r - p + 1) cards .."
+    
+    *** BEGIN NOTE **
+    In our implementation, (r - p + 1) = (right - left + 1)
+    *** END NOTE ***
+    
+    " ... will be placed onto the output pile, we can stop once we have 
+    performed that many basic steps."
+    */
 
     left_sub_array[i] = (void *) LLONG_MAX;
     right_sub_array[j] = (void *) LLONG_MAX;
