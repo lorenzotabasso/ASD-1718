@@ -14,7 +14,9 @@ import java.util.Scanner;
 public class EditDistanceMain {
 
     /*
-    FOR COMPILING AND RUNNING (for better information see README.md in "laboratorio-algoritmi-2017-18/ex2")
+    FOR COMPILING AND RUNNING 
+    (for better information see README.md in "laboratorio-algoritmi-2017-18/ex2")
+    
     1. Go with the terminal inside "laboratorio-algoritmi-2017-18/ex2/src"
     2. For compile main launch the next commmand:
         "javac ex2/EditDistance.java ex2/EditDistanceMain.java"
@@ -43,15 +45,18 @@ public class EditDistanceMain {
     }
 
     /**
-     * It executes the editDistanceDynBottomUp() method on all the words contained in correctme.txt,
-     * comparing them one at time with all the word in a dictionary in order to find all the typos.
+     * It executes the editDistanceDynBottomUp() method on all the words 
+     * contained in correctme.txt, comparing them one at time with all 
+     * the word in a dictionary in order to find all the typos.
      *
-     * @param dictionary: the dictionary to be used in order to compare words in the editDistanceDynBottomUp() method.
-     * @param text: an ArrayList<String> which contains the text to be correct.
+     * @param dictionary the dictionary to be used in order to compare words 
+     *                   in the editDistanceDynBottomUp() method.
+     * @param text an ArrayList<String> which contains the text 
+     *             to be correct.
      */
     private static void doEditDistanceDynBottomUp(ArrayList<String> dictionary, ArrayList<String> text) {
-        long start = System.currentTimeMillis();
-        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, BOTTOM UP VERSION --------------- [Timer reset to 0]"); // 80 chars
+        long start = System.currentTimeMillis(); // for timing purposes
+        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, BOTTOM UP VERSION --------------- [Timer reset to 0]");
 
         for(String wordInText: text){
             ArrayList<String> minEDPerWords = new ArrayList<String>();
@@ -78,19 +83,22 @@ public class EditDistanceMain {
 
         long end = System.currentTimeMillis();
         System.out.println("\nEND OF EDIT DISTANCE DYN, BOTTOM UP VERSION ------- [Finished in "
-                + (float)(end - start)/1000 + " seconds]"); // 80 chars
+                + (float)(end - start)/1000 + " seconds]");
     }
 
     /**
-     * It executes the editDistanceDynTopDown() method on all the words contained in correctme.txt,
-     * comparing them one at time with all the word in a dictionary in order to find all the typos.
+     * It executes the editDistanceDynTopDown() method on all the words 
+     * contained in correctme.txt, comparing them one at time with all 
+     * the word in a dictionary in order to find all the typos.
      *
-     * @param dictionary: the dictionary to be used in order to compare words in the editDistanceDynTopDown() method.
-     * @param text: an ArrayList<String> which contains the text to be correct.
+     * @param dictionary the dictionary to be used in order to compare words 
+     *                   in the editDistanceDynTopDown() method.
+     * @param text an ArrayList<String> which contains the text 
+     *             to be correct.
      */
     private static void doEditDistanceDynTopDown(ArrayList<String> dictionary, ArrayList<String> text) {
         long start = System.currentTimeMillis();
-        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, TOP DOWN VERSION ---------------- [Timer reset to 0]"); // 80 chars
+        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, TOP DOWN VERSION ---------------- [Timer reset to 0]"); 
 
         for(String wordInText: text){
             ArrayList<String> minEDPerWords = new ArrayList<String>();
@@ -119,18 +127,20 @@ public class EditDistanceMain {
         long end = System.currentTimeMillis();
 
         System.out.println("\nEND OF EDIT DISTANCE DYN, TOP DOWN VERSION -------- [Finished in "
-                + (float)(end - start)/1000 + " seconds]"); // 80 chars
+                + (float)(end - start)/1000 + " seconds]");
     }
 
     /**
-     * Support function used in main(). It loads all the words contained in the dataset at the specified path
-     * into an ArrayList<String> which will represent the dictionary to use in doEditDistanceDynBottomUp()
+     * Support function used in main(). It loads all the words contained 
+     * in the dataset at the specified path into an ArrayList<String> which 
+     * will represent the dictionary to use in doEditDistanceDynBottomUp()
      * and doEditDistanceDynTopDown() methods.
      *
-     * @param pathToDataset: the path to the dataset.
+     * @param pathToDataset the path to the dataset.
      *
-     * @return An ArrayList<String> who represent the dictionary to use. It contains all the words of the dataset.
-     * @throws FileNotFoundException if the specified path to the dataset is wrong.
+     * @return An ArrayList<String> who represent the dictionary to use. 
+     *         It contains all the words of the dataset.
+     * @throws FileNotFoundException if the specified path is wrong.
      */
     private static ArrayList<String> loadDictionary(String pathToDataset) throws FileNotFoundException {
         ArrayList<String> dictionary = new ArrayList<String>();
@@ -154,14 +164,15 @@ public class EditDistanceMain {
     }
 
     /**
-     * Support function used in main(). It loads all the words contained in the text at the specified path
-     * into an ArrayList<String> which will represent the text to correct using doEditDistanceDynBottomUp()
+     * Support function used in main(). It loads all the words contained in 
+     * the text at the specified path into an ArrayList<String> which will 
+     * represent the text to correct using doEditDistanceDynBottomUp()
      * and doEditDistanceDynTopDown() methods.
      *
-     * @param pathToFile: the path to the text.
+     * @param pathToFile the path to the text.
      *
      * @return An ArrayList<String> which contains all the words of the text.
-     * @throws FileNotFoundException if the specified path to the text is wrong.
+     * @throws FileNotFoundException if the specified path is wrong.
      */
     private static ArrayList<String> loadText(String pathToFile) throws FileNotFoundException {
         System.out.println("Loading text ...");
