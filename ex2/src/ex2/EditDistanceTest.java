@@ -62,7 +62,7 @@ public class EditDistanceTest {
         for (Failure failure : result.getFailures()) {
             System.out.println(failure.toString());
         }
-        System.out.println("\nResult: " + result.wasSuccessful());
+        System.out.println("\nTests result: " + result.wasSuccessful());
     }
 
 }
