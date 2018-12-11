@@ -6,34 +6,29 @@ import static org.junit.Assert.*;
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
  */
-public class PQueueTests
-{
+public class PQueueTests{
     @Test
-    public void testEmptyQueue()
-    {
+    public void testEmptyQueue(){
         PQueue queue = new PQueue<>();
         assertTrue(queue.isEmpty());
     }
 
     //We check also the "false" of .isEmpty()
     @Test
-    public void testInsertInQueue()
-    {
+    public void testInsertInQueue(){
         PQueue<Integer, Long> queue = new PQueue<>();
         assertTrue(queue.insert(28, 1L));
         assertFalse(queue.isEmpty());
     }
 
     @Test
-    public void testPullFirstOnEmptyQueue()
-    {
+    public void testPullFirstOnEmptyQueue(){
         PQueue queue = new PQueue<>();
         assertNull(queue.pullFirst());
     }
 
     @Test
-    public void testPullFirst()
-    {
+    public void testPullFirst(){
         PQueue<Integer, Long> queue = new PQueue<>();
         queue.insert(1, 3L);
         queue.insert(2, 6L);
@@ -47,8 +42,7 @@ public class PQueueTests
     }
 
     @Test
-    public void testEmptyQueueAfterPull()
-    {
+    public void testEmptyQueueAfterPull(){
         PQueue<Integer, Long> queue = new PQueue<>();
         queue.insert(1, 1L);
         queue.pullFirst();
@@ -56,8 +50,7 @@ public class PQueueTests
     }
 
     @Test
-    public void testPeekOnEmptyQueue()
-    {
+    public void testPeekOnEmptyQueue(){
         PQueue<Integer, Long> queue = new PQueue<>();
 
         Integer pulledItem = queue.peek();
@@ -65,8 +58,7 @@ public class PQueueTests
     }
 
     @Test
-    public void testPeek()
-    {
+    public void testPeek(){
         PQueue<Integer, Long> queue = new PQueue<>();
         queue.insert(28, 1L);
 

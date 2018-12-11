@@ -8,40 +8,33 @@ package ex3;
  * @param <T> Generic type
  * @param <P> Priority
  */
-public class QueueItem< T, P >
-{
+public class QueueItem< T, P >{
     private T item;
     private P priority;
 
-    public QueueItem(T item, P priority)
-    {
+    public QueueItem(T item, P priority){
         this.item = item;
         this.priority = priority;
     }
 
-    public T getItem()
-    {
+    public T getItem(){
         return item;
     }
 
-    public void setElem(T elem)
-    {
+    public void setElem(T elem){
         this.item = elem;
     }
 
-    public P getPriority()
-    {
+    public P getPriority(){
         return priority;
     }
 
-    public void setPriority(P priority)
-    {
+    public void setPriority(P priority){
         this.priority = priority;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString(){
         return "Value: " + item + " Priority: " + priority;
     }
 }

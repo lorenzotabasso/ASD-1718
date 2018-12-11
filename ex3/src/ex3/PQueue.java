@@ -10,13 +10,11 @@ import java.util.HashMap;
  * @param <T> Generic type
  * @param <P> Priority
  */
-public class PQueue<T, P extends Comparable<P>>
-{
+public class PQueue<T, P extends Comparable<P>>{
     private ArrayList<QueueItem<T, P>> list;
     private HashMap<T, Integer> index;
 
-    public PQueue()
-    {
+    public PQueue(){
         list = new ArrayList<>();
         index = new HashMap<>();
     }
@@ -26,17 +24,14 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @return true if the element is inserts with priority
      */
-    public boolean insert(T elem, P priority)
-    {
-        if (isPresent(elem) == null)
-        {
+    public boolean insert(T elem, P priority){
+        if (isPresent(elem) == null){
             list.add(new QueueItem<>(elem, priority));
             int i = list.size() - 1;
             int parent = parent(i);
             index.put(elem, i);
             while (parent != i && list.get(i).getPriority().compareTo(
-                    list.get(parent).getPriority()) < 0)
-            {
+                    list.get(parent).getPriority()) < 0){
                 swap(i, parent);
                 i = parent;
                 parent = parent(i);
@@ -52,8 +47,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @param elem the item
      * @param newPriority new priority to be set
      */
-    public void setPriority(T elem, P newPriority)
-    {
+    public void setPriority(T elem, P newPriority){
         Integer i = isPresent(elem);
         if (i == null)
             return;
@@ -65,8 +59,7 @@ public class PQueue<T, P extends Comparable<P>>
         heapify(i);
         int parent = parent(i);
         while (parent != i && list.get(i).getPriority().compareTo(
-                list.get(parent).getPriority()) < 0)
-        {
+                list.get(parent).getPriority()) < 0){
             swap(i, parent);
             i = parent;
             parent = parent(i);
@@ -78,16 +71,14 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @return index of element if exist, null otherwise
      */
-    public Integer isPresent(T elem)
-    {
+    public Integer isPresent(T elem){
         return index.get(elem);
     }
 
     /**
      * Builds the heap starting from the first half of the elements in the list
      */
-    public void buildHeap()
-    {
+    public void buildHeap(){
         for (int i = list.size() / 2; i >= 0; i--)
             heapify(i);
     }
@@ -96,20 +87,17 @@ public class PQueue<T, P extends Comparable<P>>
      * Replace the root of the heap with the last element, then sort the heap
      * from the new root.
      */
-    private void removeFirst()
-    {
+    private void removeFirst(){
         if (isEmpty())
             return;
 
         T first = peek();
-        if (list.size() == 1)
-        {
+        if (list.size() == 1){
             list.remove(0);
             index.remove(first);
             return;
         }
-        else
-        {
+        else{
             QueueItem<T, P> e = list.remove(list.size() - 1);
             list.set(0, e);
             index.put(e.getItem(), 0);
@@ -124,8 +112,7 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @return <T> element in first position
      */
-    public T pullFirst()
-    {
+    public T pullFirst(){
         if(isEmpty())
             return null;
         T t = peek();
@@ -139,8 +126,7 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @param i int index
      */
-    private void heapify(int i) throws IllegalArgumentException
-    {
+    private void heapify(int i) throws IllegalArgumentException{
         if (i >= list.size())
             throw new IllegalArgumentException();
 
@@ -157,8 +143,7 @@ public class PQueue<T, P extends Comparable<P>>
                 list.get(smallest).getPriority()) < 0)
             smallest = right;
 
-        if (smallest != i)
-        {
+        if (smallest != i){
             swap(i, smallest);
             heapify(smallest);
         }
@@ -169,8 +154,7 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @return <T> element in first position
      */
-    public T peek()
-    {
+    public T peek(){
         if(isEmpty())
             return null;
         return list.get(0).getItem();
@@ -181,8 +165,7 @@ public class PQueue<T, P extends Comparable<P>>
      *
      * @return true if is it empty, false otherwise
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty(){
         return list.isEmpty();
     }
 
@@ -192,8 +175,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @param i int index
      * @return the index of the right child if exists, i otherwise
      */
-    private int right(int i)
-    {
+    private int right(int i){
         if (2 * i + 2 < list.size())
             return 2 * i + 2;
         return i;
@@ -205,8 +187,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @param i int index
      * @return the index of the left child if exists, i otherwise
      */
-    private int left(int i)
-    {
+    private int left(int i){
         if (2 * i + 1 < list.size())
             return 2 * i + 1;
         return i;
@@ -218,8 +199,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @param i int index
      * @return the index of the parent of the child if exists, i otherwise
      */
-    private int parent(int i)
-    {
+    private int parent(int i){
         if (i % 2 == 1)
             return i / 2;
         return (i - 1) / 2;
@@ -232,8 +212,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @param i int index
      * @param parent int index parent's index
      */
-    private void swap(int i, int parent)
-    {
+    private void swap(int i, int parent){
         QueueItem<T, P> temp = list.get(parent);
         list.set(parent, list.get(i));
         index.put(list.get(i).getItem(), parent);
@@ -248,8 +227,7 @@ public class PQueue<T, P extends Comparable<P>>
      * @return PriorityQueue object printed into String
      */
     @Override
-    public String toString()
-    {
+    public String toString(){
         StringBuilder s = new StringBuilder("Queue: \n");
         for (QueueItem<? extends T, ? extends P> item : list)
             s.append(item).append("\n");
