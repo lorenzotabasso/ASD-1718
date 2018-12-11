@@ -6,6 +6,12 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
@@ -55,5 +61,14 @@ public class GraphTests {
     @Test
     public void testWeight() {
         assertEquals(27.0, graph.weight(),0);
+    }
+
+    // For automaticly run all the tests
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(GraphTests.class);
+        for (Failure failure : result.getFailures()) {
+            System.out.println(failure.toString());
+        }
+        System.out.println("\nGraphTests result: " + result.wasSuccessful());
     }
 }
