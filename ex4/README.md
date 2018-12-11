@@ -9,6 +9,7 @@
 
 ## Compiling and running Unit Tests:
 1. Copy PQueue, PQueueTests and PQueueItem files from *laboratorio-algoritmi-2017-18/ex3/src/ex3/* 
+(Remember to **change the package from ex3 fo ex4**)
 folder to *laboratorio-algoritmi-2017-18/ex4/src/ex4*
 2. Go with ter terminal inside *laboratorio-algoritmi-2017-18/ex4/src*
 3. For compile Unit Tests launch the next commmand:
