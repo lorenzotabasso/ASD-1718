@@ -1,7 +1,11 @@
 package ex3;
 
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 /**
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
@@ -65,5 +69,14 @@ public class PQueueTests{
         Integer pulledItem = queue.peek();
         assertNotNull(pulledItem);
         assertEquals(pulledItem,(Integer) 28);
+    }
+
+    // For automaticly run all the tests
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(PQueueTests.class);
+        for (Failure failure : result.getFailures()) {
+            System.out.println(failure.toString());
+        }
+        System.out.println("\nTests result: " + result.wasSuccessful());
     }
 }
