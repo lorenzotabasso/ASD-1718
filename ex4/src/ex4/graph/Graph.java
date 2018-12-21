@@ -1,7 +1,6 @@
 package ex4.graph;
 
-import ex4.PrimTest;
-
+import ex4.PrimTest; // needed by javadoc, see below for details
 import java.util.*;
 
 /**

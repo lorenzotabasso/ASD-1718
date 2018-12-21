@@ -3,7 +3,6 @@ package ex4;
 import ex4.graph.Edge;
 import ex4.graph.Graph;
 import ex4.graph.Vertex;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
