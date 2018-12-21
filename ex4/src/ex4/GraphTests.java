@@ -1,11 +1,13 @@
 package ex4;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.LinkedList;
 import org.junit.*;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -37,6 +39,11 @@ public class GraphTests {
     }
 
     @Test
+    public void testIsOriented(){
+        assertFalse(graph.isOriented());
+    }
+
+    @Test
     public void testContains(){
         assertTrue(graph.contains(new Vertex<String>("A")));
     }
@@ -58,7 +65,7 @@ public class GraphTests {
     @Test
     public void testAddEdge() {
         graph.addEdge(new Edge<String>(new Vertex<String>("A"), new Vertex<String>("D"), 1));
-        assertEquals(1.0, graph.getWeight(new Vertex<String>("A"), new Vertex<String>("D")),0);
+        assertEquals(1.0, graph.getEdgeWeight(new Vertex<String>("A"), new Vertex<String>("D")),0);
     }
 
     @Test
@@ -68,27 +75,48 @@ public class GraphTests {
     }
 
     @Test
+    public void testGetVertices() {
+        LinkedList<Vertex<String>> expected = new LinkedList<>();
+        expected.add(new Vertex<>("A"));
+        expected.add(new Vertex<>("B"));
+        expected.add(new Vertex<>("C"));
+        expected.add(new Vertex<>("D"));
+        expected.add(new Vertex<>("E"));
+
+        LinkedList<Vertex<String>> result = graph.getVertices();
+        assertEquals(expected, result);
+    }
+
+    @Test
     public void testGetAdjVertices() {
         Vertex result = null;
-        Set<Vertex<String>> aLE = graph.getAdjVertices(new Vertex<>("E"));
-        for (Vertex v : aLE)
+        LinkedList<Vertex<String>> adjVertices = graph.getAdjVertices(new Vertex<>("E"));
+        for (Vertex v : adjVertices)
             result = v;
         assertEquals(new Vertex<String>("D").getLabel(), result.getLabel());
     }
 
     @Test
+    public void testGetEdges() {
+        Graph<String> graphClone = graph;
+        LinkedList<Edge<String>> expected = graphClone.getEdges();
+        LinkedList<Edge<String>> result = graph.getEdges();
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetEdgeWeight() {
+        assertEquals(5.0, graph.getEdgeWeight(new Vertex<String>("A"), new Vertex<String>("B")),0);
+    }
+
+    @Test
+    public void testGetGraphWeight() {
+        assertEquals(27.0, graph.getGraphWeight(),0);
+    }
+
+    @Test
     public void testToString() {
         assertEquals("", new Graph(false).toString());
-    }
-
-    @Test
-    public void testGetWeight() {
-        assertEquals(5.0, graph.getWeight(new Vertex<String>("A"), new Vertex<String>("B")),0);
-    }
-
-    @Test
-    public void testWeight() {
-        assertEquals(27.0, graph.weight(),0);
     }
 
     // For automaticly run all the tests

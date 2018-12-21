@@ -39,7 +39,7 @@ public class Prim<T> {
         while (!queue.isEmpty()) {
             Vertex<T> u = queue.pullFirst();
             for (Vertex<T> v : graph.getAdjVertices(u)) {
-                weight = graph.getWeight(u, v);
+                weight = graph.getEdgeWeight(u, v);
                 if (!queue.isEmpty() && weight < distance.get(v)) {
                     parent.put(v, u);
                     distance.put(v, weight);
@@ -50,7 +50,7 @@ public class Prim<T> {
             Vertex<T> father = parent.get(u);
             forest.addVertex(u);
             if (father != null)
-                forest.addEdge(new Edge<>(father, u, graph.getWeight(father, u)));
+                forest.addEdge(new Edge<>(father, u, graph.getEdgeWeight(father, u)));
         }
         return forest;
     }
