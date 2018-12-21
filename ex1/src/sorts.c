@@ -105,7 +105,7 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
 }
 
 int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test, int size_of_sums,
-        int (*compare)(void*,void*), long * (sums_support)(void*, void*)) {
+        int (*compare)(void*,void*), long long * (sums_support)(void*, void*)) {
 
     int result = 0;
     int  i = 0;
@@ -116,9 +116,9 @@ int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test
         k = size_to_test;
         while (j < size_to_test && k > 0 && result != 1) {
             if (j != k && !compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1])))
-                j++;
+                j++; // array_of_sums[i] > array_to_test[j] + array_to_test[k-1]
             else if (j != k && compare(array_of_sums[i], sums_support(array_to_test[j], array_to_test[k-1])))
-                k--;
+                k--; // array_of_sums[i] < array_to_test[j] + array_to_test[k-1]
             else
                 result = result + 1;
         }
@@ -128,9 +128,9 @@ int sums_in_array(void ** array_to_test, void ** array_of_sums, int size_to_test
     return result;
 }
 
-long * sums_support(void* r1_p, void* r2_p){
-    long first = (long) r1_p;
-    long second = (long) r2_p;
+long long * sums_support(void* r1_p, void* r2_p){
+    long long first = (long long) r1_p;
+    long long second = (long long) r2_p;
 
-    return (long *) (first + second);
+    return (long long *) (first + second);
 }

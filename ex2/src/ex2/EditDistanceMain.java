@@ -98,7 +98,7 @@ public class EditDistanceMain {
      */
     private static void doEditDistanceDynTopDown(ArrayList<String> dictionary, ArrayList<String> text) {
         long start = System.currentTimeMillis();
-        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, TOP DOWN VERSION ---------------- [Timer reset to 0]"); 
+        System.out.println("\nBEGIN OF EDIT DISTANCE DYN, TOP DOWN VERSION ---------------- [Timer reset to 0]");
 
         for(String wordInText: text){
             ArrayList<String> minEDPerWords = new ArrayList<String>();

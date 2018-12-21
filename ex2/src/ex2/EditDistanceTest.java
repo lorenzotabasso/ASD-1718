@@ -64,5 +64,4 @@ public class EditDistanceTest {
         }
         System.out.println("\nTests result: " + result.wasSuccessful());
     }
-
 }

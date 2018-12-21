@@ -77,7 +77,7 @@ class EditDistance {
         int n = str2.length();
 
         // Generate a matrix to store the results of all editDistances
-        int[][] editDistanceMatrix = new int[m + 1][n + 1]; 
+        int[][] editDistanceMatrix = new int[m + 1][n + 1];
 
         // Filling the matrix in a bottom up way
         for (int i = 0; i <= m; i++) {
@@ -196,4 +196,3 @@ class EditDistance {
         }
     }
 }
-

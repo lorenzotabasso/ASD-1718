@@ -303,6 +303,8 @@ static void test_sums_in_array(void){
     printf("\nBefore mergeSort\n");
     print_array(array0, 0);
     print_array(array1, 10);
+    print_array(array2, 5);
+    printf("\t(array of sums)\n");
 
     printf("\nStarting mergeSort, timer set to 0 seconds.\n");
     merge_sort(array0, 0, 0, compare_mergesort);

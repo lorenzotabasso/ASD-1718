@@ -3,17 +3,22 @@ package ex4;
 import java.util.Objects;
 
 /**
- /**
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
+ *
  * Vertex class
+ *
  * @param <T> Generic Type
  */
 public class Vertex<T> {
     private T label;
 
+    /**
+     * Costructor of Vertex Object.
+     *
+     * @param label the vertex label
+     */
     public Vertex(T label) {
-
         this.label = label;
     }
 
@@ -34,7 +39,6 @@ public class Vertex<T> {
      */
     @Override
     public String toString() {
-
         return label.toString();
     }
 

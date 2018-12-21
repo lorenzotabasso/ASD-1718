@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 /**
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
+ *
  * Graph class
+ *
  * @param <T> Generic type
  */
 public class Graph<T> {
@@ -38,34 +40,31 @@ public class Graph<T> {
      * @return true if the graph is oriented, false otherwise
      */
     public boolean isOriented() {
-
         return isOriented;
     }
 
     /**
-     * Checks if v is contained in Set<Vertex>
+     * Checks if the Vertex v is contained in Set<Vertex> vertices
      *
      * @param v Vertex
      * @return true if it is contained, false otherwise
      */
     public boolean contains(Vertex<T> v) {
-
         return vertices.contains(v);
     }
 
     /**
-     * Adds vertex in Set<Vertex>
+     * Add the Vertex v in Set<Vertex> vertices
      *
      * @param v Vertex
      * @return true if it is added, false otherwise
      */
     public boolean addVertex(Vertex<T> v) {
-
         return vertices.add(v);
     }
 
     /**
-     * Adds all vertices from the set to this set of vertices
+     * Adds all vertices from the given set to this set of vertices
      *
      * @param vertices Collection of Vertices
      * @return true if it is all added, false otherwise
@@ -75,29 +74,34 @@ public class Graph<T> {
     }
 
     /**
-     * Removes a vertex from vertices set
+     * Removes the Vertex v from Set<Vertex> vertices
      *
      * @param v Vertex
      * @return true if it is removed, false otherwise
      */
     public boolean removeVertex(Vertex<T> v) {
-
         return vertices.remove(v);
     }
 
     /**
-     * Adds edge in the set of edges
+     * Adds Edge e in the set of edges
      *
      * @param e Edge
      * @return true if it is added
      */
     public boolean addEdge(Edge<T> e) {
-        if (isOriented)
+        if (isOriented) {
             return addEdgeOriented(e);
-        else
-            return addEdgeOriented(e) && addEdgeOriented(new Edge(e.getVertex2(), e.getVertex1(), e.getWeight()));
+        }
+        else {
+            Edge<T> toReturn = new Edge<T>(e.getVertex2(), e.getVertex1(), e.getWeight());
+            return addEdgeOriented(e) && addEdgeOriented(toReturn);
+        }
     }
 
+    /**
+     * Support method used in addEdge()
+     */
     private boolean addEdgeOriented(Edge<T> e) {
         edges.add(e);
 
@@ -146,22 +150,20 @@ public class Graph<T> {
     }
 
     /**
-     * Gets a set of vertices
+     * Gets the set of vertices
      *
      * @return Set<Vertex>
      */
     public Set<Vertex<T>> getVertices() {
-
         return Collections.unmodifiableSet(vertices);
     }
 
     /**
-     * Gets a set of edges
+     * Gets the set of edges
      *
      * @return Set<Edge>
      */
     public Set<Edge<T>> getEdges() {
-
         return Collections.unmodifiableSet(edges);
     }
 
@@ -171,7 +173,6 @@ public class Graph<T> {
      * @return HashMap<Vertex, Set<Edge>>
      */
     public Map<Vertex<T>, Set<Edge<T>>> getAdjList() {
-
         return Collections.unmodifiableMap(adjList);
     }
 

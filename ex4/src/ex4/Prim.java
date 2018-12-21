@@ -5,10 +5,14 @@ import java.util.HashMap;
 /***
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
- * Prim's algorithm implementation
+ *
+ * Class for Prim's algorithm implementation
  */
 public class Prim<T> {
+
     /**
+     * Prim's algorithm implementation
+     *
      * @param graph weighted and undirected
      * @param start starting Vertex
      * @return Graph oriented: minimum spanning tree of the graph

@@ -1,10 +1,13 @@
 package ex4;
+
 import java.util.Objects;
 
 /**
  * @author Lorenzo Tabasso, mat: 812499
  * @author Andrea Malgaoli, mat: 823429
+ *
  * Edge class
+ *
  * @param <T> Generic Type
  */
 public class Edge<T>{
@@ -12,10 +15,11 @@ public class Edge<T>{
     private double weight;
 
     /**
+     * Costructor of Edge Object.
      *
-     * @param v1
-     * @param v2
-     * @param weight
+     * @param v1 the first vertex
+     * @param v2 the second vertex
+     * @param weight the weight of the edge
      */
     public Edge(Vertex<T> v1, Vertex<T> v2, double weight){
         vertex1 = v1;
@@ -38,7 +42,6 @@ public class Edge<T>{
      * @return vertex2
      */
     public Vertex<T> getVertex2() {
-
         return vertex2;
     }
 
@@ -48,10 +51,15 @@ public class Edge<T>{
      * @return weight
      */
     public double getWeight() {
-
         return weight;
     }
 
+    /**
+     * Overrides the behavior of the method equals to return true if equals,
+     * false otherwise
+     *
+     * @return true if they are equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -64,6 +72,11 @@ public class Edge<T>{
                 && _obj.weight == weight;
     }
 
+    /**
+     * Overrides the behavior of the method hashCode (it needs for the equals method)
+     *
+     * @return int hashcode
+     */
     @Override
     public int hashCode() {
         int hash = 28;

@@ -12,21 +12,27 @@ import static org.junit.Assert.*;
  * @author Andrea Malgaoli, mat: 823429
  */
 public class PrimTest {
-    Graph<String> graph;
+    private Graph<String> graph;
 
     @Before
     public void Before() {
-        graph = new Graph(false);
-        String path = "/Volumes/HDD/Lorenzo/Unito/2 Anno/ASD/Progetto/Progetto 2017-2018/laboratorio-algoritmi-2017-18/Datasets/ex4/italian_dist_graph.csv";
+        graph = new Graph<>(false);
+        String path = "/Volumes/HDD/Lorenzo/Downloads/laboratorio-algoritmi-2017-18/Datasets/ex4/italian_dist_graph.csv";
         FileUtils.GraphCSV(graph, path);
     }
 
     @Test
     public void TestDataSet() {
-        Graph<String> forest = new Prim().mst(graph, new Vertex("francavilla fontana"));
-        System.out.format("Peso: %.3f", forest.weight()/1000).println();
+        Prim<String> algorithm = new Prim<String>();
+        Graph<String> forest = algorithm.mst(graph, new Vertex<String>("francavilla fontana"));
+
         System.out.format("Nodi: %d", forest.getVertices().size()).println();
         System.out.format("Archi: %d",forest.getEdges().size()).println();
+        System.out.format("Peso: %.3f Km", forest.weight()/1000).println();
+
+        assertEquals(18640, forest.getVertices().size());
+        assertEquals(18637, forest.getEdges().size());
+        assertEquals(89939.913f,forest.weight()/1000, 0.02f);
     }
 
     // For automaticly run all the tests
