@@ -1,4 +1,4 @@
-package ex4;
+package ex4.pqueue;
 
 import java.util.ArrayList;
 import java.util.HashMap;

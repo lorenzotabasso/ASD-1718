@@ -1,5 +1,8 @@
 package ex4;
 
+import ex4.graph.Edge;
+import ex4.graph.Graph;
+import ex4.graph.Vertex;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;

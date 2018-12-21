@@ -1,4 +1,6 @@
-package ex4;
+package ex4.graph;
+
+import ex4.PrimTest;
 
 import java.util.*;
 

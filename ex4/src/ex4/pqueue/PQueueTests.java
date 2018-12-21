@@ -1,4 +1,4 @@
-package ex4;
+package ex4.pqueue;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;

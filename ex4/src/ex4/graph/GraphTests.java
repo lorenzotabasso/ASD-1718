@@ -1,6 +1,5 @@
-package ex4;
+package ex4.graph;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import org.junit.*;
 import org.junit.runner.JUnitCore;
