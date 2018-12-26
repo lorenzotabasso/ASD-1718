@@ -22,11 +22,4 @@ void insertion_sort(void ** array, int size, int (*compare)(void*,void*));
 // It orders the given array using the merge_sort algorithm.
 void merge_sort(void ** array, int leftIndex, int rightIndex, int (*compare)(void*,void*));
 
-// Implementation of merge function, used in merge_sort algorithm.
-// It takes as input an array of void pointers, the left index of the array,
-// the center index of the array, the right index of the array,
-// and a pointer fo a compare function.
-// Used in merge_sort function defined previously.
-void merge(void ** array, int left, int center, int right, int (*compare)(void*,void*));
-
 #endif /* SORTS_H */

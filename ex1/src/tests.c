@@ -320,8 +320,7 @@ static void test_sums_in_array(void){
     print_array(array1, 10);
 
     printf("Applying sums_in_array function. ");
-    int result1 = sums_in_array(array1, array2, 10, 5, compare_sums,
-            sums_support);
+    int result1 = sums_in_array(array1, array2, 10, 5, compare_sums);
     printf("Result: %d\n", result1);
 
     TEST_ASSERT_TRUE(is_sorted(array0, 0, compare_mergesort));
@@ -343,7 +342,7 @@ static void test_sums_in_array(void){
 
     printf("Applying sums_in_array function. ");
     int result2 = sums_in_array(array_integers, array_sums, 20000000, 11,
-            compare_sums, sums_support);
+            compare_sums);
     printf("Result: %d\n", result2);
 
     TEST_ASSERT_TRUE(is_sorted(array_integers, 20000000, compare_mergesort));

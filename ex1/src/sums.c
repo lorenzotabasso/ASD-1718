@@ -6,9 +6,13 @@
 #include "sorts.h"
 #include "sums.h"
 
+// Support function used in sums_in_array() function.
+// It takes as input two void pointers.
+// It returns the sum of the two pointed values.
+long long * sums_support(void* r1_p, void* r2_p);
+
 int sums_in_array(void ** array_to_test, void ** array_of_sums,
-        int size_to_test, int size_of_sums, int (*compare)(void*,void*),
-        long long * (sums_support)(void*, void*)) {
+        int size_to_test, int size_of_sums, int (*compare)(void*,void*)) {
 
     int result = 0;
     int  i = 0;
