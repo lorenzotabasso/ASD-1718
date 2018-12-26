@@ -8,7 +8,7 @@
 
 // Support function used in sums_in_array() function.
 // It takes as input two void pointers.
-// It returns the sum of the two pointed values.
+// It returns the sum of the two pointed values (used for compare purpose).
 long long * sums_support(void* r1_p, void* r2_p);
 
 int sums_in_array(void ** array_to_test, void ** array_of_sums,

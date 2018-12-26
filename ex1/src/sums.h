@@ -9,10 +9,8 @@
 // It takes as input an array to test made of void pointers,
 // an array of void pointers to check if contains at least one element that
 // is the sum of two others elements in array_to_test, the size of
-// array_to_test, the size of array_of_sums, a pointer to a
-// compare function and a pointer to a function called sums_support,
-// which sums two numbers pointed by two void pointers
-// (used for compare purpose).
+// array_to_test, the size of array_of_sums, and a pointer to a
+// compare function.
 int sums_in_array(void ** array_to_test, void ** array_of_sums,
         int size_to_test, int size_of_sums, int (*compare)(void*,void*));
 
