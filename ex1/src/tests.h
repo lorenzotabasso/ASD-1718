@@ -3,15 +3,18 @@
  * Author: Andrea Malgaroli, mat: 823429
  */
 
-#ifndef SORTS_TEST_H
-#define SORTS_TEST_H
+#ifndef TEST_H
+#define TEST_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h> // for timing, see load_array and tests functions
 #include "../../Resources/C/Unity/unity.h"
-#include "sorts.h"
+
+// paths to dataset
+#define INTEGERS_PATH "../../Datasets/ex1/integers.csv"
+#define SUMS_PATH "../../Datasets/ex1/sums.txt"
 
 // It takes as input two void pointers.
 // It returns 1 iff the first pointed value is
@@ -51,4 +54,4 @@ static void test_merge_sort(void);
 // Test for sums_in_array algorithm.
 static void test_sums_in_array(void);
 
-#endif //EX1_UTILITY_H
+#endif /* TESTS_H */

@@ -3,12 +3,9 @@
  * Author: Andrea Malgaroli, mat: 823429
  */
 
-#include "sorts_test.h"
-
-// paths to dataset
-#define INTEGERS_PATH "../../Datasets/ex1/integers.csv"
-#define SUMS_PATH "../../Datasets/ex1/sums.txt"
-
+#include "sums.h"
+#include "sorts.h"
+#include "tests.h"
 
 // COMPARE FUNCTIONS -----------------------------------------------------------
 
@@ -78,7 +75,8 @@ void load_array(void ** array, int size, char * path){
 
         char *field_in_read_line_p = strtok(read_line_p, "\n");
 
-        number_in_read_line = strtoull(field_in_read_line_p, (char **) NULL, 10);
+        number_in_read_line = strtoull(field_in_read_line_p,
+                (char **) NULL, 10);
 
         number_in_read_line_p = (void *) number_in_read_line;
 
@@ -245,7 +243,8 @@ static void test_merge_sort(void){
     print_array(array2,10);
     print_array(array3,10);
 
-    printf("\nRestarting mergeSort on array_integers. Timer reset to 0 seconds.\n");
+    printf("\nRestarting mergeSort on array_integers. Timer reset to 0 "
+           "seconds.\n");
 
     clock_t start2 = clock();
     merge_sort(array_integers, 0, 20000000-1, compare_mergesort);
@@ -253,7 +252,8 @@ static void test_merge_sort(void){
     clock_t stop2 = clock();
     double seconds2 = (double)(stop2 - start2) / CLOCKS_PER_SEC;
 
-    printf("MergeSort of array_integers finished, time elapsed: %f seconds\n", seconds2);
+    printf("MergeSort of array_integers finished, time elapsed: %f seconds\n",
+            seconds2);
 
     TEST_ASSERT_TRUE(is_sorted(array0, 0, compare_mergesort));
     TEST_ASSERT_TRUE(is_sorted(array1, 10, compare_mergesort));
@@ -320,7 +320,8 @@ static void test_sums_in_array(void){
     print_array(array1, 10);
 
     printf("Applying sums_in_array function. ");
-    int result1 = sums_in_array(array1, array2, 10, 5, compare_sums, sums_support);
+    int result1 = sums_in_array(array1, array2, 10, 5, compare_sums,
+            sums_support);
     printf("Result: %d\n", result1);
 
     TEST_ASSERT_TRUE(is_sorted(array0, 0, compare_mergesort));
@@ -329,7 +330,8 @@ static void test_sums_in_array(void){
 
     /* Restart with array_integers of 20000000 elements */
 
-    printf("\nRestarting mergeSort on array_integers. Timer reset to 0 seconds.\n");
+    printf("\nRestarting mergeSort on array_integers. Timer reset to 0 "
+           "seconds.\n");
 
     clock_t start2 = clock();
     merge_sort(array_integers, 0, 20000000-1, compare_mergesort);
@@ -340,7 +342,8 @@ static void test_sums_in_array(void){
     printf("MergeSort finished, time elapsed: %f seconds\n", seconds2);
 
     printf("Applying sums_in_array function. ");
-    int result2 = sums_in_array(array_integers, array_sums, 20000000, 11, compare_sums, sums_support);
+    int result2 = sums_in_array(array_integers, array_sums, 20000000, 11,
+            compare_sums, sums_support);
     printf("Result: %d\n", result2);
 
     TEST_ASSERT_TRUE(is_sorted(array_integers, 20000000, compare_mergesort));
