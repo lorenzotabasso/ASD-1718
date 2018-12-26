@@ -35,8 +35,8 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
     int n2 = (right - center);
     int i, j, k;
 
-    void ** left_sub_array = malloc((n1+1) * sizeof(void *));
-    void ** right_sub_array = malloc((n2+1) * sizeof(void *));
+    void ** left_sub_array = malloc((n1) * sizeof(void *));
+    void ** right_sub_array = malloc((n2) * sizeof(void *));
 
     for(i = 0; i < n1; i++) {
         left_sub_array[i] = array[left + i];
@@ -45,52 +45,11 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
         right_sub_array[j] = array[center + j +1];
     }
 
-    /*
-    From "Introduction to algorithm and Data Structures
-    by T.H. Cormen, 3rd edition", page 31, 2nd paragraph (English edition)
-    (Italian edition: page 27, 2nd paragrah):
-
-    "The following pseudocode implements the above idea, but with an additional
-    twist that avoids having to check whether either pile is empty in each 
-    basic step. We place on the bottom of each pile a sentinel card, which 
-    contains a special value that we use to simplify our code. ..."
-    
-    *** BEGIN NOTE **
-    In our implementation, the sentinel values are these assignement
-    
-    left_sub_array[i] = (void *) LLONG_MAX;
-    right_sub_array[j] = (void *) LLONG_MAX; 
-    
-    Pay attention: when "int (*compare)" change from <= to >= and viceversa,
-    the previous values MUST be changed in the following way:
-
-    int (*compare) using <= ---> (void *) LLONG_MAX;
-    int (*compare) using >= ---> (void *) LLONG_MIN;
-
-    where LLONG_MAX and LLONG_MIN are defined in <limits.h>
-    *** END NOTE **
-
-    " ... Here, we use "infinite" as the sentinel value, so that whenever a card 
-    with "infinite" is exposed, it cannot be the smaller card unless both piles 
-    have their sentinel cards exposed. But once that happens, all the 
-    non-sentinel cards have already been placed onto the output pile. 
-    Since we know in advance that exactly (r - p + 1) cards .."
-    
-    *** BEGIN NOTE **
-    In our implementation, (r - p + 1) = (right - left + 1)
-    *** END NOTE ***
-    
-    " ... will be placed onto the output pile, we can stop once we have 
-    performed that many basic steps."
-    */
-
-    left_sub_array[i] = (void *) LLONG_MAX;
-    right_sub_array[j] = (void *) LLONG_MAX;
-
     i = 0;
     j = 0;
+    k = left;
 
-    for (k = left; k <= right; k++) {
+    while (i < n1 && j < n2) {
         if (compare(left_sub_array[i], right_sub_array[j])){
             array[k] = left_sub_array[i];
             i++;
@@ -98,6 +57,21 @@ void merge(void ** array, int left, int center, int right, int (*compare)(void*,
             array[k] = right_sub_array[j];
             j++;
         }
+        k++;
+    }
+
+    // Copy the remaining elements of left_sub_array[], if there are any
+    while (i < n1) {
+        array[k] = left_sub_array[i];
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of right_sub_array[], if there are any
+    while (j < n2) {
+        array[k] = right_sub_array[j];
+        j++;
+        k++;
     }
 
     free(left_sub_array);
